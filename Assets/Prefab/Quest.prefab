@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 9217247818776168935}
   - component: {fileID: 5314362751610805358}
   m_Layer: 5
-  m_Name: Border Image
+  m_Name: Grade Color
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -401,6 +401,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134eefd02cf70984884be1558eacd92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _questText: {fileID: 3730044691870321720}
+  _potionQualityValue: {fileID: 4340106006768737812}
+  _gradeColor: {fileID: 5314362751610805358}
+  _potionImage: {fileID: 5720520434573895519}
+  _minPotionQuality: 10
+  _maxPotionQuality: 30
+  _reqPotionQuality: 0
+  _questGrade: 1
 --- !u!1 &7127507125243520619
 GameObject:
   m_ObjectHideFlags: 0
