@@ -27,6 +27,17 @@ public class Quest : MonoBehaviour
     [SerializeField]
     private int _questGrade;
 
+    public int QuestID
+    {
+        get
+        {
+            return _questID;
+        }
+        set
+        {
+            _questID = value;
+        }
+    }
     public string QuestText
     {
         get
@@ -43,32 +54,43 @@ public class Quest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //JSON에서 데이터 읽기
-        _questID = Random.Range(1, 1000);
-        _questText.text = "제임스";
+        //ID는 생성시 무작위로 부여
+        _questID = Random.Range(3001, 3004);
+        InitilizeData();
+        
+    }
+    private void InitilizeData()
+    {
+        var questInfo = ReadJson._dictQuest[_questID];
+        _questText.text = questInfo.questText;
+        _questGrade = questInfo.questGrade;
+
+        //DB에 최소 최대 포션 품질값이 없다
         _potionQualityValue.text = "( " + _minPotionQuality.ToString() + " ~ " + _maxPotionQuality.ToString() + " )";
-        //_potionImage
         CheckQuestGrade();
         _reqPotionQuality = Random.Range(_minPotionQuality, _maxPotionQuality);
+        //_potionImage
+        //포션ID를 사용해서 정보를 읽자
+
     }
 
 
     private void CheckQuestGrade()
     {
-        if (_questGrade >= 1 && _questGrade <= 3)
+        if (_questGrade == 1)
         {
             _gradeColor.color = Color.black;
         }
-        else if (_questGrade > 3 && _questGrade <= 5)
+        else if (_questGrade == 2 )
         {
             _gradeColor.color = Color.magenta;
         }
-        else if (_questGrade > 5 && _questGrade <= 7)
+        else if (_questGrade == 3)
         {
             _gradeColor.color = Color.yellow;
 
         }
-        else if (_questGrade > 7 && _questGrade <= 10)
+        else if (_questGrade == 4)
         {
             _gradeColor.color = Color.red;
 

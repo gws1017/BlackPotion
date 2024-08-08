@@ -405,10 +405,11 @@ MonoBehaviour:
   _potionQualityValue: {fileID: 4340106006768737812}
   _gradeColor: {fileID: 5314362751610805358}
   _potionImage: {fileID: 5720520434573895519}
+  _questID: 0
   _minPotionQuality: 10
   _maxPotionQuality: 30
   _reqPotionQuality: 0
-  _questGrade: 1
+  _questGrade: 9
 --- !u!1 &7127507125243520619
 GameObject:
   m_ObjectHideFlags: 0
