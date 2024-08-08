@@ -1,0 +1,45 @@
+{
+  "root": [
+    {
+      "potionId": 1001,
+      "potionName": "회복약",
+      "potionGrade": 1,
+      "ingredientCount": 1,
+      "ingredient1": "약초",
+      "ingredient2": "x",
+      "ingredient3": "x",
+      "potionImage": "Images/redpotion"
+    },
+    {
+      "potionId": 1002,
+      "potionName": "해충제",
+      "potionGrade": 1,
+      "ingredientCount": 1,
+      "ingredient1": "해충약",
+      "ingredient2": "x",
+      "ingredient3": "x",
+      "potionImage": "Images/redpotion"
+    },
+    {
+      "potionId": 1003,
+      "potionName": "희귀 회복약",
+      "potionGrade": 2,
+      "ingredientCount": 2,
+      "ingredient1": "약초",
+      "ingredient2": "허브",
+      "ingredient3": "x",
+      "potionImage": "Images/redpotion"
+    },
+    {
+      "potionId": 1004,
+      "potionName": "환약",
+      "potionGrade": 3,
+      "ingredientCount": 3,
+      "ingredient1": "허브",
+      "ingredient2": "약초",
+      "ingredient3": "가루약",
+      "potionImage": "Images/redpotion"
+    }
+  ]
+  
+}

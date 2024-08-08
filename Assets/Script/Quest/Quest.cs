@@ -69,8 +69,9 @@ public class Quest : MonoBehaviour
         _potionQualityValue.text = "( " + _minPotionQuality.ToString() + " ~ " + _maxPotionQuality.ToString() + " )";
         CheckQuestGrade();
         _reqPotionQuality = Random.Range(_minPotionQuality, _maxPotionQuality);
-        //_potionImage
         //포션ID를 사용해서 정보를 읽자
+        var potionInfo = ReadJson._dictPotion[questInfo.potionId];
+        _potionImage.sprite = Resources.Load<Sprite>(potionInfo.potionImage);
 
     }
 
