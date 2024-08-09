@@ -6,7 +6,9 @@
       "questText": "다쳐서 회복약이 필요합니다",
       "potionId": 1001,
       "money": 50,
-      "recipeGrade": 1
+      "recipeGrade": 1,
+      "minQuality": 15,
+      "maxQuality":  21
     },
     {
       "questId": 3002,
@@ -14,7 +16,9 @@
       "questText": "여행전 회복약을 \n보충해야합니다",
       "potionId": 1001,
       "money": 55,
-      "recipeGrade": 1
+      "recipeGrade": 1,
+      "minQuality": 14,
+      "maxQuality": 21
     },
     {
       "questId": 3003,
@@ -22,7 +26,9 @@
       "questText": "해충제좀 주세요",
       "potionId": 1002,
       "money": 75,
-      "recipeGrade": 2
+      "recipeGrade": 2,
+      "minQuality": 21,
+      "maxQuality": 32
     },
     {
       "questId": 3004,
@@ -30,7 +36,9 @@
       "questText": "던전에 가기전에 환약좀 구비해두고싶습니다.",
       "potionId": 1001,
       "money": 100,
-      "recipeGrade": 3
+      "recipeGrade": 3,
+      "minQuality": 30,
+      "maxQuality": 43
     }
   ]
   
