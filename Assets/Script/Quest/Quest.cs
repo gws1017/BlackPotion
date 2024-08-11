@@ -93,8 +93,7 @@ public class Quest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _canvas = GetComponentInChildren<Canvas>();
-        _canvas.worldCamera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
+        SetCameraInCanvas();
         _openDetailQuestButton = GetComponent<Button>();
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
         //ID는 생성시 무작위로 부여
@@ -130,6 +129,13 @@ public class Quest : MonoBehaviour
         _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);
     }
 
+    protected void SetCameraInCanvas()
+    {
+        _canvas = GetComponentInChildren<Canvas>();
+        _canvas.worldCamera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
+
+    }
+
     private void CheckQuestGrade()
     {
         if (_questGrade == 1)
@@ -155,6 +161,16 @@ public class Quest : MonoBehaviour
     public void OpenDetailQuest()
     {
         DetailQuestObject.SetActive(true);
-       Debug.Log("상세퀘스트 오픈합니다");
+        Debug.Log("상세퀘스트 오픈합니다");
+        GameObject.Find("QuestBoard").GetComponent<QuestBoard>().DisableOpenButtons();
+    }
+
+    public void DisableOpenButton()
+    {
+        _openDetailQuestButton.interactable = false;
+    }
+    public void EnableOpenButton()
+    {
+        _openDetailQuestButton.interactable = true;
     }
 }

@@ -36,6 +36,21 @@ public class QuestBoard : MonoBehaviour
         
     }
 
+    public void DisableOpenButtons()
+    {
+        foreach (GameObject go in _questList)
+        {
+            go.GetComponent<Quest>().DisableOpenButton();
+        }
+    }
+    public void EnableOpenButtons()
+    {
+        foreach (GameObject go in _questList)
+        {
+            go.GetComponent<Quest>().EnableOpenButton();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

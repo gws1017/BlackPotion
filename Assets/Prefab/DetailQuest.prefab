@@ -31,13 +31,13 @@ RectTransform:
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7373188921597537236}
+  - {fileID: 4333925904012278259}
   - {fileID: 4485455304419745046}
   - {fileID: 3999227816575510577}
   - {fileID: 3084247699932040365}
-  - {fileID: 4333925904012278259}
   - {fileID: 2951816750746192812}
   - {fileID: 8108881722191000651}
+  - {fileID: 7373188921597537236}
   m_Father: {fileID: 1880559212940762089}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 5875298761929410848}
   - component: {fileID: 5017668816168609023}
   m_Layer: 5
-  m_Name: Confirm Button
+  m_Name: Receive Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -537,7 +537,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3609ba1850a545445a4c7a226467a4d1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -784,7 +784,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: -3, y: 0.7500001}
-  m_SizeDelta: {x: 3, y: 1.5}
+  m_SizeDelta: {x: 1.5, y: 1.5}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &8810792887601178326
 CanvasRenderer:
@@ -814,7 +814,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d03f3cb0e530e9b49996bf4ad0233ab6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -858,8 +858,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.9999995, y: 3.5}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -1.5, y: 3.5}
+  m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2467648748093071423
 CanvasRenderer:
@@ -899,7 +899,7 @@ MonoBehaviour:
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "\uC758\uB8B0\uB0B4\uC6A9\n\uC758\uB8B0\uB0B4\uC6A9"
@@ -1079,7 +1079,7 @@ MonoBehaviour:
   _questGradeMark: {fileID: 1234921643561168714}
   _rewardRecipe: {fileID: 5364331957289727596}
   _quitButton: {fileID: 8142619080767763608}
-  _confirmButton: {fileID: 5017668816168609023}
+  _receiveButton: {fileID: 5017668816168609023}
 --- !u!1 &7081596953645045197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,7 +1132,7 @@ GameObject:
   - component: {fileID: 3497343454572570151}
   - component: {fileID: 8855957182703810703}
   m_Layer: 5
-  m_Name: Confirm Text
+  m_Name: Receive Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1620,7 +1620,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -1.76, y: 1.1}
+  m_AnchoredPosition: {x: -2.22, y: 1.1}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7911968590413122560
