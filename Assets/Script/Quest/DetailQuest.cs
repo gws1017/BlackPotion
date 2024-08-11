@@ -12,7 +12,7 @@ public class DetailQuest : Quest
     [SerializeField]
     private Text _rewardMoney;
     [SerializeField]
-    private Text _currentConfirmQuest;
+    private Text _currentAcceptQuest;
     [SerializeField]
     private Image _questGradeMark;
     [SerializeField]
@@ -21,7 +21,7 @@ public class DetailQuest : Quest
     [SerializeField]
     private Button _quitButton;
     [SerializeField]
-    private Button _receiveButton;
+    private Button _acceptButton;
 
 
     //부모 퀘스트
@@ -36,18 +36,17 @@ public class DetailQuest : Quest
     // Start is called before the first frame update
     void Start()
     {
-        SetCameraInCanvas();
+        CanvasRef.worldCamera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
 
         //의뢰 ID는 부모 퀘스트 객체에서
         //자식인 Detail 퀘스트 프리팹을 생성 시에 전달하고 초기화 한다.
 
         //현재 수락한 의뢰 수를 퀘스트 보드에서 가져온다?
-        int currentConfirmQuestCnt = 0;
-        _currentConfirmQuest.text = "( " + currentConfirmQuestCnt.ToString() + " / 5 )";
+        SetAcceptQuestText(Board._accpetQuestList.Count);
 
         //버튼 초기화
         _quitButton.onClick.AddListener(CloseDetailQuest);
-        _receiveButton.onClick.AddListener(ReceiveQuest);
+        _acceptButton.onClick.AddListener(AcceptQuest);
 
     }
     protected override void InitilizeData()
@@ -111,14 +110,21 @@ public class DetailQuest : Quest
 
     public void CloseDetailQuest()
     {
-        GameObject.Find("QuestBoard").GetComponent<QuestBoard>().EnableOpenButtons();
+        Board.EnableOpenButtons();
         Debug.Log("상세의뢰 파괴");
 
         Destroy(gameObject);
     }
 
-    public void ReceiveQuest()
+    public void AcceptQuest()
     {
         Debug.Log("의뢰 수락했습니다.");
+        Board.AcceptQuest(ParentQuest);
+        SetAcceptQuestText(Board._accpetQuestList.Count);
+    }
+
+    private void SetAcceptQuestText(int count)
+    {
+        _currentAcceptQuest.text = "( " + count + " / " + Board.MaxAcceptQuestCount + " )";
     }
 }

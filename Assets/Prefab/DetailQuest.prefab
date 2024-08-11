@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 5875298761929410848}
   - component: {fileID: 5017668816168609023}
   m_Layer: 5
-  m_Name: Receive Button
+  m_Name: Accept Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1075,11 +1075,11 @@ MonoBehaviour:
   _detailQuestPrefab: {fileID: 0}
   _potionName: {fileID: 7014979779916151695}
   _rewardMoney: {fileID: 7188942825140511103}
-  _currentConfirmQuest: {fileID: 6910179701728741657}
+  _currentAcceptQuest: {fileID: 6910179701728741657}
   _questGradeMark: {fileID: 1234921643561168714}
   _rewardRecipe: {fileID: 5364331957289727596}
   _quitButton: {fileID: 8142619080767763608}
-  _receiveButton: {fileID: 5017668816168609023}
+  _acceptButton: {fileID: 5017668816168609023}
 --- !u!1 &7081596953645045197
 GameObject:
   m_ObjectHideFlags: 0

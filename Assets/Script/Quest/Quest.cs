@@ -42,8 +42,10 @@ public class Quest : MonoBehaviour
     private GameObject _detailQuestPrefab;
     private GameObject _detailQuestObject;
 
-  
+    //레퍼런스
+    protected QuestBoard _questBoard;
 
+    //Getter&Setter
     public GameObject DetailQuestObject
     {
         get
@@ -65,7 +67,6 @@ public class Quest : MonoBehaviour
                 return _detailQuestObject;
         }
     }
-
     public int QuestID
     {
         get
@@ -89,11 +90,35 @@ public class Quest : MonoBehaviour
         }
     }
 
+    public QuestBoard Board
+    {
+        get
+        {
+            if( _questBoard == null )
+            {
+                _questBoard = GameObject.Find("QuestBoard").GetComponent<QuestBoard>();
+            }
+            return _questBoard;
+        }
+    }
+    
+    public Canvas CanvasRef
+    {
+        get
+        {
+            if(_canvas == null)
+            {
+                _canvas = GetComponentInChildren<Canvas>();
+            }
+            return _canvas;
+        }
+    }
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        SetCameraInCanvas();
+        CanvasRef.worldCamera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
         _openDetailQuestButton = GetComponent<Button>();
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
         //ID는 생성시 무작위로 부여
@@ -129,13 +154,6 @@ public class Quest : MonoBehaviour
         _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);
     }
 
-    protected void SetCameraInCanvas()
-    {
-        _canvas = GetComponentInChildren<Canvas>();
-        _canvas.worldCamera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
-
-    }
-
     private void CheckQuestGrade()
     {
         if (_questGrade == 1)
@@ -162,7 +180,7 @@ public class Quest : MonoBehaviour
     {
         DetailQuestObject.SetActive(true);
         Debug.Log("상세퀘스트 오픈합니다");
-        GameObject.Find("QuestBoard").GetComponent<QuestBoard>().DisableOpenButtons();
+        Board.DisableOpenButtons();
     }
 
     public void DisableOpenButton()
