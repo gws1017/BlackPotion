@@ -127,6 +127,18 @@ public class Quest : MonoBehaviour
         InitilizeData();
     }
 
+    private void OnMouseEnter()
+    {
+        if(Board._CanActiveSelectEffect)
+            Board.QuestDisableEffectOn(gameObject);
+    }
+
+    private void OnMouseExit()
+    {
+        if(Board._CanActiveSelectEffect)
+            Board.QuestDisableEffectOff();
+    }
+
     protected void InitializeQuestInfo()
     {
         _questInfo = ReadJson._dictQuest[_questID];
@@ -180,6 +192,8 @@ public class Quest : MonoBehaviour
     {
         DetailQuestObject.SetActive(true);
         Debug.Log("상세퀘스트 오픈합니다");
+        //상세퀘스트 열려있을경우 
+        Board._CanActiveSelectEffect = false;
         Board.DisableOpenButtons();
     }
 

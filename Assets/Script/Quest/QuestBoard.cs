@@ -10,6 +10,8 @@ public class QuestBoard : MonoBehaviour
     private int _maxAcceptQuestCnt;
     [SerializeField]
     private int _rowCnt;
+    [ReadOnly]
+    public bool _CanActiveSelectEffect = true;
 
 
     [SerializeField]
@@ -48,19 +50,54 @@ public class QuestBoard : MonoBehaviour
        
         
     }
+    public void OpenCurrentQuest()
+    {
+        Debug.Log("현재 수락한 퀘스트");
+    }
 
+    //상세 퀘스트 오픈시 호출되는 함수
     public void DisableOpenButtons()
     {
         foreach (GameObject go in _questList)
         {
             go.GetComponent<Quest>().DisableOpenButton();
         }
+        //전체 블러
+        QuestDisableEffectOn(null);
+        _CanActiveSelectEffect = false;
     }
+    //상세 퀘스트 닫을 시 호출 됨
     public void EnableOpenButtons()
     {
         foreach (GameObject go in _questList)
         {
             go.GetComponent<Quest>().EnableOpenButton();
+        }
+        QuestDisableEffectOff();
+        _CanActiveSelectEffect = true;
+    }
+    //---------------------------------
+
+    public void QuestDisableEffectOn(GameObject gameObject)
+    {
+        foreach(GameObject go in _questList)
+        {
+            if(go!= gameObject)
+            {
+                Vector3 originPos = go.transform.position;
+                originPos.z = 10;
+                go.transform.position = originPos;
+                go.transform.position = originPos;
+            }
+        }
+    }
+    public void QuestDisableEffectOff()
+    {
+        foreach (GameObject go in _questList)
+        {
+            Vector3 originPos = go.transform.position;
+            originPos.z = 0;
+            go.transform.position = originPos;
         }
     }
 
