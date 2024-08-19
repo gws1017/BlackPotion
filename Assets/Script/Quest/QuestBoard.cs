@@ -28,6 +28,11 @@ public class QuestBoard : MonoBehaviour
         get { return _maxAcceptQuestCnt; }
     }
 
+    public int CurrrentAcceptQuestCnt
+    {
+        get { return _accpetQuestList.Count; }
+    }
+
     void Start()
     {
         _questList = new GameObject[_maxQuestCnt];
