@@ -121,6 +121,7 @@ public class DetailQuest : Quest
         Debug.Log("의뢰 수락했습니다.");
         Board.AcceptQuest(ParentQuest);
         SetAcceptQuestText(Board._accpetQuestList.Count);
+        CloseDetailQuest();
     }
 
     private void SetAcceptQuestText(int count)
