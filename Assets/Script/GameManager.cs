@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
 
-    [SerializeField]
-    private Camera _camera;
+    public static Camera _camera;
 
     [SerializeField]
     private QuestBoard _board;
