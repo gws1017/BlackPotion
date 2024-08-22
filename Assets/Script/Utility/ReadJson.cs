@@ -30,6 +30,7 @@ public struct PotionInfo
     public string ingredient1;
     public string ingredient2;
     public string ingredient3;
+    public int[] maxMount;
     public string potionImage;
 }
 [System.Serializable]

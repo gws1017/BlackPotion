@@ -114,6 +114,20 @@ public class Quest : MonoBehaviour
         }
     }
     
+    public QuestInfo QInfo
+    {
+        get
+        {
+            return _questInfo;
+        }
+    }
+    public PotionInfo PInfo
+    {
+        get
+        {
+            return _potionInfo;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()

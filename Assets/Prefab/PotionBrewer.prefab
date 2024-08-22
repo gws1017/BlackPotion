@@ -197,6 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 687300209132405394}
+  - component: {fileID: 7253857426430935559}
   m_Layer: 0
   m_Name: PotionBrewer
   m_TagString: Untagged
@@ -223,6 +224,31 @@ Transform:
   - {fileID: 2715201754206650837}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7253857426430935559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2905202356831702556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0cb4db9c9d22c478318ec620430d82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _board: {fileID: 0}
+  _ingredientInputAmountText:
+  - {fileID: 6295703593430967956}
+  - {fileID: 3090048958163152811}
+  - {fileID: 7232350417223114540}
+  _currentQualityText: {fileID: 7818736986244718543}
+  _ingredientImage:
+  - {fileID: 8443061926938759935}
+  - {fileID: 5187877860303992651}
+  - {fileID: 3879009182971336204}
+  _currentQuestIndex: 0
+  _currentQuest: {fileID: 0}
+  _currentMount: 
 --- !u!1 &3366542813250979118
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +261,7 @@ GameObject:
   - component: {fileID: 4767146717388858032}
   - component: {fileID: 3879009182971336204}
   m_Layer: 0
-  m_Name: Ingre Image
+  m_Name: Ingre Image3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -442,7 +468,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 26d0c77b8b63f7648a1444b7b6f147da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -501,7 +527,7 @@ GameObject:
   - component: {fileID: 5418689530730646353}
   - component: {fileID: 3090048958163152811}
   m_Layer: 0
-  m_Name: CountText
+  m_Name: CountText2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -618,7 +644,7 @@ GameObject:
   - component: {fileID: 825511207844793182}
   - component: {fileID: 5187877860303992651}
   m_Layer: 0
-  m_Name: Ingre Image
+  m_Name: Ingre Image2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,7 +719,7 @@ GameObject:
   - component: {fileID: 3188412450005188851}
   - component: {fileID: 7232350417223114540}
   m_Layer: 0
-  m_Name: CountText
+  m_Name: CountText3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -930,7 +956,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5424536204130f64597e9a43c1187049, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1149,7 +1175,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 7474a87304cd2014d88d32f76a8213fc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1171,7 +1197,7 @@ GameObject:
   - component: {fileID: 2647842968998847212}
   - component: {fileID: 6295703593430967956}
   m_Layer: 0
-  m_Name: CountText
+  m_Name: CountText1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1303,7 +1329,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 26d0c77b8b63f7648a1444b7b6f147da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1325,7 +1351,7 @@ GameObject:
   - component: {fileID: 2052278217138808071}
   - component: {fileID: 8443061926938759935}
   m_Layer: 0
-  m_Name: Ingre Image
+  m_Name: Ingre Image1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1401,6 +1427,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4085232698748053252, guid: 22d7db7df576ac84dba9081c6fe63d96,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5424536204130f64597e9a43c1187049, type: 2}
+    - target: {fileID: 4372993798641634581, guid: 22d7db7df576ac84dba9081c6fe63d96,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5424536204130f64597e9a43c1187049, type: 2}
     - target: {fileID: 6901283836935969762, guid: 22d7db7df576ac84dba9081c6fe63d96,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1475,6 +1511,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4085232698748053252, guid: 22d7db7df576ac84dba9081c6fe63d96,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5424536204130f64597e9a43c1187049, type: 2}
+    - target: {fileID: 4372993798641634581, guid: 22d7db7df576ac84dba9081c6fe63d96,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5424536204130f64597e9a43c1187049, type: 2}
     - target: {fileID: 6901283836935969762, guid: 22d7db7df576ac84dba9081c6fe63d96,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1549,6 +1595,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4085232698748053252, guid: 22d7db7df576ac84dba9081c6fe63d96,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5424536204130f64597e9a43c1187049, type: 2}
+    - target: {fileID: 4372993798641634581, guid: 22d7db7df576ac84dba9081c6fe63d96,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5424536204130f64597e9a43c1187049, type: 2}
     - target: {fileID: 6901283836935969762, guid: 22d7db7df576ac84dba9081c6fe63d96,
         type: 3}
       propertyPath: m_LocalPosition.x

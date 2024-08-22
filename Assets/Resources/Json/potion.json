@@ -8,6 +8,7 @@
       "ingredient1": "약초",
       "ingredient2": "x",
       "ingredient3": "x",
+      "maxMount": [21,0, 0 ],
       "potionImage": "Images/redpotion"
     },
     {
@@ -18,6 +19,7 @@
       "ingredient1": "해충약",
       "ingredient2": "x",
       "ingredient3": "x",
+      "maxMount": [ 21, 0, 0 ],
       "potionImage": "Images/redpotion"
     },
     {
@@ -28,6 +30,7 @@
       "ingredient1": "약초",
       "ingredient2": "허브",
       "ingredient3": "x",
+      "maxMount": [ 15, 17, 0 ],
       "potionImage": "Images/redpotion"
     },
     {
@@ -38,6 +41,7 @@
       "ingredient1": "허브",
       "ingredient2": "약초",
       "ingredient3": "가루약",
+      "maxMount": [ 13, 16, 16 ],
       "potionImage": "Images/redpotion"
     }
   ]
