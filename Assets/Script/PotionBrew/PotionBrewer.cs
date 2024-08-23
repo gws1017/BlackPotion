@@ -8,6 +8,8 @@ public class PotionBrewer : MonoBehaviour
     //Component
     [SerializeField]
     private QuestBoard _board;
+    [SerializeField]
+    private Slot[] _slots;
 
     //UI
     //재료 투입 현황 텍스트
@@ -42,6 +44,13 @@ public class PotionBrewer : MonoBehaviour
         GetComponentInChildren<Canvas>().worldCamera = GameManager.MainCamera;
         _board = GameManager.Board;
 
+        //슬롯의 양조기 접근을 위한 레퍼런스 할당
+        for(int i = 0; i< _slots.Length; ++i)
+        {
+            _slots[i].Brewer = this;
+            _slots[i].SlotId = i;
+        }
+
     }
     public void UpdateQuestInfo(int questId = 0)
     {
@@ -59,7 +68,7 @@ public class PotionBrewer : MonoBehaviour
             {
                 _ingredientInputAmountText[i].enabled = false;
                 _ingredientImage[i].enabled = false;
-                //slot 비활성화
+                _slots[i].gameObject.SetActive(false);
             }
         }
 
@@ -73,13 +82,18 @@ public class PotionBrewer : MonoBehaviour
     //재료 투입 함수
     public void InsertIngredient(int slotId, int mount)
     {
+        int prevValue = _currentMount[slotId];
         if (_maxMount[slotId] >= _currentMount[slotId] + mount)
-        {
             _currentMount[slotId] += mount;
-            //다 차면 빨간색상으로
-            if (_maxMount[slotId] == _currentMount[slotId])
-                _ingredientInputAmountText[slotId].color = Color.red;
-        }
+        else
+            _currentMount[slotId] = _maxMount[slotId];
+
+        if (prevValue == _currentMount[slotId]) return;
+
+        //다 차면 빨간색상으로
+        if (_maxMount[slotId] == _currentMount[slotId])
+            _ingredientInputAmountText[slotId].color = Color.red;
+
         //수량 텍스트 업데이트
         _ingredientInputAmountText[slotId].text = _currentMount[slotId].ToString() + " / " + _maxMount[slotId].ToString();
 

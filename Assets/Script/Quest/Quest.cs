@@ -136,7 +136,7 @@ public class Quest : MonoBehaviour
         _openDetailQuestButton = GetComponent<Button>();
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
         //ID는 생성시 무작위로 부여
-        _questID = Random.Range(3001, 3004);
+        _questID = Random.Range(3001, 3005);
         InitializeQuestInfo();
         InitilizeData();
     }

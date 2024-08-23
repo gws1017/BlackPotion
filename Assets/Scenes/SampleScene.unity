@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 568ac7435e027ca4aa7374cef953aeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  QuestStartButton: {fileID: 1513628926}
+  _questStartButton: {fileID: 1513628926}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

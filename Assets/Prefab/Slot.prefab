@@ -88,6 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6901283836935969762}
+  - component: {fileID: 431853868481506074}
   m_Layer: 0
   m_Name: Slot
   m_TagString: Untagged
@@ -112,6 +113,23 @@ Transform:
   - {fileID: 4552819609497630803}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &431853868481506074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250526298606905245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3928626d23cd42d408b1d867a382da88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _potionBrwer: {fileID: 0}
+  _inputButton: {fileID: 3055768078913097448}
+  _inputButtonText: {fileID: 3662903964869993445}
+  _ingredientAmountText: {fileID: 7184731130793755386}
+  _ingredientAmount: 78
 --- !u!1 &3727467625877608989
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,6 +445,7 @@ GameObject:
   - component: {fileID: 7467695707622191668}
   - component: {fileID: 6527353217663509880}
   - component: {fileID: 1299666652029640331}
+  - component: {fileID: 1717550309507718785}
   m_Layer: 0
   m_Name: Ingre Image
   m_TagString: Untagged
@@ -491,6 +510,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1717550309507718785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6614167443158617957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80826f6833c36df4ab9f98d069a37c68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slot: {fileID: 431853868481506074}
 --- !u!1 &7642823190080425377
 GameObject:
   m_ObjectHideFlags: 0

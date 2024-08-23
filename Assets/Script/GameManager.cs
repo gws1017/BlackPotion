@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private static PotionBrewer _brewer;
 
     [SerializeField]
-    private Button QuestStartButton;
+    private Button _questStartButton;
 
     //Getter Setter
     public static Camera MainCamera
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        QuestStartButton.onClick.AddListener(QuestStart);
+        _questStartButton.onClick.AddListener(QuestStart);
     }
 
     private void QuestStart()

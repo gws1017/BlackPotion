@@ -33,8 +33,8 @@
     {
       "questId": 3004,
       "questGrade": 3,
-      "questText": "던전에 가기전에 환약좀 구비해두고싶습니다.",
-      "potionId": 1001,
+      "questText": "던전에 가기전에\n환약좀 구비해두고싶습니다.",
+      "potionId": 1004,
       "money": 100,
       "recipeGrade": 3,
       "minQuality": 30,
