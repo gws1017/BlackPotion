@@ -89,7 +89,34 @@ public class Quest : MonoBehaviour
             _questText.text = value;
         }
     }
-
+    public Sprite PotionImage
+    {
+        get
+        {
+            return _potionImage.sprite;
+        }
+    }
+    public string PotionName
+    {
+        get
+        {
+            return _potionInfo.potionName;
+        }
+    }
+    public string PotionQualityValue
+    {
+        get
+        {
+            return _potionQualityValue.text;
+        }
+    }
+    public int RequirePotionQuality
+    {
+        get
+        {
+            return _reqPotionQuality;
+        }
+    }
     public QuestBoard Board
     {
         get

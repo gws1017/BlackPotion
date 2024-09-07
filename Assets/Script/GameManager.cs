@@ -69,4 +69,9 @@ public class GameManager : MonoBehaviour
             Debug.Log("의뢰를 1개이상 수주하셔야합니다.");
         }
     }
+
+    public static void CheckQuest()
+    {
+        _camera.transform.rotation = Quaternion.Euler(0, 180, 0);
+    }
 }

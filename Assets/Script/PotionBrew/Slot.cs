@@ -59,6 +59,12 @@ public class Slot : MonoBehaviour
         _ingredientAmountText.text = _ingredientAmount.ToString();
     }
 
+    public void InitializeIngredient()
+    {
+        _ingredientAmount = 78;
+        _ingredientAmountText.text = _ingredientAmount.ToString();
+    }
+
     private int GetRandomAmount()
     {
         int amount = Random.Range(1,13);
