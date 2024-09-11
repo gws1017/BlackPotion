@@ -3,17 +3,17 @@
     {
       "questId": 3001,
       "questGrade": 1,
-      "questText": "다쳐서 회복약이 필요합니다",
+      "questText": "길을 걷다가 넘어져버리는 바람에 상처가 나서 회복약이 필요합니다.",
       "potionId": 1001,
       "money": 50,
       "recipeGrade": 1,
       "minQuality": 15,
-      "maxQuality":  21
+      "maxQuality": 21
     },
     {
       "questId": 3002,
       "questGrade": 1,
-      "questText": "여행전 회복약을 \n보충해야합니다",
+      "questText": "여행전 회복약을 보충해야합니다",
       "potionId": 1001,
       "money": 55,
       "recipeGrade": 1,
@@ -23,18 +23,18 @@
     {
       "questId": 3003,
       "questGrade": 2,
-      "questText": "해충제좀 주세요",
+      "questText": "집에서 작은 텃밭에 채소를 키우는데 벌레가 너무 많이 나타나 해충약이 필요합니다.",
       "potionId": 1002,
-      "money": 75,
+      "money": 55,
       "recipeGrade": 2,
-      "minQuality": 21,
-      "maxQuality": 32
+      "minQuality": 19,
+      "maxQuality": 21
     },
     {
       "questId": 3004,
       "questGrade": 3,
-      "questText": "던전에 가기전에\n환약좀 구비해두고싶습니다.",
-      "potionId": 1004,
+      "questText": "던전에 가기전에 회복약좀 구비해두고싶습니다.",
+      "potionId": 1001,
       "money": 100,
       "recipeGrade": 3,
       "minQuality": 30,

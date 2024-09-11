@@ -27,6 +27,9 @@ public class PotionBrewer : MonoBehaviour
     [SerializeField]
     private Button _craftButton;
 
+    [SerializeField]
+    private CraftResult _craftResult;
+
     [Header("Current Quest Info")]
     [SerializeField]
     private Image _potionImage;
@@ -53,6 +56,12 @@ public class PotionBrewer : MonoBehaviour
 
     private int _currentPotionQuality;
 
+    //게터 세터
+    public int CurrentPotionQuality
+    {
+        get { return _currentPotionQuality; }
+    }
+
     void Start()
     {
         //레퍼런스 초기화
@@ -74,7 +83,9 @@ public class PotionBrewer : MonoBehaviour
 
         _currentMount = new int[3];
         _maxMount = new int[3];
+
         _currentPotionQuality = 0;
+        _currentQualityText.text = _currentPotionQuality.ToString();
 
         var potionInfo = _currentQuest.PInfo;
         _ingreCnt = potionInfo.ingredientCount;
@@ -85,13 +96,14 @@ public class PotionBrewer : MonoBehaviour
                 _ingredientInputAmountText[i].enabled = false;
                 _ingredientImage[i].enabled = false;
                 _slots[i].gameObject.SetActive(false);
-                _slots[i].InitializeIngredient();
             }
         }
 
         for (int i = 0; i < _ingreCnt; ++i)
         {
             _maxMount[i] = potionInfo.maxMount[i];
+            _slots[i].InitializeIngredient();
+            _ingredientInputAmountText[i].color = Color.black; 
             _ingredientInputAmountText[i].text = _currentMount[i].ToString() + " / " + _maxMount[i].ToString();
         }
         UpdateQuestUIInfo();
@@ -108,17 +120,22 @@ public class PotionBrewer : MonoBehaviour
 
     public void PotionCraft()
     {
-        if(_currentQuest.RequirePotionQuality <= _currentPotionQuality)
+        //제조 결과 UI 띄우기
+        _craftResult.PotionQuality = _currentPotionQuality;
+        if (_currentQuest.RequirePotionQuality <= _currentPotionQuality)
         {
-            Debug.Log("포션제조 성공");
+            _craftResult.ShowCraftResult(true);
         }
        else
         {
-            Debug.Log("포션제조 실패");
+            _craftResult.ShowCraftResult(false);
         }
-        //제조 결과 UI 띄우기
-        //다음의뢰 가져오기
-        if (_board._accpetQuestList.Count-1 > _currentQuestIndex)
+        _reqQulaityValueText.text = _currentQuest.RequirePotionQuality.ToString();
+
+    }
+    public void GetNextCraft()
+    {
+        if (_board._accpetQuestList.Count - 1 > _currentQuestIndex)
         {
             _currentQuestIndex++;
             _currentQuest = _board._accpetQuestList[_currentQuestIndex];

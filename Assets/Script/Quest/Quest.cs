@@ -46,6 +46,64 @@ public class Quest : MonoBehaviour
     protected QuestBoard _questBoard;
 
     //Getter&Setter
+    public int QuestID
+    {
+        get
+        {
+            return _questID;
+        }
+        set
+        {
+            _questID = value;
+        }
+    }
+    public int RequirePotionQuality
+    {
+        get
+        {
+            return _reqPotionQuality;
+        }
+    }
+    public int QuestGrade
+    {
+        get { return _questGrade; }
+    }
+    public int QuestRewardMoney
+    {
+        get { return QInfo.money; }
+    }
+    public string QuestText
+    {
+        get
+        {
+            return _questText.text;
+        }
+        set
+        {
+            _questText.text = value;
+        }
+    }
+    public string PotionName
+    {
+        get
+        {
+            return _potionInfo.potionName;
+        }
+    }
+    public string PotionQualityValue
+    {
+        get
+        {
+            return _potionQualityValue.text;
+        }
+    }
+    public Sprite PotionImage
+    {
+        get
+        {
+            return _potionImage.sprite;
+        }
+    }
     public GameObject DetailQuestObject
     {
         get
@@ -65,56 +123,6 @@ public class Quest : MonoBehaviour
 
             }
                 return _detailQuestObject;
-        }
-    }
-    public int QuestID
-    {
-        get
-        {
-            return _questID;
-        }
-        set
-        {
-            _questID = value;
-        }
-    }
-    public string QuestText
-    {
-        get
-        {
-            return _questText.text;
-        }
-        set
-        {
-            _questText.text = value;
-        }
-    }
-    public Sprite PotionImage
-    {
-        get
-        {
-            return _potionImage.sprite;
-        }
-    }
-    public string PotionName
-    {
-        get
-        {
-            return _potionInfo.potionName;
-        }
-    }
-    public string PotionQualityValue
-    {
-        get
-        {
-            return _potionQualityValue.text;
-        }
-    }
-    public int RequirePotionQuality
-    {
-        get
-        {
-            return _reqPotionQuality;
         }
     }
     public QuestBoard Board

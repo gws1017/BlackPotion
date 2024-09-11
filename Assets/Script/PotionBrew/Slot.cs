@@ -63,6 +63,7 @@ public class Slot : MonoBehaviour
     {
         _ingredientAmount = 78;
         _ingredientAmountText.text = _ingredientAmount.ToString();
+        _ingredientAmountText.color = Color.black;
     }
 
     private int GetRandomAmount()
