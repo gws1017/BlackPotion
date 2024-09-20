@@ -2498,7 +2498,7 @@ PrefabInstance:
     - target: {fileID: 301994723698015790, guid: ef04a5bc421e7fd44879101f3f49d6e3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1914168771663595367, guid: ef04a5bc421e7fd44879101f3f49d6e3,
         type: 3}
@@ -2609,6 +2609,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3658196241968681580 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8730453885778427987, guid: ef04a5bc421e7fd44879101f3f49d6e3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5470830747398361663}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!223 &3747503399620720233 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 9218171246393484374, guid: ef04a5bc421e7fd44879101f3f49d6e3,
@@ -2675,8 +2687,8 @@ MonoBehaviour:
   _selectButton: {fileID: 339956838299535433}
   _moneyButton: {fileID: 6564027378509676707}
   _recipeButton: {fileID: 3840755765907077876}
-  _moneyOutline: {fileID: 0}
-  _recipeOutline: {fileID: 0}
+  _moneyOutline: {fileID: 3658196241968681580}
+  _recipeOutline: {fileID: 6485602222116701825}
 --- !u!114 &5981483158650362449 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1796431205741152366, guid: ef04a5bc421e7fd44879101f3f49d6e3,
@@ -2699,6 +2711,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6485602222116701825 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1291749484446274750, guid: ef04a5bc421e7fd44879101f3f49d6e3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5470830747398361663}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6564027378509676707 stripped

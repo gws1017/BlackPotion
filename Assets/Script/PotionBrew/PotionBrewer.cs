@@ -56,7 +56,7 @@ public class PotionBrewer : MonoBehaviour
 
     private int _currentPotionQuality;
 
-    //게터 세터
+    //Getter Setter
     public int CurrentPotionQuality
     {
         get { return _currentPotionQuality; }
@@ -101,7 +101,7 @@ public class PotionBrewer : MonoBehaviour
 
         for (int i = 0; i < _ingreCnt; ++i)
         {
-            _maxMount[i] = potionInfo.maxMount[i];
+            _maxMount[i] = potionInfo.maxMount[i] * _currentQuest.QuestGrade;
             _slots[i].InitializeIngredient();
             _ingredientInputAmountText[i].color = Color.black; 
             _ingredientInputAmountText[i].text = _currentMount[i].ToString() + " / " + _maxMount[i].ToString();

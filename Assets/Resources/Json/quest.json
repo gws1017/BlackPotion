@@ -27,8 +27,8 @@
       "potionId": 1002,
       "money": 55,
       "recipeGrade": 2,
-      "minQuality": 19,
-      "maxQuality": 21
+      "minQuality": 21,
+      "maxQuality": 32
     },
     {
       "questId": 3004,

@@ -61,7 +61,7 @@ public class Slot : MonoBehaviour
 
     public void InitializeIngredient()
     {
-        _ingredientAmount = 78;
+        _ingredientAmount = 78*_potionBrwer._currentQuest.QuestGrade;
         _ingredientAmountText.text = _ingredientAmount.ToString();
         _ingredientAmountText.color = Color.black;
     }
