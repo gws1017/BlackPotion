@@ -125,10 +125,12 @@ public class PotionBrewer : MonoBehaviour
         if (_currentQuest.RequirePotionQuality <= _currentPotionQuality)
         {
             _craftResult.ShowCraftResult(true);
+            _board.SetQuestResult(_currentQuest, true);
         }
        else
         {
             _craftResult.ShowCraftResult(false);
+            _board.SetQuestResult(_currentQuest, false);
         }
         _reqQulaityValueText.text = _currentQuest.RequirePotionQuality.ToString();
 
@@ -143,7 +145,7 @@ public class PotionBrewer : MonoBehaviour
         }
         else
         {
-            GameManager.CheckQuest();
+            GameManager.ShowCraftReceipt();
         }
     }
     //재료 투입 함수

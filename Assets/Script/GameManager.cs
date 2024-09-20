@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void CheckQuest()
+    public static void ShowCraftReceipt()
     {
         _camera.transform.rotation = Quaternion.Euler(0, 180, 0);
     }
