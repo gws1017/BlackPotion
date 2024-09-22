@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class PotionBrewer : MonoBehaviour
 {
     //Component
-    [SerializeField]
     private QuestBoard _board;
     [SerializeField]
     private Slot[] _slots;
+    [SerializeField]
+    private CraftReceipt _craftReceipt;
 
     //UI
     [SerializeField]
@@ -145,12 +146,15 @@ public class PotionBrewer : MonoBehaviour
         }
         else
         {
+            _craftReceipt.UpdateReceipt();
             GameManager.ShowCraftReceipt();
         }
     }
     //재료 투입 함수
     public void InsertIngredient(int slotId, int mount)
     {
+        //최대용량이상으로 투입가능하게 수정해야함
+        //최대 용량 넘어가면 의뢰 실패임
         int prevValue = _currentMount[slotId];
         if (_maxMount[slotId] >= _currentMount[slotId] + mount)
             _currentMount[slotId] += mount;

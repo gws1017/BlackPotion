@@ -515,7 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d02114600d3c8347b025fd7cbb12575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvas: {fileID: 0}
+  _canvas: {fileID: 1679211555811369687}
   _potionNameText:
   - {fileID: 7272453301270040020}
   - {fileID: 5786296960209288591}
@@ -525,11 +525,12 @@ MonoBehaviour:
   _moneyText:
   - {fileID: 4302213395272396873}
   - {fileID: 4124820547386075902}
-  - {fileID: 4124820547386075902}
+  - {fileID: 2831664733817031190}
   - {fileID: 8223998595441136522}
   - {fileID: 4424561299427983282}
   _resultImage: {fileID: 5599178472789623266}
   _targetMoneyText: {fileID: 649718537252881340}
+  _targetMoney: 6400000096000000fa0000009001000000000000
 --- !u!1 &3503608801243159238
 GameObject:
   m_ObjectHideFlags: 0
