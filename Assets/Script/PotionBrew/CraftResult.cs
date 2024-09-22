@@ -73,6 +73,8 @@ public class CraftResult : MonoBehaviour
             _selectText.text = "선택";
             _questResultText.text = "의뢰 성공";
             _resultText.text = "성공";
+            GameManager.GM._playInfo._currentMoney += quest.QuestRewardMoney;
+            GameManager.GM._playInfo._questSuccCnt++;
         }
         else
         {
@@ -80,6 +82,8 @@ public class CraftResult : MonoBehaviour
             _selectText.text = "다음";
             _questResultText.text = "의뢰 실패";
             _resultText.text = "실패";
+            //마이너스 골드를 적용할 것인가?
+            GameManager.GM._playInfo._currentMoney -= (int)(quest.QuestRewardMoney * 0.1);
         }
     }
 

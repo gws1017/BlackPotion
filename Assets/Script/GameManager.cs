@@ -6,18 +6,29 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
+    //싱글톤으로 바꿨으니까 static으로 교체해도 상관없지않을까
+    private static GameManager _instance;
     private static Camera _camera;
 
     private static QuestBoard _board;
     private static PotionBrewer _brewer;
 
-    //플레이 기록을 저장하는 클래스를 만들어서 추가하자
-    //의뢰 누적성공횟수, 플레이타임, 포션제조 일차(한 게임에 몇일차까지 살아남았나) 등
-    //최대 생존기간?
+    public PlayInfo _playInfo;
 
     [SerializeField]
     private Button _questStartButton;
+
+    public static GameManager GM
+    {
+        get 
+        { 
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<GameManager>();
+            }
+            return _instance;
+        }
+    }
 
     //Getter Setter
     public static Camera MainCamera
@@ -57,6 +68,18 @@ public class GameManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         _questStartButton.onClick.AddListener(QuestStart);
