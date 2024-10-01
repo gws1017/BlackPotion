@@ -66,8 +66,8 @@ public class PotionBrewer : MonoBehaviour
     void Start()
     {
         //레퍼런스 초기화
-        _canvas.worldCamera = GameManager.MainCamera;
-        _board = GameManager.Board;
+        _canvas.worldCamera = GameManager.GM.MainCamera;
+        _board = GameManager.GM.Board;
 
         //슬롯의 양조기 접근을 위한 레퍼런스 할당
         for(int i = 0; i< _slots.Length; ++i)
@@ -147,7 +147,7 @@ public class PotionBrewer : MonoBehaviour
         else
         {
             _craftReceipt.UpdateReceipt();
-            GameManager.ShowCraftReceipt();
+            GameManager.GM.ShowCraftReceipt();
         }
     }
     //재료 투입 함수

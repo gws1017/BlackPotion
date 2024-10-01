@@ -8,10 +8,10 @@ public class GameManager : MonoBehaviour
 {
     //싱글톤으로 바꿨으니까 static으로 교체해도 상관없지않을까
     private static GameManager _instance;
-    private static Camera _camera;
+    private Camera _camera;
 
-    private static QuestBoard _board;
-    private static PotionBrewer _brewer;
+    private QuestBoard _board;
+    private PotionBrewer _brewer;
 
     public PlayInfo _playInfo;
 
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Getter Setter
-    public static Camera MainCamera
+    public Camera MainCamera
     {
         get
         {
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static QuestBoard Board
+    public QuestBoard Board
     {
         get
         {
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static PotionBrewer Brewer
+    public PotionBrewer Brewer
     {
         get
         {
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void ShowCraftReceipt()
+    public void ShowCraftReceipt()
     {
         //CraftReceipt를 GameManger아래에두고 UpdateReceipt를 호출하고싶었으나
         //이 함수에서 호출시 CraftReceipt에 static을 붙이지않으면 static함수에서

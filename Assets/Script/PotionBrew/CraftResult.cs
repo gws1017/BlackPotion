@@ -51,7 +51,7 @@ public class CraftResult : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _canvas.worldCamera = GameManager.MainCamera;
+        _canvas.worldCamera = GameManager.GM.MainCamera;
 
         _selectButton.onClick.AddListener(RewardSelect);
         _moneyButton.onClick.AddListener(SelectMoney);

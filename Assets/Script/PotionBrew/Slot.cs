@@ -56,7 +56,7 @@ public class Slot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponentInChildren<Canvas>().worldCamera = GameManager.MainCamera;
+        GetComponentInChildren<Canvas>().worldCamera = GameManager.GM.MainCamera;
         _inputButton.onClick.AddListener(InputIngredient);
         _ingredientAmountText.text = _ingredientAmount.ToString();
         _ingredientCountCheckDict = new Dictionary<int, int>();

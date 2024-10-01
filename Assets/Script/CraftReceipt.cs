@@ -27,8 +27,8 @@ public class CraftReceipt : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _canvas.worldCamera = GameManager.MainCamera;
-        _board = GameManager.Board;
+        _canvas.worldCamera = GameManager.GM.MainCamera;
+        _board = GameManager.GM.Board;
     }
 
     public void UpdateReceipt()
@@ -36,6 +36,8 @@ public class CraftReceipt : MonoBehaviour
         var questList = _board._accpetQuestList;
         var info = _board._questResultDict;
         int totalGold = 0;
+        //정산은 현재 보유 골드가 아니라 의뢰 성공여부에 따른 수익만 체크한다
+        //상점에서 사용한 돈은 고려하지 않는다.
         for (int i = 0; i < questList.Count; i++)
         {
             _potionNameText[i].text = questList[i].PotionName + " 제조";
