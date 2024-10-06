@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class QuestBoard : MonoBehaviour
@@ -37,13 +38,24 @@ public class QuestBoard : MonoBehaviour
 
     void Start()
     {
+        IntitilizeQuestBoard();
+    }
+
+    public void IntitilizeQuestBoard()
+    {
+        if(_questList != null)
+        {
+            foreach(GameObject _quest in _questList)
+                Destroy(_quest);
+
+        }
         _questList = new GameObject[_maxQuestCnt];
         _accpetQuestList = new List<Quest>();
         _questResultDict = new Dictionary<Quest, bool>();
 
         Vector3 pos = new Vector3(-22f, 5f, 0f);
         int col = _maxQuestCnt / _rowCnt;
-        for(int j =0; j < col; ++j)
+        for (int j = 0; j < col; ++j)
         {
             for (int i = 0; i < _rowCnt; ++i)
             {
@@ -53,11 +65,10 @@ public class QuestBoard : MonoBehaviour
                 pos.x += 11f;
             }
             pos.x = -22f;
-            pos.y -= 11f; 
+            pos.y -= 11f;
         }
-       
-        
     }
+
     public void OpenCurrentQuest()
     {
         Debug.Log("현재 수락한 퀘스트");

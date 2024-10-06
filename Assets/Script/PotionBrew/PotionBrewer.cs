@@ -10,8 +10,6 @@ public class PotionBrewer : MonoBehaviour
     [SerializeField]
     private Slot[] _slots;
     [SerializeField]
-    private CraftReceipt _craftReceipt;
-    [SerializeField]
     private Store _storeUI;
 
     //UI
@@ -153,7 +151,7 @@ public class PotionBrewer : MonoBehaviour
         }
         else
         {
-            _craftReceipt.UpdateReceipt();
+            GameManager.GM.Receipt.UpdateReceipt();
             GameManager.GM.ShowCraftReceipt();
         }
     }

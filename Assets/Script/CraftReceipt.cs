@@ -11,7 +11,12 @@ public class CraftReceipt : MonoBehaviour
 
     private QuestBoard _board;
 
+    [SerializeField]
+    private Store _storeUI;
+
     //UI
+    [SerializeField]
+    private Button _nextButton;
     [SerializeField]
     private Text[] _potionNameText;
     [SerializeField]
@@ -29,6 +34,7 @@ public class CraftReceipt : MonoBehaviour
     {
         _canvas.worldCamera = GameManager.GM.MainCamera;
         _board = GameManager.GM.Board;
+        _nextButton.onClick.AddListener(ShowRecipeStore);
     }
 
     public void UpdateReceipt()
@@ -75,8 +81,11 @@ public class CraftReceipt : MonoBehaviour
         {
             _resultImage.sprite = Resources.Load<Sprite>("Images/targetFail");
         }
-        _targetMoneyText.text = totalGold.ToString() + " / " + _targetMoney[0].ToString();
-        GameManager.GM._playInfo.IncrementCraftDay();
+        _targetMoneyText.text = totalGold.ToString() + " / " + _targetMoney[GameManager.GM._playInfo._currentCraftDay].ToString();
     }
 
+    public void ShowRecipeStore()
+    {
+        _storeUI.OpenStoreUI(Store.StoreType.Recipe);
+    }
 }

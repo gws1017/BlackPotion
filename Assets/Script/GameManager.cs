@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     private QuestBoard _board;
     private PotionBrewer _brewer;
+    private CraftReceipt _craftReceipt;
 
     public PlayInfo _playInfo;
 
@@ -67,6 +68,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public CraftReceipt Receipt
+    {
+        get
+        {
+            if (_craftReceipt == null)
+            {
+                _craftReceipt = GameObject.Find("CraftReceipt").GetComponent<CraftReceipt>();
+            }
+            return _craftReceipt;
+        }
+    }
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -100,10 +113,12 @@ public class GameManager : MonoBehaviour
 
     public void ShowCraftReceipt()
     {
-        //CraftReceipt를 GameManger아래에두고 UpdateReceipt를 호출하고싶었으나
-        //이 함수에서 호출시 CraftReceipt에 static을 붙이지않으면 static함수에서
-        //호출할 수 없다 , CraftReceipt에대한 static 접근이 필요하지않은데 붙이는건
-        //아니되므로, 이 함수를 호출하는 potionBrwer에 CraftReceipt를 두고 호출한다
         _camera.transform.rotation = Quaternion.Euler(0, 180, 0);
+    }
+    public void ShowQuestBoard()
+    {
+        _board.IntitilizeQuestBoard();
+        _camera.transform.rotation = Quaternion.Euler(0, 0, 0);
+
     }
 }

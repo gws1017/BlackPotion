@@ -387,6 +387,7 @@ MonoBehaviour:
   _canvas: {fileID: 7057665861996985418}
   _storeType: 0
   _titleText: {fileID: 1647084664646949329}
+  _nextText: {fileID: 215663347716909358}
   _nextButton: {fileID: 3855582636928865759}
   _itemListObject: {fileID: 3987370387404442518}
   _ItemIdList: 

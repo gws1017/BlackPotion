@@ -24,6 +24,8 @@ public class Store : MonoBehaviour
     private Text _titleText;
 
     [SerializeField]
+    private Text _nextText;
+    [SerializeField]
     private Button _nextButton;
 
     //아이템 목록
@@ -57,6 +59,7 @@ public class Store : MonoBehaviour
         if (_storeType == StoreType.Buff)
         {
             _titleText.text = "버프 상점";
+            _nextText.text = "다음 의뢰";
             _nextButton.onClick.AddListener(NextQuest);
 
             foreach (var ID in ReadJson._dictBuff.Keys)
@@ -71,6 +74,7 @@ public class Store : MonoBehaviour
         else if (_storeType == StoreType.Recipe)
         {
             _titleText.text = "레시피 상점";
+            _nextText.text = "다음 날";
             _nextButton.onClick.AddListener(NextDay);
             foreach (var ID in ReadJson._dictPotion.Keys)
                 _ItemIdList.Add(ID);
@@ -91,14 +95,16 @@ public class Store : MonoBehaviour
         //아이템 슬롯을 생성하고 위치를 초기화
         var slotObject = Instantiate(_itemSlotPrefab);
         slotObject.transform.SetParent(_itemListObject.transform);
-        slotObject.transform.SetLocalPositionAndRotation(startPos + new Vector3(i * 400, i / 3 * -445, 0), Quaternion.identity);
+        slotObject.transform.SetLocalPositionAndRotation(startPos + new Vector3((i%3) * 400, i / 3 * -445, 0), Quaternion.identity);
         slotObject.transform.localScale = Vector3.one;
 
         //슬롯의 정보를 초기화
         ItemSlot itemSlotClass = slotObject.GetComponent<ItemSlot>();
-        var ItemInfo = ReadJson._dictBuff[_ItemIdList[i]];
         itemSlotClass._parentStore = this;
-        itemSlotClass.InitializeItemSlot(ItemInfo);
+        if(_storeType == StoreType.Buff)
+            itemSlotClass.InitializeItemSlot(ReadJson._dictBuff[_ItemIdList[i]]);
+        else if (_storeType == StoreType.Recipe)
+            itemSlotClass.InitializeItemSlot(ReadJson._dictPotion[_ItemIdList[i]]);
     }
     //다음 포션제조로 이동
     private void NextQuest()
@@ -112,6 +118,8 @@ public class Store : MonoBehaviour
     private void NextDay()
     {
         CloseStoreUI();
+        GameManager.GM._playInfo.IncrementCraftDay();
+        GameManager.GM.ShowQuestBoard();
     }
 
     //상점 창 오픈
