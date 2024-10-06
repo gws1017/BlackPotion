@@ -102,7 +102,7 @@ public class CraftResult : MonoBehaviour
             else return;
         }
 
-        _brewer.GetNextCraft();
+        _brewer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
         gameObject.SetActive(false);
     }
 

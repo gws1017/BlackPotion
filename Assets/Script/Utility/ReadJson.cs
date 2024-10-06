@@ -31,30 +31,50 @@ public struct PotionInfo
     public string ingredient2;
     public string ingredient3;
     public int[] maxMount;
+    public int recipeCost;
     public string potionImage;
 }
+
 [System.Serializable]
 public struct PotionData
 {
     public List<PotionInfo> root;
 }
 
+[System.Serializable]
+public struct BuffInfo
+{
+    public int buffId;
+    public string buffName;
+    public int buffCost;
+    public string buffImage;
+}
+[System.Serializable]
+public struct BuffData
+{
+    public List<BuffInfo> root;
+}
+
 public class ReadJson : MonoBehaviour
 {
     public static Dictionary<int, QuestInfo> _dictQuest;
     public static Dictionary<int, PotionInfo> _dictPotion;
+    public static Dictionary<int, BuffInfo> _dictBuff;
 
     // Start is called before the first frame update
     void Start()
     {
         TextAsset questJson = Resources.Load<TextAsset>("Json/quest");
         TextAsset potionJson = Resources.Load<TextAsset>("Json/potion");
+        TextAsset buffJson = Resources.Load<TextAsset>("Json/buff");
 
         QuestData questData = JsonUtility.FromJson<QuestData>(questJson.ToString());
         PotionData potionData = JsonUtility.FromJson<PotionData>(potionJson.ToString());
+        BuffData buffData = JsonUtility.FromJson<BuffData>(buffJson.ToString());
 
         _dictQuest = new Dictionary<int, QuestInfo>();
         _dictPotion = new Dictionary<int, PotionInfo>();
+        _dictBuff = new Dictionary<int, BuffInfo>();
 
         foreach (var info in questData.root)
         {
@@ -63,6 +83,10 @@ public class ReadJson : MonoBehaviour
         foreach (var info in potionData.root)
         {
             _dictPotion.Add(info.potionId, info);
+        }
+        foreach (var info in buffData.root)
+        {
+            _dictBuff.Add(info.buffId, info);
         }
     }
 

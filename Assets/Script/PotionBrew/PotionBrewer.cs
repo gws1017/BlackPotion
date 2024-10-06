@@ -11,6 +11,8 @@ public class PotionBrewer : MonoBehaviour
     private Slot[] _slots;
     [SerializeField]
     private CraftReceipt _craftReceipt;
+    [SerializeField]
+    private Store _storeUI;
 
     //UI
     [SerializeField]
@@ -61,6 +63,11 @@ public class PotionBrewer : MonoBehaviour
     public int CurrentPotionQuality
     {
         get { return _currentPotionQuality; }
+    }
+
+    public Store StoreUI
+    {
+        get { return _storeUI; }
     }
 
     void Start()
