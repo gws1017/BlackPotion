@@ -167,7 +167,7 @@ public class Quest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CanvasRef.worldCamera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
+        CanvasRef.worldCamera = GameManager.GM.MainCamera;
         _openDetailQuestButton = GetComponent<Button>();
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
         //ID는 생성시 무작위로 부여
