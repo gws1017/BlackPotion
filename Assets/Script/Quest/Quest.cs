@@ -72,6 +72,10 @@ public class Quest : MonoBehaviour
     {
         get { return QInfo.money; }
     }
+    public int QuestRewardRecipeGrade
+    {
+        get { return QInfo.recipeGrade; }
+    }
     public string QuestText
     {
         get
@@ -131,7 +135,7 @@ public class Quest : MonoBehaviour
         {
             if( _questBoard == null )
             {
-                _questBoard = GameObject.Find("QuestBoard").GetComponent<QuestBoard>();
+                _questBoard = GameManager.GM.Board;
             }
             return _questBoard;
         }

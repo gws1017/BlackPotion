@@ -43,7 +43,13 @@ public class Store : MonoBehaviour
     public Button _puchaseCancelButton;
     public Button _purchaseAcceptButton;
     public Text _ConfirmText;
+
+    private List<GameObject> _itemSlotsList;
    
+    public StoreType SType
+    {
+        get { return _storeType; }
+    }
 
     void Start()
     {
@@ -54,6 +60,7 @@ public class Store : MonoBehaviour
     {
         _storeType = type;
         _ItemIdList = new List<int>();
+        _itemSlotsList = new List<GameObject>();
         int itemCnt = 0;
 
         if (_storeType == StoreType.Buff)
@@ -76,8 +83,13 @@ public class Store : MonoBehaviour
             _titleText.text = "레시피 상점";
             _nextText.text = "다음 날";
             _nextButton.onClick.AddListener(NextDay);
+
+            //미보유 레시피만 상점에 등장
             foreach (var ID in ReadJson._dictPotion.Keys)
-                _ItemIdList.Add(ID);
+            {
+                if(GameManager.GM._playInfo.HasRecipe(ID) == false)
+                    _ItemIdList.Add(ID);
+            }
 
             itemCnt = Mathf.Min(6, _ItemIdList.Count);
             for (int i = 0; i < itemCnt; ++i)
@@ -94,6 +106,7 @@ public class Store : MonoBehaviour
 
         //아이템 슬롯을 생성하고 위치를 초기화
         var slotObject = Instantiate(_itemSlotPrefab);
+        _itemSlotsList.Add(slotObject);
         slotObject.transform.SetParent(_itemListObject.transform);
         slotObject.transform.SetLocalPositionAndRotation(startPos + new Vector3((i%3) * 400, i / 3 * -445, 0), Quaternion.identity);
         slotObject.transform.localScale = Vector3.one;
@@ -133,6 +146,10 @@ public class Store : MonoBehaviour
     public void CloseStoreUI()
     {
         Debug.Log("상점창 닫습니다.");
+        foreach(var itemSlot in _itemSlotsList)
+        {
+            Destroy(itemSlot);
+        }
         gameObject.SetActive(false);
     }
 

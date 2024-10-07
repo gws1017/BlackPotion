@@ -71,7 +71,7 @@ public class CraftReceipt : MonoBehaviour
             _moneyText[i].enabled = false;
         }
 
-        if(totalGold >= _targetMoney[GameManager.GM._playInfo._currentCraftDay])
+        if(totalGold >= _targetMoney[GameManager.GM._playInfo.CurrentDay])
         {
             //이미지 경로를 저장하는 클래스를 따로만들까?
             //아니면 #define?
@@ -81,7 +81,7 @@ public class CraftReceipt : MonoBehaviour
         {
             _resultImage.sprite = Resources.Load<Sprite>("Images/targetFail");
         }
-        _targetMoneyText.text = totalGold.ToString() + " / " + _targetMoney[GameManager.GM._playInfo._currentCraftDay].ToString();
+        _targetMoneyText.text = totalGold.ToString() + " / " + _targetMoney[GameManager.GM._playInfo.CurrentDay].ToString();
     }
 
     public void ShowRecipeStore()

@@ -62,13 +62,19 @@ public class ItemSlot : MonoBehaviour
     //구매 확정
     public void AcceptPurchase()
     {
-        int currGold = GameManager.GM._playInfo._currentMoney;
+        int currGold = GameManager.GM._playInfo.CurrentGold;
 
         if (currGold >=_itemCost)
         {
-            GameManager.GM._playInfo._currentMoney -= _itemCost;
+            GameManager.GM._playInfo.ConsumeGold(_itemCost);
+            if(_parentStore.SType == Store.StoreType.Recipe)
+            {
+                GameManager.GM._playInfo.AddRecipe(_itemId);
+            }
+            _itemSlotButton.enabled = false;
+            _itemNameText.text = "매진";
             Debug.Log("골드 " + _itemCost.ToString() + " 소모");
-            Debug.Log("현재 골드 " + GameManager.GM._playInfo._currentMoney.ToString());
+            Debug.Log("현재 골드 " + GameManager.GM._playInfo.CurrentGold.ToString());
         }
         else
         {
