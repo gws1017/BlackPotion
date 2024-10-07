@@ -62,6 +62,7 @@ public class CraftResult : MonoBehaviour
 
     public void ShowCraftResult(bool result)
     {
+        OffHighlight();
         _result = result;
         gameObject.SetActive(true);
 
@@ -139,6 +140,13 @@ public class CraftResult : MonoBehaviour
 
         _brewer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
         gameObject.SetActive(false);
+    }
+
+    public void OffHighlight()
+    {
+        _selectId = 0;
+        _moneyOutline.effectColor = Color.white;
+        _recipeOutline.effectColor = Color.white;
     }
 
     public void SelectMoney()
