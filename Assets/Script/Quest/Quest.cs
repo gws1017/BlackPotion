@@ -80,7 +80,7 @@ public class Quest : MonoBehaviour
     {
         get
         {
-            return _questText.text;
+            return _questInfo.questText;
         }
         set
         {
@@ -98,6 +98,11 @@ public class Quest : MonoBehaviour
     {
         get
         {
+            if(_potionQualityValue == null)
+            {
+               return ( "( " + _minPotionQuality.ToString() + " ~ "
+            + _maxPotionQuality.ToString() + " )");
+            }
             return _potionQualityValue.text;
         }
     }
@@ -105,6 +110,10 @@ public class Quest : MonoBehaviour
     {
         get
         {
+            if (_potionImage == null)
+            {
+                return Resources.Load<Sprite>(_potionInfo.potionImage);
+            }
             return _potionImage.sprite;
         }
     }
@@ -168,7 +177,6 @@ public class Quest : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         CanvasRef.worldCamera = GameManager.GM.MainCamera;
@@ -176,6 +184,13 @@ public class Quest : MonoBehaviour
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
         //ID는 생성시 무작위로 부여
         _questID = Random.Range(3001, 3005);
+        InitializeQuestInfo();
+        InitilizeData();
+    }
+
+    public void InitializeQuestFromID(int id)
+    {
+        _questID = id;
         InitializeQuestInfo();
         InitilizeData();
     }

@@ -26,6 +26,11 @@ public class QuestBoard : MonoBehaviour
 
     public Dictionary<Quest, bool> _questResultDict;
 
+    public GameObject QuestPrefab
+    {
+        get { return _questPrefab; }
+    }
+
     public int MaxAcceptQuestCount
     {
         get { return _maxAcceptQuestCnt; }
@@ -51,6 +56,7 @@ public class QuestBoard : MonoBehaviour
         }
         _questList = new GameObject[_maxQuestCnt];
         _accpetQuestList = new List<Quest>();
+        
         _questResultDict = new Dictionary<Quest, bool>();
 
         Vector3 pos = new Vector3(-22f, 5f, 0f);
@@ -122,6 +128,7 @@ public class QuestBoard : MonoBehaviour
 
     public void AcceptQuest(Quest questObject)
     {
+        
         if(_accpetQuestList.Contains(questObject))
         {
             Debug.Log("이미 수락한 퀘스트 입니다.");

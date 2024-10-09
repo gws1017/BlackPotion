@@ -84,6 +84,8 @@ public class PotionBrewer : MonoBehaviour
     }
     public void UpdateQuestInfo(int questIndex = 0)
     {
+        if (_board._accpetQuestList.Count < 1)
+            return;
         _currentQuestIndex = questIndex;
         _currentQuest = _board._accpetQuestList[_currentQuestIndex];
 
