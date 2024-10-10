@@ -126,12 +126,32 @@ public class PotionBrewer : MonoBehaviour
         _craftButton.enabled = true;
     }
 
+    private bool IsSuccCraft()
+    {
+        bool ret = true;
+
+        //요구 품질보다 낮을 때
+        if (_currentQuest.RequirePotionQuality > _currentPotionQuality)
+            return false;
+
+        //재료를 오버해서 넣었을때
+        foreach(var slot in _slots)
+        {
+            if (slot.enabled == true)
+            {
+                int sid = slot.SlotId;
+                if (_currentMount[sid] > _maxMount[sid]) return false;
+            }
+        }
+
+        return ret;
+    }
+
     public void PotionCraft()
     {
         //제조 결과 UI 띄우기
         _craftResult.PotionQuality = _currentPotionQuality;
-        if (_currentQuest.RequirePotionQuality <= _currentPotionQuality
-            && _currentQuest.MaxPotionQuality >= _currentPotionQuality)
+        if (IsSuccCraft())
         {
             _craftResult.ShowCraftResult(true);
             _board.SetQuestResult(_currentQuest, true);
