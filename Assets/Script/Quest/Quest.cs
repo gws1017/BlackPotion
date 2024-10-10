@@ -45,7 +45,14 @@ public class Quest : MonoBehaviour
     //레퍼런스
     protected QuestBoard _questBoard;
 
+    private bool _disableQuest = false;
+
     //Getter&Setter
+    public bool IsDisable
+    {
+        get {return _disableQuest;}
+    }
+
     public int QuestID
     {
         get
@@ -74,6 +81,7 @@ public class Quest : MonoBehaviour
             return _maxPotionQuality;
         }
     }
+
     public int QuestGrade
     {
         get { return _questGrade; }
@@ -185,20 +193,33 @@ public class Quest : MonoBehaviour
         _openDetailQuestButton = GetComponent<Button>();
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
         //ID는 생성시 무작위로 부여
-        _questID = Random.Range(3001, 3005);
+        if(_questID == 0 )
+            _questID = Random.Range(3001, 3005);
+        InitializeQuestInfo();
+        InitilizeData();
+    }
+
+    public void InitializeQuestFromID(int id)
+    {
+        _questID = id;
         InitializeQuestInfo();
         InitilizeData();
     }
 
     private void OnMouseEnter()
     {
+        //버튼 비활성화때는 아무것도하지마라
+        if (_disableQuest)
+            return;
         if(Board._CanActiveSelectEffect)
             Board.QuestDisableEffectOn(gameObject);
     }
 
     private void OnMouseExit()
     {
-        if(Board._CanActiveSelectEffect)
+        if (_disableQuest)
+            return;
+        if (Board._CanActiveSelectEffect)
             Board.QuestDisableEffectOff();
     }
 
@@ -227,6 +248,19 @@ public class Quest : MonoBehaviour
         //포션ID를 사용해서 정보를 읽자
         _potionInfo = ReadJson._dictPotion[_questInfo.potionId];
         _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);
+
+        //미보유 레시피 의뢰
+        if(GameManager.GM._playInfo.HasRecipe(PInfo.potionId) == false)
+        {
+            _disableQuest = true;
+            Vector3 originPos = gameObject.transform.position;
+            originPos.z = 10;
+            gameObject.transform.position = originPos;
+        }
+        else
+        {
+            _disableQuest = false;
+        }
     }
 
     private void CheckQuestGrade()

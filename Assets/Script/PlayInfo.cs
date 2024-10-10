@@ -57,6 +57,21 @@ public class PlayInfo : MonoBehaviour
         else 
             return false;
     }
+
+    public void SplitQuest(out List<int> AcceptableQuest, out List<int>UnaccpeptableQuest)
+    {
+        //레시피를 분리하는게아니라 퀘스트를 분리해야한다
+        AcceptableQuest = new List<int>();
+        UnaccpeptableQuest = new List<int>();
+
+        foreach(var Data in ReadJson._dictQuest.Values)
+        {
+            if(HasRecipe(Data.potionId))
+                AcceptableQuest.Add(Data.questId);
+            else
+                UnaccpeptableQuest.Add(Data.questId);
+        }
+    }
     //골드 함수
     public void ConsumeGold(int value)
     {
