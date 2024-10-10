@@ -109,6 +109,7 @@ public class PotionBrewer : MonoBehaviour
         {
             _maxMount[i] = potionInfo.maxMount[i] * _currentQuest.QuestGrade;
             _slots[i].InitializeIngredient();
+            _slots[i].EnableInputButton();
             _ingredientInputAmountText[i].color = Color.black; 
             _ingredientInputAmountText[i].text = _currentMount[i].ToString() + " / " + _maxMount[i].ToString();
         }
@@ -128,7 +129,8 @@ public class PotionBrewer : MonoBehaviour
     {
         //제조 결과 UI 띄우기
         _craftResult.PotionQuality = _currentPotionQuality;
-        if (_currentQuest.RequirePotionQuality <= _currentPotionQuality)
+        if (_currentQuest.RequirePotionQuality <= _currentPotionQuality
+            && _currentQuest.MaxPotionQuality >= _currentPotionQuality)
         {
             _craftResult.ShowCraftResult(true);
             _board.SetQuestResult(_currentQuest, true);
@@ -161,16 +163,18 @@ public class PotionBrewer : MonoBehaviour
         //최대용량이상으로 투입가능하게 수정해야함
         //최대 용량 넘어가면 의뢰 실패임
         int prevValue = _currentMount[slotId];
-        if (_maxMount[slotId] >= _currentMount[slotId] + mount)
-            _currentMount[slotId] += mount;
-        else
-            _currentMount[slotId] = _maxMount[slotId];
-
+        
+        _currentMount[slotId] += mount;
+        
+        
         if (prevValue == _currentMount[slotId]) return;
 
         //다 차면 빨간색상으로
-        if (_maxMount[slotId] == _currentMount[slotId])
+        if (_maxMount[slotId] <= _currentMount[slotId])
+        {
             _ingredientInputAmountText[slotId].color = Color.red;
+            _slots[slotId].DisableInputButton();
+        }
 
         //수량 텍스트 업데이트
         _ingredientInputAmountText[slotId].text = _currentMount[slotId].ToString() + " / " + _maxMount[slotId].ToString();

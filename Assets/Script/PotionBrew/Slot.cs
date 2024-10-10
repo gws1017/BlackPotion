@@ -134,4 +134,12 @@ public class Slot : MonoBehaviour
         _inputButton.onClick.AddListener(InputIngredient);
     }
 
+    public void DisableInputButton()
+    {
+        _inputButton.enabled = false;
+    }
+    public void EnableInputButton()
+    {
+        _inputButton.enabled = true;
+    }
 }

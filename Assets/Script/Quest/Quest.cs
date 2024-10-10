@@ -64,6 +64,16 @@ public class Quest : MonoBehaviour
             return _reqPotionQuality;
         }
     }
+
+    public int MaxPotionQuality
+    {
+        get 
+        { 
+            if (_maxPotionQuality == 0)
+                return QInfo.maxQuality;
+            return _maxPotionQuality;
+        }
+    }
     public int QuestGrade
     {
         get { return _questGrade; }
