@@ -29,6 +29,13 @@ public class CraftReceipt : MonoBehaviour
     [SerializeField]
     private int[] _targetMoney;
 
+    private bool _targetSucc;
+
+    public bool TargetSuccess
+    {
+        get { return _targetSucc; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,7 +69,7 @@ public class CraftReceipt : MonoBehaviour
                 gold -= (int)(questList[i].QuestRewardMoney * 0.1);
             }
             totalGold += gold;
-            _moneyText[i].text = questList[i].QuestRewardMoney.ToString() + "G";
+            _moneyText[i].text = gold.ToString() + "G";
         }
 
         for (int i = questList.Count; i < _potionNameText.Length; i++)
@@ -76,10 +83,12 @@ public class CraftReceipt : MonoBehaviour
             //이미지 경로를 저장하는 클래스를 따로만들까?
             //아니면 #define?
             _resultImage.sprite = Resources.Load<Sprite>("Images/targetSucc");
+            _targetSucc = true;
         }
         else
         {
             _resultImage.sprite = Resources.Load<Sprite>("Images/targetFail");
+            _targetSucc = false;
         }
         _targetMoneyText.text = totalGold.ToString() + " / " + _targetMoney[GameManager.GM._playInfo.CurrentDay].ToString();
     }

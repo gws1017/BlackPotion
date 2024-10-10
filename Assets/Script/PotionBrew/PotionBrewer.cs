@@ -123,6 +123,7 @@ public class PotionBrewer : MonoBehaviour
         _potionImage.sprite = _currentQuest.PotionImage;
         _potionNameText.text = _currentQuest.PotionName;
         _reqQulaityValueText.text = _currentQuest.PotionQualityValue;
+        _craftButton.enabled = true;
     }
 
     public void PotionCraft()
@@ -145,18 +146,21 @@ public class PotionBrewer : MonoBehaviour
     }
     public void GetNextCraft()
     {
-        if (_board._accpetQuestList.Count - 1 > _currentQuestIndex)
+        _currentQuestIndex++;
+        Debug.Log(_currentQuestIndex);
+        if (_board._accpetQuestList.Count > _currentQuestIndex)
         {
-            _currentQuestIndex++;
             _currentQuest = _board._accpetQuestList[_currentQuestIndex];
             UpdateQuestInfo(_currentQuestIndex);
         }
         else
         {
+            _currentQuestIndex = 0;
             GameManager.GM.Receipt.UpdateReceipt();
             GameManager.GM.ShowCraftReceipt();
         }
     }
+
     //재료 투입 함수
     public void InsertIngredient(int slotId, int mount)
     {

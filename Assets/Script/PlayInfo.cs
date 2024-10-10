@@ -75,4 +75,12 @@ public class PlayInfo : MonoBehaviour
         _maxCraftDay = Mathf.Max(_maxCraftDay, _currentCraftDay);
     }
 
+    //0일차 초기화시 사용됨
+    public void Resetinfo()
+    {
+        _currentCraftDay = 0;
+        _currentGold = 0;
+        IntializeGetRecipeDict();
+    }
+
 }

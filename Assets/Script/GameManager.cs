@@ -121,4 +121,17 @@ public class GameManager : MonoBehaviour
         _camera.transform.rotation = Quaternion.Euler(0, 0, 0);
 
     }
+
+    public void CheckRecipt()
+    {
+        if(Receipt.TargetSuccess)
+        {
+            _playInfo.IncrementCraftDay();
+        }
+        else
+        {
+            _playInfo.Resetinfo();
+        }
+        ShowQuestBoard();
+    }
 }

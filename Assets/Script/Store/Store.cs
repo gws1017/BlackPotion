@@ -58,11 +58,12 @@ public class Store : MonoBehaviour
 
     public void InitializeStore(StoreType type)
     {
+        //_nextButton.enabled = true;
+        _nextButton.onClick.RemoveAllListeners();
         _storeType = type;
         _ItemIdList = new List<int>();
         _itemSlotsList = new List<GameObject>();
         int itemCnt = 0;
-
         if (_storeType == StoreType.Buff)
         {
             _titleText.text = "버프 상점";
@@ -123,6 +124,7 @@ public class Store : MonoBehaviour
     private void NextQuest()
     {
         Debug.Log("다음 의뢰로 넘어갑니다");
+        //_nextButton.enabled = false;
         CloseStoreUI();
         GameManager.GM.Brewer.GetNextCraft();
     }
@@ -131,8 +133,7 @@ public class Store : MonoBehaviour
     private void NextDay()
     {
         CloseStoreUI();
-        GameManager.GM._playInfo.IncrementCraftDay();
-        GameManager.GM.ShowQuestBoard();
+        GameManager.GM.CheckRecipt();
     }
 
     //상점 창 오픈
