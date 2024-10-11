@@ -77,7 +77,6 @@ public class PotionBrewer : MonoBehaviour
         //슬롯의 양조기 접근을 위한 레퍼런스 할당
         for(int i = 0; i< _slots.Length; ++i)
         {
-            _slots[i].Brewer = this;
             _slots[i].SlotId = i;
         }
         _craftButton.onClick.AddListener(PotionCraft);

@@ -33,10 +33,9 @@ public class DetailQuest : Quest
         set { _parentQuest = value; }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        CanvasRef.worldCamera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
+        CanvasRef.worldCamera = GameManager.GM.MainCamera;
 
         //의뢰 ID는 부모 퀘스트 객체에서
         //자식인 Detail 퀘스트 프리팹을 생성 시에 전달하고 초기화 한다.

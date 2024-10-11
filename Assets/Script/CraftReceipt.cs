@@ -36,7 +36,6 @@ public class CraftReceipt : MonoBehaviour
         get { return _targetSucc; }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         _canvas.worldCamera = GameManager.GM.MainCamera;
@@ -71,7 +70,11 @@ public class CraftReceipt : MonoBehaviour
             totalGold += gold;
             _moneyText[i].text = gold.ToString() + "G";
         }
-
+        for (int i = 0; i < questList.Count; i++)
+        {
+            _potionNameText[i].enabled = true;
+            _moneyText[i].enabled = true;
+        }
         for (int i = questList.Count; i < _potionNameText.Length; i++)
         {
             _potionNameText[i].enabled = false;

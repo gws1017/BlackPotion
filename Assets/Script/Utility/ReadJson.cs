@@ -61,7 +61,6 @@ public class ReadJson : MonoBehaviour
     public static Dictionary<int, PotionInfo> _dictPotion;
     public static Dictionary<int, BuffInfo> _dictBuff;
 
-    // Start is called before the first frame update
     private void Awake()
     {
         TextAsset questJson = Resources.Load<TextAsset>("Json/quest");
@@ -89,10 +88,5 @@ public class ReadJson : MonoBehaviour
             _dictBuff.Add(info.buffId, info);
         }
     }
-    void Start()
-    {
-        
-    }
-
     
 }

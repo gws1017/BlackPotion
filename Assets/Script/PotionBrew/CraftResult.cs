@@ -50,7 +50,6 @@ public class CraftResult : MonoBehaviour
         set { _potionQualityValueText.text = value.ToString(); }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         _canvas.worldCamera = GameManager.GM.MainCamera;

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class QuestBoard : MonoBehaviour
 {
@@ -17,10 +19,16 @@ public class QuestBoard : MonoBehaviour
 
 
     [SerializeField]
+    private GameObject _currentQuestUIObject;
+    [SerializeField]
     private GameObject _questPrefab;
+    [SerializeField]
+    private Button _currentQuestButton;
+    [SerializeField]
+    private Button _curretnQuestUIHidePannel;
 
     [ReadOnly, SerializeField]
-    private GameObject[] _questList;
+    private List<GameObject> _questList;
 
     [ReadOnly]
     public List<Quest> _accpetQuestList;
@@ -46,18 +54,28 @@ public class QuestBoard : MonoBehaviour
     }
 
 
-
     public void IntitilizeQuestBoard()
     {
-        if(_questList != null)
+        if (_questList != null)
         {
-            foreach(GameObject _quest in _questList)
+            foreach (GameObject _quest in _questList)
                 Destroy(_quest);
 
         }
-        _questList = new GameObject[_maxQuestCnt];
+        if(_accpetQuestList != null)
+        {
+            foreach(Quest obj in _accpetQuestList)
+                Destroy(obj.gameObject);
+        }
+        _currentQuestUIObject.SetActive(false);
+        _questList = new List<GameObject>();
         _accpetQuestList = new List<Quest>();
         _questResultDict = new Dictionary<Quest, bool>();
+
+        _currentQuestButton.onClick.RemoveAllListeners();
+        _curretnQuestUIHidePannel.onClick.RemoveAllListeners();
+        _currentQuestButton.onClick.AddListener(ShowAcceptQuest);
+        _curretnQuestUIHidePannel.onClick.AddListener(CloseAcceptQuestUI);
 
         //전체 레시피에서 보유/ 미보유 리스트를 나눠서 가져온다
         GameManager.GM._playInfo.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
@@ -73,7 +91,7 @@ public class QuestBoard : MonoBehaviour
                 int index = i + j * _rowCnt;
                 var Clone = Instantiate(_questPrefab, pos, Quaternion.identity);
                 Clone.GetComponent<Quest>().QuestID = id;
-                _questList[index] = Clone;
+                _questList.Add(Clone);
                 pos.x += 11f;
             }
             pos.x = -22f;
@@ -111,9 +129,11 @@ public class QuestBoard : MonoBehaviour
 
     public void QuestDisableEffectOn(GameObject gameObject)
     {
-        foreach(GameObject go in _questList)
+        if (_currentQuestUIObject.activeSelf)
+            return;
+        foreach (GameObject go in _questList)
         {
-            if(go!= gameObject)
+            if (go != gameObject)
             {
                 Vector3 originPos = go.transform.position;
                 originPos.z = 10;
@@ -124,6 +144,8 @@ public class QuestBoard : MonoBehaviour
     }
     public void QuestDisableEffectOff()
     {
+        if (_currentQuestUIObject.activeSelf)
+            return;
         foreach (GameObject go in _questList)
         {
             if (go.GetComponent<Quest>().IsDisable) continue;
@@ -135,7 +157,7 @@ public class QuestBoard : MonoBehaviour
 
     public void AcceptQuest(Quest questObject)
     {
-        if(_accpetQuestList.Contains(questObject))
+        if (_accpetQuestList.Contains(questObject))
         {
             Debug.Log("이미 수락한 퀘스트 입니다.");
             return;
@@ -144,6 +166,24 @@ public class QuestBoard : MonoBehaviour
         {
             _accpetQuestList.Add(questObject);
             _questResultDict.Add(questObject, false);
+
+            _questList.Remove(questObject.gameObject);
+            questObject.IsDisable = true;
+
+            questObject.gameObject.transform.SetParent(_currentQuestUIObject.transform);
+            int i = _accpetQuestList.Count - 1;
+            Vector3 start;
+            if (i < 3)
+            {
+                start = new Vector3(-20, 4, -23);
+                questObject.gameObject.transform.position = start + new Vector3(i * 20, 0, 0);
+            }
+            else
+            {
+                start = new Vector3(-10, -8, -23);
+                questObject.gameObject.transform.position = start + new Vector3((i % 3) * 20, 0, 0);
+            }
+
         }
         else
         {
@@ -152,6 +192,17 @@ public class QuestBoard : MonoBehaviour
         }
     }
 
+    public void ShowAcceptQuest()
+    {
+        _currentQuestUIObject.SetActive(!_currentQuestUIObject.activeSelf);
+
+
+
+    }
+    public void CloseAcceptQuestUI()
+    {
+        _currentQuestUIObject.SetActive(false);
+    }
     public void SetQuestResult(Quest quest, bool value)
     {
         _questResultDict[quest] = value;
@@ -163,8 +214,8 @@ public class QuestBoard : MonoBehaviour
         bool possess = (UnityEngine.Random.value > 0.5f);
 
         //모든 레시피 보유했거나 어떠한레시피도 없으면 더 확인할 이유가 없다
-        if (_unAcceptableQuestList.Count == 0 ) return true;
-        else if(_acceptableQuestList.Count == 0 ) return false;
+        if (_unAcceptableQuestList.Count == 0) return true;
+        else if (_acceptableQuestList.Count == 0) return false;
 
         int maxPCnt = Convert.ToInt32(_maxQuestCnt * 0.65);
         int maxUpCnt = _maxQuestCnt - maxPCnt;
@@ -172,16 +223,16 @@ public class QuestBoard : MonoBehaviour
         if (possess)
         {
             //65% 못채웠으면 그대로
-            if(pCnt >= maxPCnt) possess = !possess;
+            if (pCnt >= maxPCnt) possess = !possess;
         }
-        else if(!possess)
+        else if (!possess)
         {
             //위와 동일
             if (upCnt >= maxUpCnt) possess = !possess;
         }
         return possess;
     }
-    private int GetQuestID(ref int pCnt, ref int upCnt ) 
+    private int GetQuestID(ref int pCnt, ref int upCnt)
     {
         //최종 의뢰ID
         int questID = 0;
