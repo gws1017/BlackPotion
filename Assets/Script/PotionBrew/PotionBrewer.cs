@@ -24,13 +24,21 @@ public class PotionBrewer : MonoBehaviour
     //재료 이미지
     [SerializeField]
     private Image[] _ingredientImage;
-
+    //투입 결과 오브젝트
+    [SerializeField]
+    private GameObject[] _capacityObject;
+    //제조버튼
     [SerializeField]
     private Button _craftButton;
+    //+ 이미지 오브젝트 0 -> 투입구 하나일때 1 -> 투입구2
+    [SerializeField]
+    private GameObject[] _plusImageObjects;
 
+    //보상UI 오브젝트
     [SerializeField]
     private CraftResult _craftResult;
 
+    //현재 제조 포션 정보
     [Header("Current Quest Info")]
     [SerializeField]
     private Image _potionImage;
@@ -40,7 +48,6 @@ public class PotionBrewer : MonoBehaviour
     private Text _questText;
     [SerializeField]
     private Text _reqQulaityValueText;
-
     //현재 표시하는 Quest 정보
     [SerializeField]
     private int _currentQuestIndex;
@@ -94,24 +101,39 @@ public class PotionBrewer : MonoBehaviour
 
         var potionInfo = _currentQuest.PInfo;
         _ingreCnt = potionInfo.ingredientCount;
-        if (_ingreCnt > 0)
+
+        for (int i = 0; i < 3; ++i)
         {
-            for (int i = _ingreCnt; i <= 2; ++i)
+            if(i!=2)_plusImageObjects[i].SetActive(false);
+            _capacityObject[i].SetActive(true);
+            _slots[i].gameObject.SetActive(true);
+            _slots[i].InitializeIngredient();
+            _slots[i].EnableInputButton();
+            _ingredientInputAmountText[i].color = Color.black;
+            _maxMount[i] = potionInfo.maxMount[i] * _currentQuest.QuestGrade;
+            _ingredientInputAmountText[i].text = _currentMount[i].ToString() + " / " + _maxMount[i].ToString();
+        }
+
+        if (_ingreCnt == 1) //2번째만
+        {
+            for (int i = 0; i < 3; ++i)
             {
-                _ingredientInputAmountText[i].enabled = false;
-                _ingredientImage[i].enabled = false;
+                if (i == 1) continue;
+                _capacityObject[i].SetActive(false);
                 _slots[i].gameObject.SetActive(false);
             }
         }
-
-        for (int i = 0; i < _ingreCnt; ++i)
+        else if(_ingreCnt == 2) //1 3번째만
         {
-            _maxMount[i] = potionInfo.maxMount[i] * _currentQuest.QuestGrade;
-            _slots[i].InitializeIngredient();
-            _slots[i].EnableInputButton();
-            _ingredientInputAmountText[i].color = Color.black; 
-            _ingredientInputAmountText[i].text = _currentMount[i].ToString() + " / " + _maxMount[i].ToString();
+            _plusImageObjects[_ingreCnt - 2].SetActive(true);
+            _capacityObject[1].SetActive(false);
+            _slots[1].gameObject.SetActive(false);
+
         }
+        else if(_ingreCnt == 3)
+            _plusImageObjects[_ingreCnt - 2].SetActive(true);
+
+
         UpdateQuestUIInfo();
     }
 
