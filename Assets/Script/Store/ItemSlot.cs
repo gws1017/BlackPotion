@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+//상점 판매 제품 버튼 하나에 할당되는 클래스
 public class ItemSlot : MonoBehaviour
 {
+    //판매 제품의 정보
     public int _itemId;
     public int _itemCost;
     public Image _itemImage;
@@ -12,17 +15,17 @@ public class ItemSlot : MonoBehaviour
     public Text _itemCostText;
     public Button _itemSlotButton;
 
+    //상점의 레퍼런스
     public Store _parentStore;
-
-
-   
+    private PlayInfo _playInfo;
 
     void Start()
     {
+        _playInfo = GameManager.GM.PlayInfomation;
         _itemSlotButton.onClick.AddListener(ShowPurchaseUI);
-        
     }
 
+    //판매되는 버프정보를 초기화
     public void InitializeItemSlot(BuffInfo ItemInfo)
     {
         _itemId = ItemInfo.buffId;
@@ -33,7 +36,7 @@ public class ItemSlot : MonoBehaviour
         _parentStore._puchaseCancelButton.onClick.RemoveAllListeners();
         _parentStore._puchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
     }
-
+    //판매되는 포션레시피 정보를 초기화
     public void InitializeItemSlot(PotionInfo ItemInfo)
     {
         _itemId = ItemInfo.potionId;
@@ -62,22 +65,21 @@ public class ItemSlot : MonoBehaviour
     //구매 확정
     public void AcceptPurchase()
     {
-        int currGold = GameManager.GM._playInfo.CurrentGold;
+        int currGold = _playInfo.CurrentGold;
 
         if (currGold >=_itemCost)
         {
-            GameManager.GM._playInfo.ConsumeGold(_itemCost);
+            _playInfo.ConsumeGold(_itemCost);
             if(_parentStore.SType == Store.StoreType.Recipe)
             {
-                GameManager.GM._playInfo.AddRecipe(_itemId);
+                _playInfo.AddRecipe(_itemId);
             }
             _itemSlotButton.enabled = false;
             _itemNameText.text = "매진";
-            Debug.Log("골드 " + _itemCost.ToString() + " 소모");
-            Debug.Log("현재 골드 " + GameManager.GM._playInfo.CurrentGold.ToString());
         }
         else
         {
+            //추후 UI로 표기
             Debug.Log("골드가 부족합니다.");
         }
         _parentStore._purchaseUI.SetActive(false);

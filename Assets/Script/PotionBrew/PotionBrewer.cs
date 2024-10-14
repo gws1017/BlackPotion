@@ -81,13 +81,103 @@ public class PotionBrewer : MonoBehaviour
         _canvas.worldCamera = GameManager.GM.MainCamera;
         _board = GameManager.GM.Board;
 
-        //슬롯의 양조기 접근을 위한 레퍼런스 할당
-        for(int i = 0; i< _slots.Length; ++i)
+        _craftResult.gameObject.SetActive(false);
+
+        //슬롯의id 설정
+        for (int i = 0; i< _slots.Length; ++i)
         {
             _slots[i].SlotId = i;
         }
         _craftButton.onClick.AddListener(PotionCraft);
     }
+
+    //포션 제조에 성공했는지 확인하는 함수
+    private bool IsSuccCraft()
+    {
+        bool ret = true;
+
+        //요구 품질보다 낮을 때
+        if (_currentQuest.RequirePotionQuality > _currentPotionQuality)
+            return false;
+
+        //재료를 오버해서 넣었을때
+        foreach (var slot in _slots)
+        {
+            if (slot.enabled == true)
+            {
+                int sid = slot.SlotId;
+                if (_currentMount[sid] > _maxMount[sid]) return false;
+            }
+        }
+
+        return ret;
+    }
+
+    //포션 제조 함수
+    public void PotionCraft()
+    {
+        //제조 결과 UI 띄우기
+        _craftResult.PotionQuality = _currentPotionQuality;
+        if (IsSuccCraft())
+        {
+            _craftResult.ShowCraftResultUI(true);
+            _board.SetQuestResult(_currentQuest, true);
+        }
+        else
+        {
+            _craftResult.ShowCraftResultUI(false);
+            _board.SetQuestResult(_currentQuest, false);
+        }
+        _reqQulaityValueText.text = _currentQuest.RequirePotionQuality.ToString();
+
+    }
+    //다음 제조 혹은 정산 단계로 이동하는 함수
+    public void GetNextCraft()
+    {
+        _currentQuestIndex++;
+        if (_board._accpetQuestList.Count > _currentQuestIndex)
+        {
+            _currentQuest = _board._accpetQuestList[_currentQuestIndex];
+            UpdateQuestInfo(_currentQuestIndex);
+        }
+        else
+        {
+            _currentQuestIndex = 0;
+            GameManager.GM.Receipt.UpdateReceipt();
+            GameManager.GM.ShowCraftReceipt();
+        }
+    }
+
+    //재료 투입 함수
+    public void InsertIngredient(int slotId, int mount)
+    {
+        int prevValue = _currentMount[slotId];
+        _currentMount[slotId] += mount;
+
+        if (prevValue == _currentMount[slotId]) return;
+
+        //다 차면 빨간색상
+        if (_maxMount[slotId] <= _currentMount[slotId])
+        {
+            _ingredientInputAmountText[slotId].color = Color.red;
+            _slots[slotId].DisableInputButton();
+        }
+
+        //수량 텍스트 업데이트
+        _ingredientInputAmountText[slotId].text = _currentMount[slotId].ToString() + " / " + _maxMount[slotId].ToString();
+
+        //현재 품질 업데이트
+        _currentPotionQuality = 0;
+        foreach (var val in _currentMount)
+        {
+            _currentPotionQuality += val;
+        }
+        _currentQualityText.text = _currentPotionQuality.ToString();
+
+
+    }
+
+    //지금 제조하는 의뢰에 맞게 양조기 정보를 업데이트한다.
     public void UpdateQuestInfo(int questIndex = 0)
     {
         _currentQuestIndex = questIndex;
@@ -107,13 +197,14 @@ public class PotionBrewer : MonoBehaviour
             if(i!=2)_plusImageObjects[i].SetActive(false);
             _capacityObject[i].SetActive(true);
             _slots[i].gameObject.SetActive(true);
-            _slots[i].InitializeIngredient();
+            _slots[i].InitializeSlot();
             _slots[i].EnableInputButton();
             _ingredientInputAmountText[i].color = Color.black;
             _maxMount[i] = potionInfo.maxMount[i] * _currentQuest.QuestGrade;
             _ingredientInputAmountText[i].text = _currentMount[i].ToString() + " / " + _maxMount[i].ToString();
         }
 
+        //의뢰 별 투입되는 재료의 종류(투입구의 수)에 따라 UI가 바뀐다.
         if (_ingreCnt == 1) //2번째만
         {
             for (int i = 0; i < 3; ++i)
@@ -145,94 +236,6 @@ public class PotionBrewer : MonoBehaviour
         _potionNameText.text = _currentQuest.PotionName;
         _reqQulaityValueText.text = _currentQuest.PotionQualityValue;
         _craftButton.enabled = true;
-    }
-
-    private bool IsSuccCraft()
-    {
-        bool ret = true;
-
-        //요구 품질보다 낮을 때
-        if (_currentQuest.RequirePotionQuality > _currentPotionQuality)
-            return false;
-
-        //재료를 오버해서 넣었을때
-        foreach(var slot in _slots)
-        {
-            if (slot.enabled == true)
-            {
-                int sid = slot.SlotId;
-                if (_currentMount[sid] > _maxMount[sid]) return false;
-            }
-        }
-
-        return ret;
-    }
-
-    public void PotionCraft()
-    {
-        //제조 결과 UI 띄우기
-        _craftResult.PotionQuality = _currentPotionQuality;
-        if (IsSuccCraft())
-        {
-            _craftResult.ShowCraftResult(true);
-            _board.SetQuestResult(_currentQuest, true);
-        }
-       else
-        {
-            _craftResult.ShowCraftResult(false);
-            _board.SetQuestResult(_currentQuest, false);
-        }
-        _reqQulaityValueText.text = _currentQuest.RequirePotionQuality.ToString();
-
-    }
-    public void GetNextCraft()
-    {
-        _currentQuestIndex++;
-        Debug.Log(_currentQuestIndex);
-        if (_board._accpetQuestList.Count > _currentQuestIndex)
-        {
-            _currentQuest = _board._accpetQuestList[_currentQuestIndex];
-            UpdateQuestInfo(_currentQuestIndex);
-        }
-        else
-        {
-            _currentQuestIndex = 0;
-            GameManager.GM.Receipt.UpdateReceipt();
-            GameManager.GM.ShowCraftReceipt();
-        }
-    }
-
-    //재료 투입 함수
-    public void InsertIngredient(int slotId, int mount)
-    {
-        //최대용량이상으로 투입가능하게 수정해야함
-        //최대 용량 넘어가면 의뢰 실패임
-        int prevValue = _currentMount[slotId];
-        
-        _currentMount[slotId] += mount;
-        
-        
-        if (prevValue == _currentMount[slotId]) return;
-
-        //다 차면 빨간색상으로
-        if (_maxMount[slotId] <= _currentMount[slotId])
-        {
-            _ingredientInputAmountText[slotId].color = Color.red;
-            _slots[slotId].DisableInputButton();
-        }
-
-        //수량 텍스트 업데이트
-        _ingredientInputAmountText[slotId].text = _currentMount[slotId].ToString() + " / " + _maxMount[slotId].ToString();
-
-        //현재 품질 업데이트
-        _currentPotionQuality = 0;
-        foreach (var val in _currentMount)
-        {
-            _currentPotionQuality += val;
-        }
-        _currentQualityText.text = _currentPotionQuality.ToString();
-
-
     }
 
 }

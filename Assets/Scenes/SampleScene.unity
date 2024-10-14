@@ -377,7 +377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 568ac7435e027ca4aa7374cef953aeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playInfo: {fileID: 374720874}
   _questStartButton: {fileID: 1513628926}
 --- !u!114 &374720874
 MonoBehaviour:
@@ -608,7 +607,7 @@ PrefabInstance:
     - target: {fileID: 5754664698892594193, guid: 3b79ec9b38f13514b870a9a99e8c8235,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7253857426430935559, guid: 3b79ec9b38f13514b870a9a99e8c8235,
         type: 3}
@@ -1959,17 +1958,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04506dd7a4ce054087689b1c6326aa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxQuestCnt: 10
-  _maxAcceptQuestCnt: 5
-  _rowCnt: 5
-  _CanActiveSelectEffect: 1
-  _currentQuestUIObject: {fileID: 1735403086}
-  _questPrefab: {fileID: 7024418843332693245, guid: 2af10ea4938d1ca448c2dc7736fc6607,
-    type: 3}
   _currentQuestButton: {fileID: 1360930466}
   _curretnQuestUIHidePannel: {fileID: 2085354251}
   _questList: []
   _accpetQuestList: []
+  _questPrefab: {fileID: 7024418843332693245, guid: 2af10ea4938d1ca448c2dc7736fc6607,
+    type: 3}
+  _currentQuestUIObject: {fileID: 1735403086}
+  _maxQuestCnt: 10
+  _maxAcceptQuestCnt: 5
+  _rowCnt: 5
+  _CanActiveSelectEffect: 1
 --- !u!1 &1950264479
 GameObject:
   m_ObjectHideFlags: 0

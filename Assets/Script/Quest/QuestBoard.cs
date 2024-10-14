@@ -8,20 +8,7 @@ using UnityEngine.UI;
 
 public class QuestBoard : MonoBehaviour
 {
-    [SerializeField]
-    private int _maxQuestCnt;
-    [SerializeField]
-    private int _maxAcceptQuestCnt;
-    [SerializeField]
-    private int _rowCnt;
-    [ReadOnly]
-    public bool _CanActiveSelectEffect = true;
-
-
-    [SerializeField]
-    private GameObject _currentQuestUIObject;
-    [SerializeField]
-    private GameObject _questPrefab;
+    //UI
     [SerializeField]
     private Button _currentQuestButton;
     [SerializeField]
@@ -29,14 +16,36 @@ public class QuestBoard : MonoBehaviour
 
     [ReadOnly, SerializeField]
     private List<GameObject> _questList;
-
+    //수락한 의뢰 목록
     [ReadOnly]
     public List<Quest> _accpetQuestList;
 
+    //포션 제조 결과를 의뢰별로 저장하는 Dictionary
     public Dictionary<Quest, bool> _questResultDict;
 
+    //모든 의뢰중 보유중인 레시피를 기준으로 수락 가능 / 수락 불가 목록을 저장하기 위한 List
     private List<int> _acceptableQuestList;
     private List<int> _unAcceptableQuestList;
+
+    //의뢰 프리펩
+    [SerializeField]
+    private GameObject _questPrefab;
+    //현재 의뢰 버튼을 누르면 활성화되는 UI
+    [SerializeField]
+    private GameObject _currentQuestUIObject;
+
+    //의뢰 게시판에 붙는 최대 의뢰 수
+    [SerializeField]
+    private int _maxQuestCnt;
+    //최대로 수락가능한 의뢰 수
+    [SerializeField]
+    private int _maxAcceptQuestCnt;
+    //한 행에 나열 하는 의뢰 수
+    [SerializeField]
+    private int _rowCnt;
+    //의뢰 마우스 오버 효과에 사용되는 변수
+    [ReadOnly]
+    public bool _CanActiveSelectEffect = true;
 
     public int MaxAcceptQuestCount
     {
@@ -56,6 +65,7 @@ public class QuestBoard : MonoBehaviour
 
     public void IntitilizeQuestBoard()
     {
+        //2일차의 경우 기존 의뢰를 삭제하고 새로 생성한다.
         if (_questList != null)
         {
             foreach (GameObject _quest in _questList)
@@ -67,6 +77,8 @@ public class QuestBoard : MonoBehaviour
             foreach(Quest obj in _accpetQuestList)
                 Destroy(obj.gameObject);
         }
+
+        //변수들 초기화
         _currentQuestUIObject.SetActive(false);
         _questList = new List<GameObject>();
         _accpetQuestList = new List<Quest>();
@@ -74,13 +86,14 @@ public class QuestBoard : MonoBehaviour
 
         _currentQuestButton.onClick.RemoveAllListeners();
         _curretnQuestUIHidePannel.onClick.RemoveAllListeners();
-        _currentQuestButton.onClick.AddListener(ShowAcceptQuest);
+        _currentQuestButton.onClick.AddListener(OpenAcceptQuestUI);
         _curretnQuestUIHidePannel.onClick.AddListener(CloseAcceptQuestUI);
 
         //전체 레시피에서 보유/ 미보유 리스트를 나눠서 가져온다
-        GameManager.GM._playInfo.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
+        GameManager.GM.PlayInfomation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
         int pCnt = 0, upCnt = 0;
 
+        //의뢰 객체를 생성함
         Vector3 pos = new Vector3(-22f, 5f, 0f);
         int col = _maxQuestCnt / _rowCnt;
         for (int j = 0; j < col; ++j)
@@ -99,62 +112,8 @@ public class QuestBoard : MonoBehaviour
         }
     }
 
-    public void OpenCurrentQuest()
-    {
-        Debug.Log("현재 수락한 퀘스트");
-    }
 
-    //상세 퀘스트 오픈시 호출되는 함수
-    public void DisableOpenButtons()
-    {
-        foreach (GameObject go in _questList)
-        {
-            go.GetComponent<Quest>().DisableOpenButton();
-        }
-        //전체 블러
-        QuestDisableEffectOn(null);
-        _CanActiveSelectEffect = false;
-    }
-    //상세 퀘스트 닫을 시 호출 됨
-    public void EnableOpenButtons()
-    {
-        foreach (GameObject go in _questList)
-        {
-            go.GetComponent<Quest>().EnableOpenButton();
-        }
-        QuestDisableEffectOff();
-        _CanActiveSelectEffect = true;
-    }
-    //---------------------------------
-
-    public void QuestDisableEffectOn(GameObject gameObject)
-    {
-        if (_currentQuestUIObject.activeSelf)
-            return;
-        foreach (GameObject go in _questList)
-        {
-            if (go != gameObject)
-            {
-                Vector3 originPos = go.transform.position;
-                originPos.z = 10;
-                go.transform.position = originPos;
-                go.transform.position = originPos;
-            }
-        }
-    }
-    public void QuestDisableEffectOff()
-    {
-        if (_currentQuestUIObject.activeSelf)
-            return;
-        foreach (GameObject go in _questList)
-        {
-            if (go.GetComponent<Quest>().IsDisable) continue;
-            Vector3 originPos = go.transform.position;
-            originPos.z = 0;
-            go.transform.position = originPos;
-        }
-    }
-
+    //의뢰 수락하는 함수
     public void AcceptQuest(Quest questObject)
     {
         if (_accpetQuestList.Contains(questObject))
@@ -170,6 +129,7 @@ public class QuestBoard : MonoBehaviour
             _questList.Remove(questObject.gameObject);
             questObject.IsDisable = true;
 
+            //수락한 의뢰는 현재 의뢰 UI로 이동된다.
             questObject.gameObject.transform.SetParent(_currentQuestUIObject.transform);
             int i = _accpetQuestList.Count - 1;
             Vector3 start;
@@ -192,22 +152,74 @@ public class QuestBoard : MonoBehaviour
         }
     }
 
-    public void ShowAcceptQuest()
+    public void OpenAcceptQuestUI()
     {
         _currentQuestUIObject.SetActive(!_currentQuestUIObject.activeSelf);
-
-
-
     }
     public void CloseAcceptQuestUI()
     {
         _currentQuestUIObject.SetActive(false);
     }
+
+    //마우스 오버된 오브젝트를 제외하고 나머지를 어둡게 보이게만듬
+    public void QuestDisableEffectOn(GameObject gameObject)
+    {
+        if (_currentQuestUIObject.activeSelf)
+            return;
+        foreach (GameObject go in _questList)
+        {
+            if (go != gameObject)
+            {
+                Vector3 originPos = go.transform.position;
+                originPos.z = 10;
+                go.transform.position = originPos;
+                go.transform.position = originPos;
+            }
+        }
+    }
+    //마우스 오버 효과를 해제함
+    public void QuestDisableEffectOff()
+    {
+        if (_currentQuestUIObject.activeSelf)
+            return;
+        foreach (GameObject go in _questList)
+        {
+            if (go.GetComponent<Quest>().IsDisable) continue;
+            Vector3 originPos = go.transform.position;
+            originPos.z = 0;
+            go.transform.position = originPos;
+        }
+    }
+
+    //상세 퀘스트 오픈시 다른 버튼 입력을 막음
+    public void DisableOpenButtons()
+    {
+        foreach (GameObject go in _questList)
+        {
+            go.GetComponent<Quest>().DisableOpenButton();
+        }
+        //전체 블러
+        QuestDisableEffectOn(null);
+        _CanActiveSelectEffect = false;
+    }
+    //상세 퀘스트 닫을 시 버튼 입력 복구
+    public void EnableOpenButtons()
+    {
+        foreach (GameObject go in _questList)
+        {
+            go.GetComponent<Quest>().EnableOpenButton();
+        }
+        QuestDisableEffectOff();
+        _CanActiveSelectEffect = true;
+    }
+
+    //퀘스트 결과를 저장하는 함수, 외부에서 호출된다
     public void SetQuestResult(Quest quest, bool value)
     {
         _questResultDict[quest] = value;
     }
 
+    //가져올 의뢰가 보유 레시피 / 미보유레시피 둘중에하나를 결정하는 함수
     private bool SelectPossess(int pCnt, int upCnt)
     {
         //true == possess false == unpossess
@@ -232,17 +244,14 @@ public class QuestBoard : MonoBehaviour
         }
         return possess;
     }
+    
+    //보유 레시피에 해당하는 의뢰가 전체 의뢰중 65% 이상 차지하도록 무작위로 의뢰 ID를 얻어오는 함수
     private int GetQuestID(ref int pCnt, ref int upCnt)
     {
         //최종 의뢰ID
         int questID = 0;
 
-        //보유 미보유중 하나를 선택
-
-        //전체 퀘스트의 65%까지만 보유퀘스트를 뽑을 수 있다.
-
         bool possess = SelectPossess(pCnt, upCnt);
-
         //보유중이고,뽑은 레시피의 65%를넘지 않았을때, 혹은 모든레시피를 보유중이라면
         if (possess)
         {

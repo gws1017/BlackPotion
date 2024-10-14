@@ -3,26 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.EventSystems.PointerEventData;
 
 public class Slot : MonoBehaviour
 {
-    [SerializeField]
-    private PotionBrewer _brewer;
-
     //UI
     //투입 버튼
     [SerializeField]
     private Button _inputButton;
     [SerializeField] 
     private Text _inputButtonText;
-
     //투입 가능한 량
     [SerializeField]
     private Text _ingredientAmountText;
     [SerializeField]
     private int _ingredientAmount;
 
+
+    //PotionBrwer 레퍼런스
+    private PotionBrewer _brewer;
     //현재 슬롯의 ID
     private int _slotId;
 
@@ -65,7 +63,7 @@ public class Slot : MonoBehaviour
     }
 
     //현재 제조하는 포션 의뢰에 맞게 초기화한다.
-    public void InitializeIngredient()
+    public void InitializeSlot()
     {
         IngredientAmount = 78* _brewer._currentQuest.QuestGrade;
 
@@ -73,7 +71,6 @@ public class Slot : MonoBehaviour
 
         for (int i = 1; i <= 13; ++i) _ingredientCountCheckDict[i] = 0;
         _ingredientCountFullList = Enumerable.Repeat(false, 14).ToList();
-
     }
 
     //재료 투임 함수

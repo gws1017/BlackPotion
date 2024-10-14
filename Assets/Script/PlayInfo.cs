@@ -45,11 +45,13 @@ public class PlayInfo : MonoBehaviour
                 _getRecipeDict[RecipeData.Key] = true;
         }
     }
-
+    
+    //레시피 획득 함수
     public void AddRecipe(int recipeID)
     {
         _getRecipeDict[recipeID] = true;
     }
+    //레시피 보유 확인 함수
     public bool HasRecipe(int recipeID)
     {
         if(_getRecipeDict.ContainsKey(recipeID))
@@ -58,6 +60,7 @@ public class PlayInfo : MonoBehaviour
             return false;
     }
 
+    //보유중인 레시피와 미보유레시피의 리스트를 돌려준다.
     public void SplitQuest(out List<int> AcceptableQuest, out List<int>UnaccpeptableQuest)
     {
         //레시피를 분리하는게아니라 퀘스트를 분리해야한다
@@ -72,12 +75,12 @@ public class PlayInfo : MonoBehaviour
                 UnaccpeptableQuest.Add(Data.questId);
         }
     }
-    //골드 함수
+    //골드 소모 함수
     public void ConsumeGold(int value)
     {
         _currentGold -= value; 
     }
-
+    //골드 획득 함수
     public void IncreamentGold(int value)
     {
         _currentGold += value;

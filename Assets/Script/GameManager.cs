@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    //싱글톤으로 바꿨으니까 static으로 교체해도 상관없지않을까
+    //GameManager 인스턴스 GM으로 접근
     private static GameManager _instance;
-    private Camera _camera;
 
+    //게임 각 핵심 클래스를 허브처럼 한곳에 모아둠
+    private Camera _camera;
     private QuestBoard _board;
     private PotionBrewer _brewer;
     private CraftReceipt _craftReceipt;
-
-    public PlayInfo _playInfo;
+    private PlayInfo _playInfo;
 
     [SerializeField]
     private Button _questStartButton;
@@ -80,7 +80,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
+    public PlayInfo PlayInfomation
+    {
+        get { 
+            if(_playInfo == null)
+            {
+                _playInfo = GetComponent<PlayInfo>();
+            }
+            return _playInfo; 
+        }
+
+    }
     private void Awake()
     {
         if (_instance == null)
@@ -98,6 +108,7 @@ public class GameManager : MonoBehaviour
         _questStartButton.onClick.AddListener(QuestStart);
     }
 
+    //의뢰 시작(포션제조) 단계 전환
     private void QuestStart()
     {
         if (_board.CurrrentAcceptQuestCnt > 0)
@@ -110,11 +121,12 @@ public class GameManager : MonoBehaviour
             Debug.Log("의뢰를 1개이상 수주하셔야합니다.");
         }
     }
-
+    //정산 단계로 전환
     public void ShowCraftReceipt()
     {
         _camera.transform.rotation = Quaternion.Euler(0, 180, 0);
     }
+    //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()
     {
         _board.IntitilizeQuestBoard();
@@ -122,6 +134,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //정산 결과에 따라 0일차로 재시작인지 다음날로 넘어가는 지 확인한다
     public void CheckRecipt()
     {
         if(Receipt.TargetSuccess)
