@@ -27,9 +27,7 @@ public struct PotionInfo
     public string potionName;
     public int potionGrade;
     public int ingredientCount;
-    public string ingredient1;
-    public string ingredient2;
-    public string ingredient3;
+    public string[] ingredientName;
     public int[] maxMount;
     public int recipeCost;
     public string potionImage;
@@ -61,7 +59,6 @@ public class ReadJson : MonoBehaviour
     public static Dictionary<int, PotionInfo> _dictPotion;
     public static Dictionary<int, BuffInfo> _dictBuff;
 
-    // Start is called before the first frame update
     private void Awake()
     {
         TextAsset questJson = Resources.Load<TextAsset>("Json/quest");
@@ -89,10 +86,5 @@ public class ReadJson : MonoBehaviour
             _dictBuff.Add(info.buffId, info);
         }
     }
-    void Start()
-    {
-        
-    }
-
     
 }

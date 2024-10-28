@@ -9,8 +9,6 @@ public class CraftResult : MonoBehaviour
     //Component
     [SerializeField]
     private Canvas _canvas;
-
-    [SerializeField]
     private PotionBrewer _brewer;
 
     //UI
@@ -24,12 +22,10 @@ public class CraftResult : MonoBehaviour
     private Text _recipeNameText;
     [SerializeField]
     private Text _selectText;
-
     [SerializeField]
     private Text _potionQualityValueText;
     [SerializeField]
     private Text _resultText;
-
     [SerializeField]
     private Button _selectButton;
     [SerializeField]
@@ -41,8 +37,11 @@ public class CraftResult : MonoBehaviour
     [SerializeField]
     private Outline _recipeOutline;
 
-    private int _selectId;
+    //보상 선택 정보
+    private int _selectReward;
+    //의뢰 성공 여부를 저장하는 변수
     private bool _result;
+    //보상 레시피의 ID
     private int _rewardRecipeId;
 
     public int PotionQuality
@@ -50,27 +49,30 @@ public class CraftResult : MonoBehaviour
         set { _potionQualityValueText.text = value.ToString(); }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         _canvas.worldCamera = GameManager.GM.MainCamera;
+        _brewer = GameManager.GM.Brewer;
 
-        _selectButton.onClick.AddListener(RewardSelect);
+        _selectButton.onClick.AddListener(SelectReward);
         _moneyButton.onClick.AddListener(SelectMoney);
         _recipeButton.onClick.AddListener(SelectRecipe);
     }
-
-    public void ShowCraftResult(bool result)
+    
+    //포션 제조 결과를 표시하는 함수
+    public void ShowCraftResultUI(bool result)
     {
+        //외곽선 효과 오프
         OffHighlight();
         _result = result;
         gameObject.SetActive(true);
 
         var quest = _brewer._currentQuest;
-        PlayInfo pinfo = GameManager.GM._playInfo;
+        PlayInfo pinfo = GameManager.GM.PlayInfomation;
 
         if (result)
         {
+            //특정 레시피가 아니라 레시피 등급중 무작위로 가져온다
             int RewardRecipeGrade = quest.QuestRewardRecipeGrade;
 
             //획득가능한 레시피 가져오기
@@ -112,39 +114,41 @@ public class CraftResult : MonoBehaviour
             _selectText.text = "다음";
             _questResultText.text = "의뢰 실패";
             _resultText.text = "실패";
-            //마이너스 골드를 적용할 것인가?
             pinfo.ConsumeGold((int)(quest.QuestRewardMoney * 0.1));
         }
     }
 
-    public void RewardSelect()
+    //선택한 보상을 PlayInfo에 업데이트하는 함수
+    public void SelectReward()
     {
         if (_result)
         {
             var quest = _brewer._currentQuest;
 
-            if (_selectId == 1)
+            if (_selectReward == 1)
             {
                 //골드 획득
-                GameManager.GM._playInfo.IncreamentGold(quest.QuestRewardMoney);
-                Debug.Log(quest.QuestRewardMoney.ToString() + " 획득했습니다.");
+                GameManager.GM.PlayInfomation.IncreamentGold(quest.QuestRewardMoney);
             }
-            else if (_selectId == 2)
+            else if (_selectReward == 2)
             {
                 var RecipeData = ReadJson._dictPotion[_rewardRecipeId];
-                GameManager.GM._playInfo.AddRecipe(_rewardRecipeId);
+                GameManager.GM.PlayInfomation.AddRecipe(_rewardRecipeId);
+                //UI로 표기할 것인가?
                 Debug.Log(RecipeData.potionName.ToString() + " 레시피 해금되었습니다.");
             }
             else return;
         }
 
+        //버프 상점 오픈
         _brewer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
         gameObject.SetActive(false);
     }
 
+    //보상 하이라이트 관련 함수
     public void OffHighlight()
     {
-        _selectId = 0;
+        _selectReward = 0;
         _moneyOutline.effectColor = Color.white;
         _recipeOutline.effectColor = Color.white;
     }
@@ -152,17 +156,15 @@ public class CraftResult : MonoBehaviour
     public void SelectMoney()
     {
         // 하이라이트 효과
-        _selectId = 1;
+        _selectReward = 1;
         _moneyOutline.effectColor = Color.black;
         _recipeOutline.effectColor = Color.white;
     }
 
     public void SelectRecipe()
     {
-        _selectId = 2;
+        _selectReward = 2;
         _moneyOutline.effectColor = Color.white;
         _recipeOutline.effectColor = Color.black;
     }
-
-
 }

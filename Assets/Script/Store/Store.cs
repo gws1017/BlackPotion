@@ -6,10 +6,7 @@ using UnityEngine.UI;
 
 public class Store : MonoBehaviour
 {
-    //Component
-    [SerializeField]
-    private Canvas _canvas;
-
+    //상점 유형
     public enum StoreType
     {
         None,
@@ -17,25 +14,17 @@ public class Store : MonoBehaviour
         Recipe,
     }
 
+    //Component
     [SerializeField]
-    private StoreType _storeType;
-
+    private Canvas _canvas;
+    
+    //UI
     [SerializeField]
     private Text _titleText;
-
     [SerializeField]
     private Text _nextText;
     [SerializeField]
     private Button _nextButton;
-
-    //아이템 목록
-    [SerializeField]
-    GameObject _itemListObject;
-    //표시할 아이템 ID 리스트
-    [SerializeField]
-    List<int> _ItemIdList;
-    [SerializeField]
-    GameObject _itemSlotPrefab;
 
     //구매 확인창 UI
     [Header("Purchase UI")]
@@ -44,6 +33,21 @@ public class Store : MonoBehaviour
     public Button _purchaseAcceptButton;
     public Text _ConfirmText;
 
+    //아이템 목록
+    [SerializeField]
+    GameObject _itemListObject;
+    //표시할 아이템 ID 리스트
+    [SerializeField]
+    List<int> _ItemIdList;
+   
+    //상점 Type
+    [SerializeField]
+    private StoreType _storeType;
+
+    //아이템(UI) 프리펩
+    [SerializeField]
+    GameObject _itemSlotPrefab;
+    //아이템(UI) 목록
     private List<GameObject> _itemSlotsList;
    
     public StoreType SType
@@ -56,13 +60,16 @@ public class Store : MonoBehaviour
         _canvas.worldCamera = GameManager.GM.MainCamera;
     }
 
+    //상점 초기화 함수
     public void InitializeStore(StoreType type)
     {
+        _nextButton.onClick.RemoveAllListeners();
         _storeType = type;
         _ItemIdList = new List<int>();
         _itemSlotsList = new List<GameObject>();
-        int itemCnt = 0;
 
+        int itemCnt = 0;
+        //버프 상점
         if (_storeType == StoreType.Buff)
         {
             _titleText.text = "버프 상점";
@@ -78,6 +85,7 @@ public class Store : MonoBehaviour
                 InitializeItemSlot(i);
             }
         }
+        //레시피 상점
         else if (_storeType == StoreType.Recipe)
         {
             _titleText.text = "레시피 상점";
@@ -87,7 +95,7 @@ public class Store : MonoBehaviour
             //미보유 레시피만 상점에 등장
             foreach (var ID in ReadJson._dictPotion.Keys)
             {
-                if(GameManager.GM._playInfo.HasRecipe(ID) == false)
+                if(GameManager.GM.PlayInfomation.HasRecipe(ID) == false)
                     _ItemIdList.Add(ID);
             }
 
@@ -100,6 +108,7 @@ public class Store : MonoBehaviour
 
     }
 
+    //상점 판매 목록을 초기화함
     private void InitializeItemSlot(int i)
     {
         Vector3 startPos = new Vector3(-600, 145, 0);
@@ -119,6 +128,7 @@ public class Store : MonoBehaviour
         else if (_storeType == StoreType.Recipe)
             itemSlotClass.InitializeItemSlot(ReadJson._dictPotion[_ItemIdList[i]]);
     }
+
     //다음 포션제조로 이동
     private void NextQuest()
     {
@@ -131,8 +141,7 @@ public class Store : MonoBehaviour
     private void NextDay()
     {
         CloseStoreUI();
-        GameManager.GM._playInfo.IncrementCraftDay();
-        GameManager.GM.ShowQuestBoard();
+        GameManager.GM.CheckRecipt();
     }
 
     //상점 창 오픈
@@ -145,7 +154,6 @@ public class Store : MonoBehaviour
     //상점 창 닫기
     public void CloseStoreUI()
     {
-        Debug.Log("상점창 닫습니다.");
         foreach(var itemSlot in _itemSlotsList)
         {
             Destroy(itemSlot);

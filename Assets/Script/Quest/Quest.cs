@@ -4,25 +4,29 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class Quest : MonoBehaviour
 {
-    //UI
-    [SerializeField]
-    protected Text _questText;
-    [SerializeField]
-    protected Text _potionQualityValue;
-
-    [SerializeField]
-    protected Image _gradeColor;
-    [SerializeField]
-    protected Image _potionImage;
-
-    private Button _openDetailQuestButton;
-
     //컴포넌트
     private Canvas _canvas;
 
-    //데이터
+    //UI
+    //의뢰 내용
+    [SerializeField]
+    protected Text _questText;
+    //포션 품질 범위
+    [SerializeField]
+    protected Text _potionQualityValue;
+    //의뢰 등급을 나타내는 테두리 색상
+    [SerializeField]
+    protected Image _gradeColor;
+    //포션 이미지
+    [SerializeField]
+    protected Image _potionImage;
+    //의뢰 상세내용 오픈 버튼
+    private Button _openDetailQuestButton;
+
+    //JSON에서 읽은 데이터
     [ReadOnly,SerializeField]
     protected int _questID;
     [SerializeField]
@@ -33,19 +37,24 @@ public class Quest : MonoBehaviour
     protected int _reqPotionQuality;
     [SerializeField]
     protected int _questGrade;
-
-    //의뢰 데이터
     protected QuestInfo _questInfo;
     protected PotionInfo _potionInfo;
 
+    //의뢰 상세내용 오브젝트
     [SerializeField]
     private GameObject _detailQuestPrefab;
     private GameObject _detailQuestObject;
 
-    //레퍼런스
-    protected QuestBoard _questBoard;
+    //비활성화된 퀘스트 체크
+    private bool _disableQuest = false;
 
     //Getter&Setter
+    public bool IsDisable
+    {
+        get {return _disableQuest;}
+        set { _disableQuest = value;}
+    }
+
     public int QuestID
     {
         get
@@ -64,10 +73,13 @@ public class Quest : MonoBehaviour
             return _reqPotionQuality;
         }
     }
+
     public int QuestGrade
     {
         get { return _questGrade; }
     }
+
+    //의뢰 보상
     public int QuestRewardMoney
     {
         get { return QInfo.money; }
@@ -76,6 +88,7 @@ public class Quest : MonoBehaviour
     {
         get { return QInfo.recipeGrade; }
     }
+
     public string QuestText
     {
         get
@@ -138,19 +151,8 @@ public class Quest : MonoBehaviour
                 return _detailQuestObject;
         }
     }
-    public QuestBoard Board
-    {
-        get
-        {
-            if( _questBoard == null )
-            {
-                _questBoard = GameManager.GM.Board;
-            }
-            return _questBoard;
-        }
-    }
     
-    public Canvas CanvasRef
+    protected Canvas CanvasRef
     {
         get
         {
@@ -161,7 +163,13 @@ public class Quest : MonoBehaviour
             return _canvas;
         }
     }
+
+    protected QuestBoard Board
+    {
+        get { return GameManager.GM.Board; }
+    }
     
+
     public QuestInfo QInfo
     {
         get
@@ -180,14 +188,36 @@ public class Quest : MonoBehaviour
     void Start()
     {
         CanvasRef.worldCamera = GameManager.GM.MainCamera;
+
         _openDetailQuestButton = GetComponent<Button>();
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
-        //ID는 생성시 무작위로 부여
-        _questID = Random.Range(3001, 3005);
+
+        if(_questID == 0 )
+            _questID = Random.Range(3001, 3005);
+
         InitializeQuestInfo();
         InitilizeData();
     }
 
+    //마우스 오버된 의뢰를 강조하기위해 추가함
+    private void OnMouseEnter()
+    {
+        //버튼 비활성화때는 아무것도하지마라
+        if (_disableQuest)
+            return;
+        if(Board._CanActiveSelectEffect)
+            Board.QuestDisableEffectOn(gameObject);
+    }
+
+    private void OnMouseExit()
+    {
+        if (_disableQuest)
+            return;
+        if (Board._CanActiveSelectEffect)
+            Board.QuestDisableEffectOff();
+    }
+
+    //QuestID 기반으로 UI와 정보를 초기화한다
     public void InitializeQuestFromID(int id)
     {
         _questID = id;
@@ -195,30 +225,22 @@ public class Quest : MonoBehaviour
         InitilizeData();
     }
 
-    private void OnMouseEnter()
-    {
-        if(Board._CanActiveSelectEffect)
-            Board.QuestDisableEffectOn(gameObject);
-    }
-
-    private void OnMouseExit()
-    {
-        if(Board._CanActiveSelectEffect)
-            Board.QuestDisableEffectOff();
-    }
-
+    //QuestID로 의뢰정보를 JSON에서 읽어온다
     protected void InitializeQuestInfo()
     {
         _questInfo = ReadJson._dictQuest[_questID];
     }
 
+    //DetailQuest 객체에서 부모Quest정보로 초기화할 때 사용
     protected void InitializeQuestInfo(Quest quest)
     {
         _questInfo = quest._questInfo;
     }
 
+    //Ques UI 표기 데이터나 실제 값들이 초기화된다
     virtual protected void InitilizeData()
     {
+        //UI 정보 초기화
         _questText.text = _questInfo.questText;
         _questGrade = _questInfo.questGrade;
         _minPotionQuality = _questInfo.minQuality;
@@ -228,12 +250,28 @@ public class Quest : MonoBehaviour
             + _maxPotionQuality.ToString() + " )";
 
         CheckQuestGrade();
-        _reqPotionQuality = Random.Range(_minPotionQuality, _maxPotionQuality);
         //포션ID를 사용해서 정보를 읽자
         _potionInfo = ReadJson._dictPotion[_questInfo.potionId];
         _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);
+
+        //포션 품질 범위내에서 무작위 값으로 요구 품질 값을 생성한다
+        _reqPotionQuality = Random.Range(_minPotionQuality, _maxPotionQuality);
+
+        //미보유 레시피 의뢰 마우스와 상호작용되지 않아야함
+        if(GameManager.GM.PlayInfomation.HasRecipe(PInfo.potionId) == false)
+        {
+            _disableQuest = true;
+            Vector3 originPos = gameObject.transform.position;
+            originPos.z = 10;
+            gameObject.transform.position = originPos;
+        }
+        else
+        {
+            _disableQuest = false;
+        }
     }
 
+    //의뢰등급에 맞게 테두리 색을 변경함
     private void CheckQuestGrade()
     {
         if (_questGrade == 1)
@@ -256,11 +294,11 @@ public class Quest : MonoBehaviour
         }
     }
 
+    //의뢰 상세 내용 오픈
     public void OpenDetailQuest()
     {
         DetailQuestObject.SetActive(true);
-        Debug.Log("상세퀘스트 오픈합니다");
-        //상세퀘스트 열려있을경우 
+        //상세퀘스트 열려있을경우 뒷 부분 클릭을 차단한다.
         Board._CanActiveSelectEffect = false;
         Board.DisableOpenButtons();
     }
