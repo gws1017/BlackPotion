@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Button _questStartButton;
 
+    public bool _isSaveData;
+
     [System.Serializable]
 
     public struct SaveData
@@ -107,6 +109,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
     private void Awake()
     {
         if (_instance == null)
@@ -223,6 +226,7 @@ public class GameManager : MonoBehaviour
         //¼öÁÖ ÀÇ·Ú Load
         if (_saveData.acceptQuestId.Count > 0)
         {
+            _isSaveData = true;
             int idCnt = Mathf.Min(5, _saveData.acceptQuestId.Count);
             for (int i = 0; i < idCnt; ++i)
             {

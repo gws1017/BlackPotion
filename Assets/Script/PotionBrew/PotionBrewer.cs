@@ -187,7 +187,7 @@ public class PotionBrewer : MonoBehaviour
     //지금 제조하는 의뢰에 맞게 양조기 정보를 업데이트한다.
     public void UpdateQuestInfo(int questIndex = 0)
     {
-        if (_currentQuest != null) return;
+        //if (_currentQuest != null) return;
         _currentQuestIndex = questIndex;
         _currentQuest = Board.GetCurrentQuest(_currentQuestIndex);
 
