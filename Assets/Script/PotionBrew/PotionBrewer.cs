@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class PotionBrewer : MonoBehaviour
 {
     //Component
-    private QuestBoard _board;
     [SerializeField]
     private Slot[] _slots;
     [SerializeField]
@@ -75,16 +74,25 @@ public class PotionBrewer : MonoBehaviour
         get { return _storeUI; }
     }
 
+    public QuestBoard Board
+    {
+        get { return GameManager.GM.Board; }
+    }
+
     void Start()
+    {
+        InitializeBrewer();
+    }
+
+    public void InitializeBrewer()
     {
         //레퍼런스 초기화
         _canvas.worldCamera = GameManager.GM.MainCamera;
-        _board = GameManager.GM.Board;
 
         _craftResult.gameObject.SetActive(false);
 
         //슬롯의id 설정
-        for (int i = 0; i< _slots.Length; ++i)
+        for (int i = 0; i < _slots.Length; ++i)
         {
             _slots[i].SlotId = i;
         }
@@ -121,12 +129,12 @@ public class PotionBrewer : MonoBehaviour
         if (IsSuccCraft())
         {
             _craftResult.ShowCraftResultUI(true);
-            _board.SetQuestResult(_currentQuest, true);
+            Board.SetQuestResult(_currentQuest, true);
         }
         else
         {
             _craftResult.ShowCraftResultUI(false);
-            _board.SetQuestResult(_currentQuest, false);
+            Board.SetQuestResult(_currentQuest, false);
         }
         _reqQulaityValueText.text = _currentQuest.RequirePotionQuality.ToString();
 
@@ -135,9 +143,8 @@ public class PotionBrewer : MonoBehaviour
     public void GetNextCraft()
     {
         _currentQuestIndex++;
-        if (_board._accpetQuestList.Count > _currentQuestIndex)
+        if (Board.CurrrentAcceptQuestCnt > _currentQuestIndex)
         {
-            _currentQuest = _board._accpetQuestList[_currentQuestIndex];
             UpdateQuestInfo(_currentQuestIndex);
         }
         else
@@ -180,8 +187,9 @@ public class PotionBrewer : MonoBehaviour
     //지금 제조하는 의뢰에 맞게 양조기 정보를 업데이트한다.
     public void UpdateQuestInfo(int questIndex = 0)
     {
+        if (_currentQuest != null) return;
         _currentQuestIndex = questIndex;
-        _currentQuest = _board._accpetQuestList[_currentQuestIndex];
+        _currentQuest = Board.GetCurrentQuest(_currentQuestIndex);
 
         _currentMount = new int[3];
         _maxMount = new int[3];

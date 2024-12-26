@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86;
 
 public class QuestBoard : MonoBehaviour
 {
@@ -17,8 +18,9 @@ public class QuestBoard : MonoBehaviour
     [ReadOnly, SerializeField]
     private List<GameObject> _questList;
     //수락한 의뢰 목록
-    [ReadOnly]
-    public List<Quest> _accpetQuestList;
+    
+    [SerializeField]
+    private List<Quest> _acceptQuestList;
 
     //포션 제조 결과를 의뢰별로 저장하는 Dictionary
     public Dictionary<Quest, bool> _questResultDict;
@@ -55,20 +57,37 @@ public class QuestBoard : MonoBehaviour
     {
         get { return _maxAcceptQuestCnt; }
     }
-
+  
     public int CurrrentAcceptQuestCnt
     {
-        get { return _accpetQuestList.Count; }
+        get { return _acceptQuestList.Count; }
+    }
+
+    public List<Quest> AcceptQuestList
+    {
+        get { return _acceptQuestList; }
+        set
+        {
+            Debug.Log(_acceptQuestList.Count);
+            AcceptQuestList = value;
+        }
+    }
+    public Quest GetCurrentQuest(int id)
+    {
+       return AcceptQuestList[id];
     }
 
     void Start()
     {
         IntitilizeQuestBoard();
+        CreateQuestObject();
     }
 
 
     public void IntitilizeQuestBoard()
     {
+        Debug.Log("퀘스트보드 초기화");
+
         //2일차의 경우 기존 의뢰를 삭제하고 새로 생성한다.
         if (_questList != null)
         {
@@ -76,17 +95,20 @@ public class QuestBoard : MonoBehaviour
                 Destroy(_quest);
 
         }
-        if(_accpetQuestList != null)
+        if(_acceptQuestList != null)
         {
-            foreach(Quest obj in _accpetQuestList)
+            foreach(Quest obj in _acceptQuestList)
                 Destroy(obj.gameObject);
         }
 
         //변수들 초기화
         _currentQuestUIObject.SetActive(false);
+        if(_questList == null || _questList.Count > 0)
         _questList = new List<GameObject>();
-        _accpetQuestList = new List<Quest>();
+        if(_acceptQuestList == null || _acceptQuestList.Count > 0)
+        _acceptQuestList = new List<Quest>();
         
+        if(_questResultDict == null || _questResultDict.Count > 0)
         _questResultDict = new Dictionary<Quest, bool>();
 
         _currentQuestButton.onClick.RemoveAllListeners();
@@ -96,8 +118,12 @@ public class QuestBoard : MonoBehaviour
 
         //전체 레시피에서 보유/ 미보유 리스트를 나눠서 가져온다
         GameManager.GM.PlayInfomation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
-        int pCnt = 0, upCnt = 0;
+    }
 
+    public void CreateQuestObject()
+    {
+        GameManager.GM.PlayInfomation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
+        int pCnt = 0, upCnt = 0;
         //의뢰 객체를 생성함
         Vector3 pos = new Vector3(-22f, 5f, 0f);
         int col = _maxQuestCnt / _rowCnt;
@@ -121,14 +147,14 @@ public class QuestBoard : MonoBehaviour
     //의뢰 수락하는 함수
     public void AcceptQuest(Quest questObject)
     {
-        if (_accpetQuestList.Contains(questObject))
+        if (_acceptQuestList.Contains(questObject))
         {
             Debug.Log("이미 수락한 퀘스트 입니다.");
             return;
         }
-        if (_accpetQuestList.Count < _maxAcceptQuestCnt)
+        if (_acceptQuestList.Count < _maxAcceptQuestCnt)
         {
-            _accpetQuestList.Add(questObject);
+            _acceptQuestList.Add(questObject);
             _questResultDict.Add(questObject, false);
 
             _questList.Remove(questObject.gameObject);
@@ -136,7 +162,7 @@ public class QuestBoard : MonoBehaviour
 
             //수락한 의뢰는 현재 의뢰 UI로 이동된다.
             questObject.gameObject.transform.SetParent(_currentQuestUIObject.transform);
-            int i = _accpetQuestList.Count - 1;
+            int i = _acceptQuestList.Count - 1;
             Vector3 start;
             if (i < 3)
             {

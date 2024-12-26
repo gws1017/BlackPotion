@@ -40,9 +40,11 @@ public class DetailQuest : Quest
         //의뢰 ID는 부모 퀘스트 객체에서
         //자식인 Detail 퀘스트 프리팹을 생성 시에 전달하고 초기화 한다.
 
-        SetAcceptQuestText(Board._accpetQuestList.Count);
+        SetAcceptQuestText(Board.CurrrentAcceptQuestCnt);
 
         //버튼 초기화
+        _quitButton.onClick.RemoveAllListeners();
+        _acceptButton.onClick.RemoveAllListeners();
         _quitButton.onClick.AddListener(CloseDetailQuest);
         _acceptButton.onClick.AddListener(AcceptQuest);
 
@@ -76,7 +78,7 @@ public class DetailQuest : Quest
     {
         Debug.Log("의뢰 수락했습니다.");
         Board.AcceptQuest(ParentQuest);
-        SetAcceptQuestText(Board._accpetQuestList.Count);
+        SetAcceptQuestText(Board.CurrrentAcceptQuestCnt);
         CloseDetailQuest();
     }
 

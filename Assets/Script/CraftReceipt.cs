@@ -49,7 +49,7 @@ public class CraftReceipt : MonoBehaviour
     //정산 내용을 업데이트한다
     public void UpdateReceipt()
     {
-        var questList = _board._accpetQuestList;
+        var questList = _board.AcceptQuestList;
         var questResult = _board._questResultDict;
         int totalGold = 0;
 

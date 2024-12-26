@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     {
         public List<int> acceptQuestId;
         public Quaternion camRotation;
+        //몇번째까지 퀘스트를 완료햇는지 기본값은 -1 == 퀘스트아얘시작도안함
+        //public int currentQuest = -1;
     }
 
     [SerializeField]
@@ -119,6 +121,12 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        _camera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
+        _board = GameObject.Find("QuestBoard").GetComponent<QuestBoard>();
+        _brewer = GameObject.Find("PotionBrewer").GetComponent<PotionBrewer>(); 
+        _craftReceipt = GameObject.Find("CraftReceipt").GetComponent<CraftReceipt>();
+        _playInfo = GetComponent<PlayInfo>();
+
         GameLoad();
         _questStartButton.onClick.AddListener(QuestStart);
     }
@@ -149,6 +157,7 @@ public class GameManager : MonoBehaviour
     public void ShowQuestBoard()
     {
         Board.IntitilizeQuestBoard();
+        Board.CreateQuestObject();
         if (destroyOjbect.Count > 0)
         {
             foreach(var item in destroyOjbect)
@@ -180,7 +189,7 @@ public class GameManager : MonoBehaviour
     public void SaveQuest()
     {
         _saveData.acceptQuestId = new List<int>();
-        foreach (var quest in Board._accpetQuestList)
+        foreach (var quest in Board.AcceptQuestList)
         {
             _saveData.acceptQuestId.Add(quest.QuestID);
         }
@@ -208,11 +217,12 @@ public class GameManager : MonoBehaviour
 
         //제조 단계(카메라 회전) Load
         MainCamera.transform.rotation = _saveData.camRotation;
+        Board.IntitilizeQuestBoard();
+        Brewer.InitializeBrewer();
 
         //수주 의뢰 Load
         if (_saveData.acceptQuestId.Count > 0)
         {
-            Board._accpetQuestList = new List<Quest>();
             int idCnt = Mathf.Min(5, _saveData.acceptQuestId.Count);
             for (int i = 0; i < idCnt; ++i)
             {
@@ -220,12 +230,10 @@ public class GameManager : MonoBehaviour
                 var questObject = Instantiate(Board.QuestPrefab);
                 questObject.GetComponent<Quest>().InitializeQuestFromID(id);
                 destroyOjbect.Add(questObject);
-                Board._accpetQuestList.Add(questObject.GetComponent<Quest>());
+                Board.AcceptQuest(questObject.GetComponent<Quest>());
             }
+            Brewer.UpdateQuestInfo();
         }
-
-
-        Brewer.UpdateQuestInfo();
 
     }
 

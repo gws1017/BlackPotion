@@ -377,7 +377,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 568ac7435e027ca4aa7374cef953aeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyOjbect: []
   _questStartButton: {fileID: 1513628926}
+  _saveData:
+    acceptQuestId: 
+    camRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &374720874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1961,7 +1965,7 @@ MonoBehaviour:
   _currentQuestButton: {fileID: 1360930466}
   _curretnQuestUIHidePannel: {fileID: 2085354251}
   _questList: []
-  _accpetQuestList: []
+  _acceptQuestList: []
   _questPrefab: {fileID: 7024418843332693245, guid: 2af10ea4938d1ca448c2dc7736fc6607,
     type: 3}
   _currentQuestUIObject: {fileID: 1735403086}
@@ -2385,7 +2389,6 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 374720872}
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 1963126641}
@@ -2395,3 +2398,4 @@ SceneRoots:
   - {fileID: 4712904874569571429}
   - {fileID: 757673924}
   - {fileID: 646150331}
+  - {fileID: 374720872}

@@ -54,7 +54,8 @@ public class PlayInfo : MonoBehaviour
     //레시피 보유 확인 함수
     public bool HasRecipe(int recipeID)
     {
-        if(_getRecipeDict.ContainsKey(recipeID))
+        if (_getRecipeDict == null) return false;
+        if (_getRecipeDict.ContainsKey(recipeID))
             return _getRecipeDict[recipeID];
         else 
             return false;
