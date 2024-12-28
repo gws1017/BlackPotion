@@ -16,25 +16,11 @@ public class GameManager : MonoBehaviour
     private PotionBrewer _brewer;
     private CraftReceipt _craftReceipt;
     private PlayInfo _playInfo;
+    private SaveManager _saveManager;
 
     public List<GameObject> destroyOjbect;
     [SerializeField]
     private Button _questStartButton;
-
-    public bool _isSaveData;
-
-    [System.Serializable]
-
-    public struct SaveData
-    {
-        public List<int> acceptQuestId;
-        public Quaternion camRotation;
-        //몇번째까지 퀘스트를 완료햇는지 기본값은 -1 == 퀘스트아얘시작도안함
-        //public int currentQuest = -1;
-    }
-
-    [SerializeField]
-    private SaveData _saveData;
 
     public static GameManager GM
     {
@@ -110,6 +96,17 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public SaveManager SM
+    {
+        get
+        {
+            if (_saveManager == null)
+            {
+                _saveManager = GameObject.Find("SaveManager").GetComponent<SaveManager>(); ;
+            }
+            return _saveManager;
+        }
+    }
     private void Awake()
     {
         if (_instance == null)
@@ -128,9 +125,9 @@ public class GameManager : MonoBehaviour
         _board = GameObject.Find("QuestBoard").GetComponent<QuestBoard>();
         _brewer = GameObject.Find("PotionBrewer").GetComponent<PotionBrewer>(); 
         _craftReceipt = GameObject.Find("CraftReceipt").GetComponent<CraftReceipt>();
+        _saveManager = GameObject.Find("SaveManager").GetComponent<SaveManager>();
         _playInfo = GetComponent<PlayInfo>();
 
-        GameLoad();
         _questStartButton.onClick.AddListener(QuestStart);
     }
 
@@ -142,8 +139,8 @@ public class GameManager : MonoBehaviour
         {
             _camera.transform.rotation = Quaternion.Euler(0, 90, 0);
             Brewer.UpdateQuestInfo();
-            SaveQuest();
-            SaveStage();
+            SM.SaveQuest();
+            SM.SaveStage();
         }
         else
         {
@@ -154,7 +151,7 @@ public class GameManager : MonoBehaviour
     public void ShowCraftReceipt()
     {
         _camera.transform.rotation = Quaternion.Euler(0, 180, 0);
-        SaveStage();
+        SM.SaveStage();
     }
     //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()
@@ -168,8 +165,8 @@ public class GameManager : MonoBehaviour
             destroyOjbect = new List<GameObject>();
         }
         _camera.transform.rotation = Quaternion.Euler(0, 0, 0);
-        SaveQuest();
-        SaveStage();
+        SM.SaveQuest();
+        SM.SaveStage();
 
     }
 
@@ -187,59 +184,9 @@ public class GameManager : MonoBehaviour
         ShowQuestBoard();
     }
 
-    // 세이브 관련함수
-
-    public void SaveQuest()
+    public void DestoryQuest(GameObject gameObject)
     {
-        _saveData.acceptQuestId = new List<int>();
-        foreach (var quest in Board.AcceptQuestList)
-        {
-            _saveData.acceptQuestId.Add(quest.QuestID);
-        }
-        GameSave();
+        destroyOjbect.Add(gameObject);
     }
-
-    public void SaveStage()
-    {
-        _saveData.camRotation = MainCamera.transform.rotation;
-        GameSave();
-    }
-
-    private void GameSave()
-    {
-        PlayerPrefs.SetString("Save", JsonUtility.ToJson(_saveData));
-        PlayerPrefs.Save();
-    }
-
-    public void GameLoad()
-    {
-        if (!PlayerPrefs.HasKey("Save"))
-            return;
-        string loadJson = PlayerPrefs.GetString("Save");
-        _saveData = JsonUtility.FromJson<SaveData>(loadJson);
-
-        //제조 단계(카메라 회전) Load
-        MainCamera.transform.rotation = _saveData.camRotation;
-        Board.IntitilizeQuestBoard();
-        Brewer.InitializeBrewer();
-
-        //수주 의뢰 Load
-        if (_saveData.acceptQuestId.Count > 0)
-        {
-            _isSaveData = true;
-            int idCnt = Mathf.Min(5, _saveData.acceptQuestId.Count);
-            for (int i = 0; i < idCnt; ++i)
-            {
-                int id = _saveData.acceptQuestId[i];
-                var questObject = Instantiate(Board.QuestPrefab);
-                questObject.GetComponent<Quest>().InitializeQuestFromID(id);
-                destroyOjbect.Add(questObject);
-                Board.AcceptQuest(questObject.GetComponent<Quest>());
-            }
-            Brewer.UpdateQuestInfo();
-        }
-
-    }
-
 
 }

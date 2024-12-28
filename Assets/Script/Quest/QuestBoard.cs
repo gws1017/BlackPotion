@@ -86,11 +86,6 @@ public class QuestBoard : MonoBehaviour
 
     public void IntitilizeQuestBoard()
     {
-        if(GameManager.GM._isSaveData)
-        {
-            GameManager.GM._isSaveData = false;
-            return;
-        }
         Debug.Log("퀘스트보드 초기화");
 
         //2일차의 경우 기존 의뢰를 삭제하고 새로 생성한다.

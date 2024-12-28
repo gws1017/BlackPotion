@@ -27,6 +27,11 @@ public class PlayInfo : MonoBehaviour
     {
         get { return _currentCraftDay; }
     }
+
+    //데이터 로드시에만 사용
+    public void SetGold(int value) { _currentGold = value; }
+    public void SetDay(int value) { _currentCraftDay = value; }
+
     void Start()
     {
        IntializeGetRecipeDict();
@@ -79,19 +84,24 @@ public class PlayInfo : MonoBehaviour
     //골드 소모 함수
     public void ConsumeGold(int value)
     {
-        _currentGold -= value; 
+        _currentGold -= value;
+        GameManager.GM.SM.SavePlayInfo();
     }
     //골드 획득 함수
     public void IncreamentGold(int value)
     {
         _currentGold += value;
+        GameManager.GM.SM.SavePlayInfo();
     }
+
+   
 
     //날짜 함수
     public void IncrementCraftDay()
     {
         _currentCraftDay++;
         _maxCraftDay = Mathf.Max(_maxCraftDay, _currentCraftDay);
+        GameManager.GM.SM.SavePlayInfo();
     }
 
     //0일차 초기화시 사용됨
@@ -99,6 +109,7 @@ public class PlayInfo : MonoBehaviour
     {
         _currentCraftDay = 0;
         _currentGold = 0;
+        GameManager.GM.SM.SavePlayInfo();
         IntializeGetRecipeDict();
     }
 
