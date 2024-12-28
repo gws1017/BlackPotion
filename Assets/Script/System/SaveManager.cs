@@ -13,7 +13,7 @@ public class SaveManager : MonoBehaviour
         public int gold;
         public int day;
         //몇번째까지 퀘스트를 완료햇는지 기본값은 -1 == 퀘스트아얘시작도안함
-        //public int currentQuest = -1;
+        public int currentQuest;
     }
 
     [SerializeField]
@@ -24,6 +24,16 @@ public class SaveManager : MonoBehaviour
     void Start()
     {
         GameLoad();
+    }
+
+    private void OnDestroy()
+    {
+        GameSave();
+    }
+
+    public void SaveQuestOrder(int value)
+    {
+        _saveData.currentQuest = value;
     }
 
     public void SavePlayInfo()
@@ -87,7 +97,7 @@ public class SaveManager : MonoBehaviour
                 gm.DestoryQuest(questObject);
                 board.AcceptQuest(questObject.GetComponent<Quest>());
             }
-            brewer.UpdateQuestInfo();
+            brewer.UpdateQuestInfo(_saveData.currentQuest);
         }
 
     }

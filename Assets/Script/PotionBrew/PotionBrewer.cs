@@ -143,6 +143,7 @@ public class PotionBrewer : MonoBehaviour
     public void GetNextCraft()
     {
         _currentQuestIndex++;
+        GameManager.GM.SM.SaveQuestOrder(_currentQuestIndex);
         if (Board.CurrrentAcceptQuestCnt > _currentQuestIndex)
         {
             UpdateQuestInfo(_currentQuestIndex);
