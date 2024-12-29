@@ -14,6 +14,7 @@ public struct QuestInfo
     public int minQuality;
     public int maxQuality;
 }
+
 [System.Serializable]
 public struct QuestData
 {
@@ -46,6 +47,8 @@ public struct BuffInfo
     public string buffName;
     public int buffCost;
     public string buffImage;
+    public int buffState;
+    public string buffExplain;
 }
 [System.Serializable]
 public struct BuffData
