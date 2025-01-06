@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private CraftReceipt _craftReceipt;
     private PlayInfo _playInfo;
     private SaveManager _saveManager;
+    private BuffManager _buffManager;
 
     public List<GameObject> destroyOjbect;
     [SerializeField]
@@ -107,6 +108,19 @@ public class GameManager : MonoBehaviour
             return _saveManager;
         }
     }
+
+    public BuffManager BM
+    {
+        get
+        {
+            if(_buffManager == null)
+            {
+                _buffManager = GameObject.Find("Pixel Perfect Camera").GetComponentInChildren<BuffManager>();
+            }
+            return _buffManager;
+        }
+    }
+
     private void Awake()
     {
         if (_instance == null)

@@ -74,6 +74,10 @@ public class ItemSlot : MonoBehaviour
             {
                 _playInfo.AddRecipe(_itemId);
             }
+            else if(_parentStore.SType == Store.StoreType.Buff)
+            {
+                GameManager.GM.BM.AddBuff(_itemId);
+            }
             _itemSlotButton.enabled = false;
             _itemNameText.text = "¸ÅÁø";
         }
