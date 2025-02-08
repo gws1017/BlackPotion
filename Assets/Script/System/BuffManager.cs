@@ -1,11 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BuffManager : MonoBehaviour
 {
+
+    class BuffObject
+    {
+        public int id;
+        public bool isActive;
+        public GameObject buffObject;
+    }
+
     [SerializeField]
-    private Dictionary<int, bool> currentBuffList;
+    private Dictionary<int, BuffObject> currentBuffList;
+
+    [SerializeField]
+    private GameObject buffUIPrefab;
+    private GameObject buffListUI;
 
     //Getter
     public string GetNameFromBuffId(int id)
@@ -24,24 +37,29 @@ public class BuffManager : MonoBehaviour
     void Start()
     {
         InitializeBuffList();
+        buffListUI = GameObject.Find("Current BuffList UI");
     }
 
     private void InitializeBuffList()
     {
-        currentBuffList = new Dictionary<int, bool>();
+        currentBuffList = new Dictionary<int, BuffObject>();
     }
 
     public void ResetBuffList()
     {
-        foreach (var data in currentBuffList)
+        foreach (var buffObject in currentBuffList.Values)
         {
-            currentBuffList[data.Key] = false;
+            buffObject.isActive = false;     
         }
     }
     
     public void AddBuff(int id)
     {
-        currentBuffList.Add(id, false);
+        BuffObject buffObject = new BuffObject();
+        buffObject.id = id;
+        buffObject.isActive = false;
+
+        currentBuffList.Add(id, buffObject);
     }
 
     public void RemoveBuff(int id)
@@ -54,18 +72,19 @@ public class BuffManager : MonoBehaviour
 
     public bool ActivateBuff(int id)
     {
-        if(currentBuffList.ContainsKey(id))
-        {
-            currentBuffList[id] = true;
+        if (currentBuffList.ContainsKey(id))
+        { 
+            currentBuffList[id].isActive = true;
+            return true;
         }
-        return currentBuffList[id];
+        return false;
     }
 
     public void DeactivateBuff(int id)
     {
         if (currentBuffList.ContainsKey(id))
         {
-            currentBuffList[id] = false;
+            currentBuffList[id].isActive = false;
         }
     }
 }
