@@ -96,6 +96,7 @@ public class PotionBrewer : MonoBehaviour
         {
             _slots[i].SlotId = i;
         }
+        _craftButton.onClick.RemoveAllListeners();
         _craftButton.onClick.AddListener(PotionCraft);
     }
 
@@ -104,6 +105,9 @@ public class PotionBrewer : MonoBehaviour
     {
         bool ret = true;
 
+        //증가 가루 버프 체크
+        GameManager.GM.BM.CheckBuff(BuffType.PlusPowder,ref _currentPotionQuality);
+        
         //요구 품질보다 낮을 때
         if (_currentQuest.RequirePotionQuality > _currentPotionQuality)
             return false;

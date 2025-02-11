@@ -85,6 +85,9 @@ public class Slot : MonoBehaviour
         if (_ingredientCountCheckDict[amount] >= _brewer._currentQuest.QuestGrade)
             _ingredientCountFullList[amount] = true;
 
+        //양조기강화 버프 체크
+        GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
+
         IngredientAmount -= amount;
 
         //재료 다 사용했을 경우
@@ -109,7 +112,8 @@ public class Slot : MonoBehaviour
         {
             amount = Random.Range(1, 13);
         }
-
+        //홀짝버프 확인
+        GameManager.GM.BM.CheckBuff(BuffType.EvenOddNumber,ref amount);
         return amount;
     }
 

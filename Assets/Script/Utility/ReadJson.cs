@@ -72,6 +72,7 @@ public class ReadJson : MonoBehaviour
         PotionData potionData = JsonUtility.FromJson<PotionData>(potionJson.ToString());
         BuffData buffData = JsonUtility.FromJson<BuffData>(buffJson.ToString());
 
+
         _dictQuest = new Dictionary<int, QuestInfo>();
         _dictPotion = new Dictionary<int, PotionInfo>();
         _dictBuff = new Dictionary<int, BuffInfo>();
@@ -86,8 +87,11 @@ public class ReadJson : MonoBehaviour
         }
         foreach (var info in buffData.root)
         {
-            _dictBuff.Add(info.buffId, info);
+            BuffInfo formatData = info;
+            formatData.buffExplain = string.Format(info.buffExplain, info.buffState);
+            _dictBuff.Add(info.buffId, formatData);
         }
+        
     }
     
 }

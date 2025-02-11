@@ -68,6 +68,9 @@ public class Store : MonoBehaviour
         _ItemIdList = new List<int>();
         _itemSlotsList = new List<GameObject>();
 
+        //사용한 버프들을 확인 후 제거한다
+        GameManager.GM.BM.RemoveUsedBuff();
+
         int itemCnt = 0;
         //버프 상점
         if (_storeType == StoreType.Buff)

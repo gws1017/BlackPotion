@@ -54,6 +54,15 @@ public class CraftResult : MonoBehaviour
         _canvas.worldCamera = GameManager.GM.MainCamera;
         _brewer = GameManager.GM.Brewer;
 
+        InitializeResultUI();
+    }
+
+    void InitializeResultUI()
+    {
+        _selectButton.onClick.RemoveAllListeners();
+        _moneyButton.onClick.RemoveAllListeners();
+        _recipeButton.onClick.RemoveAllListeners();
+
         _selectButton.onClick.AddListener(SelectReward);
         _moneyButton.onClick.AddListener(SelectMoney);
         _recipeButton.onClick.AddListener(SelectRecipe);
@@ -62,6 +71,7 @@ public class CraftResult : MonoBehaviour
     //포션 제조 결과를 표시하는 함수
     public void ShowCraftResultUI(bool result)
     {
+        InitializeResultUI();
         //외곽선 효과 오프
         OffHighlight();
         _result = result;

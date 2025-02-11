@@ -4,7 +4,7 @@
       "buffId": 4001,
       "buffName": "짝수 정제",
       "buffCost": 45,
-      "buffImage": "Images/redpotion",
+      "buffImage": "Images/buffEven",
       "buffState": 0,
       "buffExplain": "사용시 2~12사이의 랜덤한 짝수 수치가 들어갑니다."
     },
@@ -12,7 +12,7 @@
       "buffId": 4002,
       "buffName": "홀수 정제",
       "buffCost": 45,
-      "buffImage": "Images/redpotion",
+      "buffImage": "Images/buffOdd",
       "buffState": 0,
       "buffExplain": "사용시 1~13사이의 랜덤한 홀수 수치가 들어갑니다."
     },
@@ -20,23 +20,23 @@
       "buffId": 4003,
       "buffName": "증가 가루",
       "buffCost": 75,
-      "buffImage": "Images/redpotion",
+      "buffImage": "Images/buffPlusPowder",
       "buffState": 5,
-      "buffExplain": "제조후 품질수치를 5만큼 올려준다"
+      "buffExplain": "제조후 품질수치를 {0}만큼 올려준다"
     },
     {
       "buffId": 4004,
       "buffName": "양조기 강화",
       "buffCost": 45,
-      "buffImage": "Images/redpotion",
+      "buffImage": "Images/buffUpgradeBrew",
       "buffState": 1,
-      "buffExplain": "사용시 들어가는 재료의 수치가 +1만큼 올라간다."
+      "buffExplain": "사용시 들어가는 재료의 수치가 +{0}만큼 올라간다."
     },
     {
       "buffId": 4005,
-      "buffName": "고장난 양조기",
+      "buffName": "이상한 양조기",
       "buffCost": 45,
-      "buffImage": "Images/redpotion",
+      "buffImage": "Images/buffStrangeBrew",
       "buffState": 0,
       "buffExplain": "1~13사이의 랜덤한 숫자 하나가 들어간다."
     }

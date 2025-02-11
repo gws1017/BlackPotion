@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour
         _brewer = GameObject.Find("PotionBrewer").GetComponent<PotionBrewer>(); 
         _craftReceipt = GameObject.Find("CraftReceipt").GetComponent<CraftReceipt>();
         _saveManager = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+        _buffManager = GameObject.Find("Pixel Perfect Camera").GetComponentInChildren<BuffManager>();
         _playInfo = GetComponent<PlayInfo>();
 
         _questStartButton.onClick.AddListener(QuestStart);

@@ -142,7 +142,6 @@ GameObject:
   m_Component:
   - component: {fileID: 319946039}
   - component: {fileID: 319946040}
-  - component: {fileID: 319946041}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -183,21 +182,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentGoldUIText: {fileID: 664173172}
---- !u!114 &319946041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 319946038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27da01bc720779a4d8a3c82f9797570d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buffUIPrefab: {fileID: 0}
-  buffListButton: {fileID: 0}
-  buffListUI: {fileID: 0}
 --- !u!114 &329885823 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1483430016725318828, guid: a80319115b24033439075330b27347a1,
