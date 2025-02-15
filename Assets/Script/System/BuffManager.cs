@@ -35,6 +35,8 @@ public class BuffManager : MonoBehaviour
     [SerializeField]
     private GameObject _buffListUI;
 
+    public const int MAX_BUFF_COUNT = 3;
+
     //Getter
     public string GetNameFromBuffId(int id)
     {
@@ -62,14 +64,24 @@ public class BuffManager : MonoBehaviour
 
         //Test Code
         AddBuff(4001);
-        AddBuff(4002);
-        AddBuff(4003);
+        AddBuff(4001);
+        AddBuff(4001);
     }
 
     public void ToggleBuffListUI()
     {
         _buffListUI.SetActive(!_buffListUI.activeSelf);
         InitializeBuffUI();
+    }
+
+    private int GetBuffCount()
+    {
+        int ret= 0;
+        foreach (var buffObject in _currentBuffList.Values)
+        {
+            ret += buffObject.count;
+        }
+        return ret;
     }
 
     private void InitializeBuffUI()
@@ -109,7 +121,7 @@ public class BuffManager : MonoBehaviour
                 //짝수 버프
                 if (IsActiveBuff(4001) && !IsActiveBuff(4002))
                 {
-                    if (value % 2 == 0) return;
+                    if (value % 2 == 0) break;
                     //원래 1이면 -> 2 그외는 -1 해서 짝수로 변경
                     if (value == 1) value = 2;
                     else value -= 1;
@@ -117,7 +129,7 @@ public class BuffManager : MonoBehaviour
                 //홀수 버프
                 else if (IsActiveBuff(4002) && !IsActiveBuff(4001))
                 {
-                    if (value % 2 == 1) return;
+                    if (value % 2 == 1) break;
                     value -= 1;
                 }
                 else return;
@@ -151,7 +163,15 @@ public class BuffManager : MonoBehaviour
         //사용 후 제거한다
         RemoveUsedBuff();
     }
-
+    public bool IsFullBuffList()
+    {
+        if (GetBuffCount() >= MAX_BUFF_COUNT)
+        {
+            Debug.Log("더 이상 버프를 구매할 수 없습니다 " + MAX_BUFF_COUNT);
+            return true;
+        }
+        return false;
+    }
     public void AddBuff(int id)
     {
         if (_currentBuffList.ContainsKey(id) == false)
@@ -172,11 +192,15 @@ public class BuffManager : MonoBehaviour
 
             buffObject.id = id;
             buffObject.isActive = false;
+            buffObject.count = 1;
 
             _currentBuffList.Add(id, buffObject);
         }
         else
+        {
             _currentBuffList[id].count += 1;
+            _currentBuffList[id].buffUI.GetComponentInChildren<Text>().text = "사용하기 x" + _currentBuffList[id].count;
+        }
 
         InitializeBuffUI();
     }
@@ -185,9 +209,18 @@ public class BuffManager : MonoBehaviour
     {
         if (_currentBuffList.ContainsKey(id))
         {
-            if (_currentBuffList[id].count>1)
+
+            if (_currentBuffList[id].count > 1)
             {
                 _currentBuffList[id].count -= 1;
+                Text buttonText = _currentBuffList[id].buffUI.GetComponentInChildren<Text>();
+                if (_currentBuffList[id].count >= 2)
+                    buttonText.text = "사용하기 x" + _currentBuffList[id].count;
+                else
+                    buttonText.text = "사용하기";
+                _currentBuffList[id].buffUI.GetComponentInChildren<Button>().interactable = true;
+                _currentBuffList[id].isActive = false;
+
             }
             else
             {
@@ -223,7 +256,7 @@ public class BuffManager : MonoBehaviour
         {
             _currentBuffList[id].isActive = true;
             _currentBuffList[id].buffUI.GetComponentInChildren<Button>().interactable = false;
-            _currentBuffList[id].buffUI.GetComponentInChildren<Text>().text = "사용 완료";
+            _currentBuffList[id].buffUI.GetComponentInChildren<Text>().text = "적용중";
             return true;
         }
         return false;

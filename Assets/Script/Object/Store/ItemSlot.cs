@@ -67,17 +67,22 @@ public class ItemSlot : MonoBehaviour
     {
         int currGold = _playInfo.CurrentGold;
 
-        if (currGold >=_itemCost)
+        if (currGold >= _itemCost)
         {
-            _playInfo.ConsumeGold(_itemCost);
-            if(_parentStore.SType == Store.StoreType.Recipe)
+            if (_parentStore.SType == Store.StoreType.Recipe)
             {
                 _playInfo.AddRecipe(_itemId);
             }
-            else if(_parentStore.SType == Store.StoreType.Buff)
+            else if (_parentStore.SType == Store.StoreType.Buff)
             {
+                if (GameManager.GM.BM.IsFullBuffList())
+                {
+                    _parentStore._purchaseUI.SetActive(false);
+                    return;
+                }
                 GameManager.GM.BM.AddBuff(_itemId);
             }
+            _playInfo.ConsumeGold(_itemCost);
             _itemSlotButton.enabled = false;
             _itemNameText.text = "¸ÅÁø";
         }
