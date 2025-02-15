@@ -455,10 +455,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27da01bc720779a4d8a3c82f9797570d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffUIPrefab: {fileID: 2796793494692962225, guid: e6513e2a26a8d0c47ac2a7cad6eb470b,
+  _buffUIPrefab: {fileID: 2796793494692962225, guid: e6513e2a26a8d0c47ac2a7cad6eb470b,
     type: 3}
-  buffListButton: {fileID: 1784809190}
-  buffListUI: {fileID: 2124370172}
+  _buffListButton: {fileID: 1784809190}
+  _buffListUI: {fileID: 2124370172}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

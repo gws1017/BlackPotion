@@ -129,7 +129,6 @@ public class PotionBrewer : MonoBehaviour
     public void PotionCraft()
     {
         //제조 결과 UI 띄우기
-        _craftResult.PotionQuality = _currentPotionQuality;
         if (IsSuccCraft())
         {
             _craftResult.ShowCraftResultUI(true);
@@ -140,6 +139,7 @@ public class PotionBrewer : MonoBehaviour
             _craftResult.ShowCraftResultUI(false);
             Board.SetQuestResult(_currentQuest, false);
         }
+        _craftResult.PotionQuality = _currentPotionQuality;
         _reqQulaityValueText.text = _currentQuest.RequirePotionQuality.ToString();
 
     }

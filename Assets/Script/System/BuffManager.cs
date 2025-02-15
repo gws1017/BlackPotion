@@ -26,14 +26,14 @@ public class BuffManager : MonoBehaviour
 
 
     [SerializeField]
-    private Dictionary<int, BuffObject> currentBuffList;
+    private Dictionary<int, BuffObject> _currentBuffList;
 
     [SerializeField]
-    private GameObject buffUIPrefab;
+    private GameObject _buffUIPrefab;
     [SerializeField]
-    private Button buffListButton;
+    private Button _buffListButton;
     [SerializeField]
-    private GameObject buffListUI;
+    private GameObject _buffListUI;
 
     //Getter
     public string GetNameFromBuffId(int id)
@@ -56,9 +56,9 @@ public class BuffManager : MonoBehaviour
 
     private void InitializeBuffList()
     {
-        currentBuffList = new Dictionary<int, BuffObject>();
-        buffListButton.onClick.RemoveAllListeners();
-        buffListButton.onClick.AddListener(ToggleBuffListUI);
+        _currentBuffList = new Dictionary<int, BuffObject>();
+        _buffListButton.onClick.RemoveAllListeners();
+        _buffListButton.onClick.AddListener(ToggleBuffListUI);
 
         //Test Code
         AddBuff(4001);
@@ -68,21 +68,21 @@ public class BuffManager : MonoBehaviour
 
     public void ToggleBuffListUI()
     {
-        buffListUI.SetActive(!buffListUI.activeSelf);
+        _buffListUI.SetActive(!_buffListUI.activeSelf);
         InitializeBuffUI();
     }
 
     private void InitializeBuffUI()
     {
         //중복 버프 여러개 있을때 코드 추가 바람
-        RectTransform listAnchor = buffListUI.GetComponent<RectTransform>();
-        int buffCount = currentBuffList.Count;
+        RectTransform listAnchor = _buffListUI.GetComponent<RectTransform>();
+        int buffCount = _currentBuffList.Count;
         listAnchor.offsetMin = new Vector2(0, 40 + (buffCount - 1) * -20);
 
         //버프1개이상 있을 때 위치조정
         if (buffCount < 1) return;
         int index = 0;
-        foreach (var buffObject in currentBuffList.Values)
+        foreach (var buffObject in _currentBuffList.Values)
         {
             RectTransform anchor = buffObject.buffUI.GetComponent<RectTransform>();
             int startY = (buffCount - 1) * 10;
@@ -93,7 +93,7 @@ public class BuffManager : MonoBehaviour
 
     public void ResetBuffList()
     {
-        foreach (var buffObject in currentBuffList.Values)
+        foreach (var buffObject in _currentBuffList.Values)
         {
             buffObject.isActive = false;
         }
@@ -120,6 +120,7 @@ public class BuffManager : MonoBehaviour
                     if (value % 2 == 1) return;
                     value -= 1;
                 }
+                else return;
                 break;
             case BuffType.PlusPowder:
                 //증가 가루
@@ -127,6 +128,7 @@ public class BuffManager : MonoBehaviour
                 {
                     value += ReadJson._dictBuff[4003].buffState;
                 }
+                else return;
                 break;
             case BuffType.UpgradeBrew:
                 //양조기 강화
@@ -134,6 +136,7 @@ public class BuffManager : MonoBehaviour
                 {
                     value += ReadJson._dictBuff[4003].buffState;
                 }
+                else return;
                 break;
             case BuffType.StrangeBrew:
                 //이상한 양조기
@@ -141,21 +144,24 @@ public class BuffManager : MonoBehaviour
                 {
                     value += Random.Range(1, Slot.MAX_NUMBER);
                 }
+                else return;
                 break;
 
         }
+        //사용 후 제거한다
+        RemoveUsedBuff();
     }
 
     public void AddBuff(int id)
     {
-        if (currentBuffList.ContainsKey(id) == false)
+        if (_currentBuffList.ContainsKey(id) == false)
         {
             BuffObject buffObject = new BuffObject();
 
             //버프UI(아이콘, 사용버튼) 프리펩 생성
-            buffObject.buffUI = Instantiate(buffUIPrefab, Vector3.zero, Quaternion.identity);
+            buffObject.buffUI = Instantiate(_buffUIPrefab, Vector3.zero, Quaternion.identity);
             //버프 리스트 UI하위로 설정
-            buffObject.buffUI.transform.SetParent(buffListUI.transform, false);
+            buffObject.buffUI.transform.SetParent(_buffListUI.transform, false);
             //버프 이미지 설정
             buffObject.buffUI.GetComponentInChildren<Image>().sprite
                 = Resources.Load<Sprite>(ReadJson._dictBuff[id].buffImage);
@@ -167,46 +173,57 @@ public class BuffManager : MonoBehaviour
             buffObject.id = id;
             buffObject.isActive = false;
 
-            currentBuffList.Add(id, buffObject);
+            _currentBuffList.Add(id, buffObject);
         }
         else
-            currentBuffList[id].count += 1;
+            _currentBuffList[id].count += 1;
 
         InitializeBuffUI();
     }
 
     public void RemoveBuff(int id)
     {
-        if (currentBuffList.ContainsKey(id))
+        if (_currentBuffList.ContainsKey(id))
         {
-            if (currentBuffList[id].count>1)
+            if (_currentBuffList[id].count>1)
             {
-                currentBuffList[id].count -= 1;
+                _currentBuffList[id].count -= 1;
             }
             else
             {
-                Destroy(currentBuffList[id].buffUI);
-                currentBuffList.Remove(id);
+                Destroy(_currentBuffList[id].buffUI);
+                _currentBuffList.Remove(id);
             }
         }
     }
 
-    public bool IsActiveBuff(int id)
+    public bool IsActiveBuff(int id = -1)
     {
-        if (currentBuffList.ContainsKey(id))
+        if (id == -1)
         {
-            return currentBuffList[id].isActive;
+            foreach (var buff in _currentBuffList.Values)
+            {
+                if (buff.isActive == true) return true;
+            }
+            return false;
+        }
+        else if(_currentBuffList.ContainsKey(id))
+        {
+            return _currentBuffList[id].isActive;
         }
         return false;
     }
 
     public bool ActivateBuff(int id)
     {
-        if (currentBuffList.ContainsKey(id))
+        //버프는 한번에 한개만 활성화 가능
+        if (IsActiveBuff() == true) return false;
+
+        if (_currentBuffList.ContainsKey(id))
         {
-            currentBuffList[id].isActive = true;
-            currentBuffList[id].buffUI.GetComponentInChildren<Button>().interactable = false;
-            currentBuffList[id].buffUI.GetComponentInChildren<Text>().text = "사용 완료";
+            _currentBuffList[id].isActive = true;
+            _currentBuffList[id].buffUI.GetComponentInChildren<Button>().interactable = false;
+            _currentBuffList[id].buffUI.GetComponentInChildren<Text>().text = "사용 완료";
             return true;
         }
         return false;
@@ -216,9 +233,9 @@ public class BuffManager : MonoBehaviour
     public void RemoveUsedBuff()
     {
         List<int> RemoveBuffList = new List<int>();
-        foreach (var buffID in currentBuffList.Keys)
+        foreach (var buffID in _currentBuffList.Keys)
         {
-            if (currentBuffList[buffID].isActive == true)
+            if (_currentBuffList[buffID].isActive == true)
                 RemoveBuffList.Add(buffID);
         }
         foreach(var buffID in RemoveBuffList)
@@ -232,9 +249,9 @@ public class BuffManager : MonoBehaviour
     //미사용 함수, 버프 OFF 혹은 사용 취소시 사용될 수 있다.
     public void DeactivateBuff(int id)
     {
-        if (currentBuffList.ContainsKey(id))
+        if (_currentBuffList.ContainsKey(id))
         {
-            currentBuffList[id].isActive = false;
+            _currentBuffList[id].isActive = false;
         }
     }
 }
