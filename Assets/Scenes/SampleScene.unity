@@ -654,6 +654,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PotionBrewer
       objectReference: {fileID: 0}
+    - target: {fileID: 3196521802952936010, guid: 3b79ec9b38f13514b870a9a99e8c8235,
+        type: 3}
+      propertyPath: m_Text
+      value: "<\uC694\uAD6C \uC6A9\uB7C9>"
+      objectReference: {fileID: 0}
     - target: {fileID: 4001910323316462189, guid: 3b79ec9b38f13514b870a9a99e8c8235,
         type: 3}
       propertyPath: m_LocalPosition.z

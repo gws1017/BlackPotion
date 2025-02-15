@@ -18,6 +18,11 @@ public class Slot : MonoBehaviour
     [SerializeField]
     private int _ingredientAmount;
 
+    public const int REFILL_GOLD = 10;
+
+    public const int MAX_NUMBER = 10;
+
+    public const int SUM_NUMBER = ((MAX_NUMBER - 1) * MAX_NUMBER) / 2;
 
     //PotionBrwer 레퍼런스
     private PotionBrewer _brewer;
@@ -65,12 +70,12 @@ public class Slot : MonoBehaviour
     //현재 제조하는 포션 의뢰에 맞게 초기화한다.
     public void InitializeSlot()
     {
-        IngredientAmount = 78* _brewer._currentQuest.QuestGrade;
+        IngredientAmount = SUM_NUMBER * _brewer._currentQuest.QuestGrade;
 
         _ingredientAmountText.color = Color.black;
 
-        for (int i = 1; i <= 13; ++i) _ingredientCountCheckDict[i] = 0;
-        _ingredientCountFullList = Enumerable.Repeat(false, 14).ToList();
+        for (int i = 1; i <= MAX_NUMBER; ++i) _ingredientCountCheckDict[i] = 0;
+        _ingredientCountFullList = Enumerable.Repeat(false, MAX_NUMBER+1).ToList();
     }
 
     //재료 투임 함수
@@ -104,13 +109,13 @@ public class Slot : MonoBehaviour
     //투입될 무작위 수량을 뽑는 함수
     private int GetRandomAmount()
     {
-        int amount = Random.Range(1, 13);
+        int amount = Random.Range(1, MAX_NUMBER);
 
         if (IsFullCount()) return 0;
         //1~13의 숫자는 같은 숫자를 의뢰 등급만큼 뽑을 수 있다.
         while (_ingredientCountCheckDict[amount] >= _brewer._currentQuest.QuestGrade)
         {
-            amount = Random.Range(1, 13);
+            amount = Random.Range(1, MAX_NUMBER);
         }
         //홀짝버프 확인
         GameManager.GM.BM.CheckBuff(BuffType.EvenOddNumber,ref amount);
@@ -122,7 +127,7 @@ public class Slot : MonoBehaviour
     {
         bool ret = true;
 
-        for (int i = 1; i <= 13; ++i)
+        for (int i = 1; i <= MAX_NUMBER; ++i)
             if (_ingredientCountFullList[i] == false) ret = false;
 
         return ret;
@@ -133,8 +138,8 @@ public class Slot : MonoBehaviour
     {
         Debug.Log("재료를 수급합니다!");
         //골드를 소모함
-        //GameManager.GM._playInfo.ConsumeGold();
-        IngredientAmount = 78;
+        GameManager.GM.PlayInfomation.ConsumeGold(REFILL_GOLD);
+        IngredientAmount = SUM_NUMBER;
 
         _inputButtonText.text = "투입";
         _ingredientAmountText.color = Color.white;

@@ -139,7 +139,7 @@ public class BuffManager : MonoBehaviour
                 //이상한 양조기
                 if (IsActiveBuff(4005))
                 {
-                    value += Random.Range(1, 13);
+                    value += Random.Range(1, Slot.MAX_NUMBER);
                 }
                 break;
 
