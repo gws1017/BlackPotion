@@ -74,6 +74,7 @@ public class QuestBoard : MonoBehaviour
     }
     public Quest GetCurrentQuest(int id)
     {
+       id = Mathf.Clamp(id, 0, AcceptQuestList.Count-1);
        return AcceptQuestList[id];
     }
 

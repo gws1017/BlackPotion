@@ -9,6 +9,7 @@ public class SaveManager : MonoBehaviour
     public struct SaveData
     {
         public List<int> acceptQuestId;
+        public List<int> buffList;
         public Quaternion camRotation;
         public int gold;
         public int day;
@@ -28,7 +29,7 @@ public class SaveManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameSave();
+        //GameSave();
     }
 
     public void SaveQuestOrder(int value)
@@ -40,6 +41,7 @@ public class SaveManager : MonoBehaviour
     {
         _saveData.gold = GameManager.GM.PlayInfomation.CurrentGold;
         _saveData.day = GameManager.GM.PlayInfomation.CurrentDay;
+        _saveData.buffList = GameManager.GM.BM.GetCurrentBuffList();
         GameSave();
     }
 
@@ -50,6 +52,12 @@ public class SaveManager : MonoBehaviour
         {
             _saveData.acceptQuestId.Add(quest.QuestID);
         }
+        GameSave();
+    }
+
+    public void SaveBuff()
+    {
+        _saveData.buffList = GameManager.GM.BM.GetCurrentBuffList();
         GameSave();
     }
 
@@ -81,12 +89,12 @@ public class SaveManager : MonoBehaviour
 
         //제조 단계(카메라 회전) Load
         gm.MainCamera.transform.rotation = _saveData.camRotation;
-        board.IntitilizeQuestBoard();
         brewer.InitializeBrewer();
 
         //수주 의뢰 Load
         if (_saveData.acceptQuestId.Count > 0)
         {
+            board.IntitilizeQuestBoard();
             //_isSaveData = true;
             int idCnt = Mathf.Min(5, _saveData.acceptQuestId.Count);
             for (int i = 0; i < idCnt; ++i)
@@ -98,6 +106,14 @@ public class SaveManager : MonoBehaviour
                 board.AcceptQuest(questObject.GetComponent<Quest>());
             }
             brewer.UpdateQuestInfo(_saveData.currentQuest);
+        }
+        //버프 로드
+        if (_saveData.buffList.Count > 0)
+        {
+           foreach(int buffID in _saveData.buffList)
+           {
+                GameManager.GM.BM.AddBuff(buffID);
+           }
         }
 
     }

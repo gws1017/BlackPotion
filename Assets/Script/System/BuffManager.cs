@@ -51,6 +51,10 @@ public class BuffManager : MonoBehaviour
         return ReadJson._dictBuff[id].buffExplain;
     }
 
+    public List<int> GetCurrentBuffList()
+    {
+        return _currentBuffList.Keys.ToList();
+    }
     void Start()
     {
         InitializeBuffList();
@@ -63,9 +67,9 @@ public class BuffManager : MonoBehaviour
         _buffListButton.onClick.AddListener(ToggleBuffListUI);
 
         //Test Code
-        AddBuff(4001);
-        AddBuff(4001);
-        AddBuff(4001);
+        //AddBuff(4001);
+        //AddBuff(4001);
+        //AddBuff(4001);
     }
 
     public void ToggleBuffListUI()
@@ -76,7 +80,7 @@ public class BuffManager : MonoBehaviour
 
     private int GetBuffCount()
     {
-        int ret= 0;
+        int ret = 0;
         foreach (var buffObject in _currentBuffList.Values)
         {
             ret += buffObject.count;
@@ -107,15 +111,17 @@ public class BuffManager : MonoBehaviour
     {
         foreach (var buffObject in _currentBuffList.Values)
         {
-            buffObject.isActive = false;
+            Destroy(buffObject.buffUI);
         }
+        _currentBuffList = new Dictionary<int, BuffObject>();
+        InitializeBuffList();
     }
 
     //버프 Type을 사용하면 BuffId가 변경되어도 여기서만 수정하면된다
     //버프로 인해 변동될 수치값을 파라미터로 입력한다
-    public void CheckBuff(BuffType type , ref int value)
+    public void CheckBuff(BuffType type, ref int value)
     {
-        switch(type)
+        switch (type)
         {
             case BuffType.EvenOddNumber:
                 //짝수 버프
@@ -240,7 +246,7 @@ public class BuffManager : MonoBehaviour
             }
             return false;
         }
-        else if(_currentBuffList.ContainsKey(id))
+        else if (_currentBuffList.ContainsKey(id))
         {
             return _currentBuffList[id].isActive;
         }
@@ -271,7 +277,7 @@ public class BuffManager : MonoBehaviour
             if (_currentBuffList[buffID].isActive == true)
                 RemoveBuffList.Add(buffID);
         }
-        foreach(var buffID in RemoveBuffList)
+        foreach (var buffID in RemoveBuffList)
         {
             RemoveBuff(buffID);
         }

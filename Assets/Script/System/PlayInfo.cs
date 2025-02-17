@@ -35,6 +35,8 @@ public class PlayInfo : MonoBehaviour
     void Start()
     {
        IntializeGetRecipeDict();
+        //Test Code
+        //_currentGold = 1000;
     }
 
     //레시피 함수
@@ -109,6 +111,7 @@ public class PlayInfo : MonoBehaviour
     {
         _currentCraftDay = 0;
         _currentGold = 0;
+        GameManager.GM.BM.ResetBuffList();
         GameManager.GM.SM.SavePlayInfo();
         IntializeGetRecipeDict();
     }
