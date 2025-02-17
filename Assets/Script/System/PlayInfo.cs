@@ -15,8 +15,8 @@ public class PlayInfo : MonoBehaviour
     public int _questSuccCnt = 0;
     public int _maxCraftDay = 0;
 
-    //보유 레시피
-    private Dictionary<int, bool> _getRecipeDict;
+    //보유 레시피 - 보유는 true 미보유는 false
+    private Dictionary<int, bool> _recipeDict;
 
     public int CurrentGold
     {
@@ -26,6 +26,20 @@ public class PlayInfo : MonoBehaviour
     public int CurrentDay
     {
         get { return _currentCraftDay; }
+    }
+
+    public List<int> PossessRecipeList
+    {
+        get
+        {
+            List<int> ret = new List<int>();
+            foreach (var data in _recipeDict)
+            {
+                if (data.Value == true)
+                    ret.Add(data.Key);
+            }
+            return ret;
+        }
     }
 
     //데이터 로드시에만 사용
@@ -43,27 +57,27 @@ public class PlayInfo : MonoBehaviour
     //레시피 보유 정보 초기화
     public void IntializeGetRecipeDict()
     {
-        _getRecipeDict = new Dictionary<int, bool>();
+        _recipeDict = new Dictionary<int, bool>();
         foreach (var RecipeData in ReadJson._dictPotion)
         {
             if(RecipeData.Value.recipeCost !=0)
-                _getRecipeDict.Add(RecipeData.Key, false);
+                _recipeDict.Add(RecipeData.Key, false);
             else // 0골드인 레시피는 기본 레시피이다.
-                _getRecipeDict[RecipeData.Key] = true;
+                _recipeDict[RecipeData.Key] = true;
         }
     }
     
     //레시피 획득 함수
     public void AddRecipe(int recipeID)
     {
-        _getRecipeDict[recipeID] = true;
+        _recipeDict[recipeID] = true;
     }
     //레시피 보유 확인 함수
     public bool HasRecipe(int recipeID)
     {
-        if (_getRecipeDict == null) return false;
-        if (_getRecipeDict.ContainsKey(recipeID))
-            return _getRecipeDict[recipeID];
+        if (_recipeDict == null) return false;
+        if (_recipeDict.ContainsKey(recipeID))
+            return _recipeDict[recipeID];
         else 
             return false;
     }

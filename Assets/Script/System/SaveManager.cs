@@ -10,6 +10,7 @@ public class SaveManager : MonoBehaviour
     {
         public List<int> acceptQuestId;
         public List<int> buffList;
+        public List<int> recipeList;
         public Quaternion camRotation;
         public int gold;
         public int day;
@@ -42,6 +43,7 @@ public class SaveManager : MonoBehaviour
         _saveData.gold = GameManager.GM.PlayInfomation.CurrentGold;
         _saveData.day = GameManager.GM.PlayInfomation.CurrentDay;
         _saveData.buffList = GameManager.GM.BM.GetCurrentBuffList();
+        _saveData.recipeList = GameManager.GM.PlayInfomation.PossessRecipeList;
         GameSave();
     }
 
@@ -106,6 +108,13 @@ public class SaveManager : MonoBehaviour
                 board.AcceptQuest(questObject.GetComponent<Quest>());
             }
             brewer.UpdateQuestInfo(_saveData.currentQuest);
+        }
+        if(_saveData.recipeList.Count > 0)
+        {
+            foreach(int recipeID in _saveData.recipeList)
+            {
+                GameManager.GM.PlayInfomation.AddRecipe(recipeID);
+            }
         }
         //버프 로드
         if (_saveData.buffList.Count > 0)
