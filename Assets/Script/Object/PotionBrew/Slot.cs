@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
+    ,IPointerEnterHandler
+    ,IPointerExitHandler
 {
     //UI
     //투입 버튼
@@ -17,6 +20,14 @@ public class Slot : MonoBehaviour
     private Text _ingredientAmountText;
     [SerializeField]
     private int _ingredientAmount;
+
+    [SerializeField]
+    private Image _ingredientImage;
+    [SerializeField]
+    private GameObject _infoUIPrefab;
+    private GameObject _infoUIInstance;
+    [SerializeField]
+    private Canvas _canvas;
 
     public const int REFILL_GOLD = 10;
 
@@ -56,6 +67,7 @@ public class Slot : MonoBehaviour
     
     void Start()
     {
+        _canvas = GetComponentInChildren<Canvas>();
         GetComponentInChildren<Canvas>().worldCamera = GameManager.GM.MainCamera;
         _brewer = GameManager.GM.Brewer;
 
@@ -66,6 +78,25 @@ public class Slot : MonoBehaviour
         _ingredientCountCheckDict = new Dictionary<int, int>();
         _ingredientCountFullList = new List<bool> { false };
     }
+
+    //마우스 오버된 의뢰를 강조하기위해 추가함
+    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+
+        Vector3 offset = new Vector3(-2,1, -1);
+        _infoUIInstance = Instantiate<GameObject>(_infoUIPrefab, _ingredientImage.transform.position + offset, _ingredientImage.transform.rotation);
+
+        _infoUIInstance.GetComponentInChildren<Text>().text
+            = _brewer._currentQuest.PInfo.ingredientName[SlotId];
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Destroy(_infoUIInstance);
+        Debug.Log("mouse exit");
+
+    }
+
 
     //현재 제조하는 포션 의뢰에 맞게 초기화한다.
     public void InitializeSlot()

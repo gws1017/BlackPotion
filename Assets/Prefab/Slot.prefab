@@ -125,11 +125,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3928626d23cd42d408b1d867a382da88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _potionBrwer: {fileID: 0}
   _inputButton: {fileID: 3055768078913097448}
   _inputButtonText: {fileID: 3662903964869993445}
   _ingredientAmountText: {fileID: 7184731130793755386}
   _ingredientAmount: 78
+  _ingredientImage: {fileID: 1299666652029640331}
+  _infoUIPrefab: {fileID: 2514927131761075172, guid: 543eae283629d6c4188307ad68e11487,
+    type: 3}
+  _canvas: {fileID: 0}
 --- !u!1 &3727467625877608989
 GameObject:
   m_ObjectHideFlags: 0
