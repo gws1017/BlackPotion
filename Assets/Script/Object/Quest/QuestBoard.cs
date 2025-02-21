@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static Unity.Burst.Intrinsics.X86;
+//using UnityEngine.UIElements;
 
 public class QuestBoard : MonoBehaviour
 {
@@ -36,6 +33,9 @@ public class QuestBoard : MonoBehaviour
     [SerializeField]
     private GameObject _currentQuestUIObject;
 
+    //의뢰 무작위 회전 값 기본 30
+    [SerializeField]
+    private float _zRotRandRange;
     //의뢰 게시판에 붙는 최대 의뢰 수
     [SerializeField]
     private int _maxQuestCnt;
@@ -126,24 +126,41 @@ public class QuestBoard : MonoBehaviour
         GameManager.GM.PlayInfomation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
         int pCnt = 0, upCnt = 0;
         //의뢰 객체를 생성함
-        Vector3 pos = new Vector3(-22f, 5f, 0f);
         int col = _maxQuestCnt / _rowCnt;
         for (int j = 0; j < col; ++j)
         {
             for (int i = 0; i < _rowCnt; ++i)
             {
+                Vector3 pos;
+                Quaternion rot;
+                GenarateRandomPositionAndRotation(out pos, out rot);
+
                 int id = GetQuestID(ref pCnt, ref upCnt);
-                int index = i + j * _rowCnt;
-                var Clone = Instantiate(_questPrefab, pos, Quaternion.identity);
-                Clone.GetComponent<Quest>().QuestID = id;
+
+                var Clone = Instantiate(_questPrefab, pos, rot);
+                var quest = Clone.GetComponent<Quest>();
+                var questCanvas = Clone.GetComponentInChildren<Canvas>();
+                quest.QuestID = id;
+                quest.OriginZ = pos.z;
+                questCanvas.overrideSorting = true;
+                questCanvas.sortingOrder = Mathf.RoundToInt(pos.z * -10);
                 _questList.Add(Clone);
-                pos.x += 11f;
             }
-            pos.x = -22f;
-            pos.y -= 11f;
         }
     }
 
+    private void GenarateRandomPositionAndRotation(out Vector3 Position , out Quaternion Rotation)
+    {
+        var cam = GameManager.GM.MainCamera;
+        Bounds bounds = cam.GetComponentInChildren<Collider2D>().bounds;
+        float randX = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
+        float randY = UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
+        float randZ = UnityEngine.Random.Range(0f, 9f);
+        Position = new Vector3(randX, randY, randZ);
+       
+        float randRotZ = UnityEngine.Random.Range(-_zRotRandRange, _zRotRandRange);
+        Rotation = Quaternion.Euler(0f, 0f, randRotZ);
+    }
 
     //의뢰 수락하는 함수
     public void AcceptQuest(Quest questObject)
@@ -203,7 +220,7 @@ public class QuestBoard : MonoBehaviour
             if (go != gameObject)
             {
                 Vector3 originPos = go.transform.position;
-                originPos.z = 10;
+                originPos.z += 20f;
                 go.transform.position = originPos;
                 go.transform.position = originPos;
             }
@@ -218,7 +235,7 @@ public class QuestBoard : MonoBehaviour
         {
             if (go.GetComponent<Quest>().IsDisable) continue;
             Vector3 originPos = go.transform.position;
-            originPos.z = 0;
+            originPos.z = go.GetComponent<Quest>().OriginZ;
             go.transform.position = originPos;
         }
     }

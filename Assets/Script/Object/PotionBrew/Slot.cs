@@ -97,7 +97,6 @@ public class Slot : MonoBehaviour
 
     }
 
-
     //현재 제조하는 포션 의뢰에 맞게 초기화한다.
     public void InitializeSlot()
     {

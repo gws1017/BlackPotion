@@ -40,6 +40,8 @@ public class Quest : MonoBehaviour
     protected QuestInfo _questInfo;
     protected PotionInfo _potionInfo;
 
+    public float OriginZ;
+
     //의뢰 상세내용 오브젝트
     [SerializeField]
     private GameObject _detailQuestPrefab;
