@@ -11,9 +11,9 @@ public class CraftResult : MonoBehaviour
     private Canvas _canvas;
     private PotionBrewer _brewer;
     [SerializeField]
-    private Image _succImage;
+    private Animator _animatorLeft;
     [SerializeField]
-    private Animator _animator;
+    private Animator _animatorRight;
 
     //UI
     [SerializeField]
@@ -53,11 +53,22 @@ public class CraftResult : MonoBehaviour
         set { _potionQualityValueText.text = value.ToString(); }
     }
 
+    public PotionBrewer Brwer
+    {
+        get
+        {
+            if(_brewer == null)
+            {
+                _brewer = GameManager.GM.Brewer;
+            }
+            return _brewer;
+        }
+    }
+
     void Start()
     {
         _canvas.worldCamera = GameManager.GM.MainCamera;
         _brewer = GameManager.GM.Brewer;
-
         InitializeResultUI();
     }
 
@@ -71,7 +82,7 @@ public class CraftResult : MonoBehaviour
         _moneyButton.onClick.AddListener(SelectMoney);
         _recipeButton.onClick.AddListener(SelectRecipe);
     }
-    
+
     //포션 제조 결과를 표시하는 함수
     public void ShowCraftResultUI(bool result)
     {
@@ -81,11 +92,12 @@ public class CraftResult : MonoBehaviour
         _result = result;
         gameObject.SetActive(true);
 
-        var quest = _brewer._currentQuest;
+        var quest = Brwer._currentQuest;
         PlayInfo pinfo = GameManager.GM.PlayInfomation;
         //완성 애니메이션
-        _animator.SetTrigger("PlayOnce");
-        _succImage.enabled = true;
+        _animatorLeft.SetTrigger("PlayOnce");
+        _animatorRight.SetTrigger("PlayOnce");
+        //_succImage.enabled = true;
 
         if (_result)
         {
@@ -152,7 +164,7 @@ public class CraftResult : MonoBehaviour
     {
         if (_result)
         {
-            var quest = _brewer._currentQuest;
+            var quest = Brwer._currentQuest;
 
             if (_selectReward == 1)
             {
@@ -170,8 +182,10 @@ public class CraftResult : MonoBehaviour
         }
 
         //버프 상점 오픈
-        _brewer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
-        _succImage.enabled = false;
+        Brwer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
+        _questResultText.text = "의뢰 결과";
+        _resultText.text = "결과";
+        //_succImage.enabled = false;
         gameObject.SetActive(false);
     }
 
