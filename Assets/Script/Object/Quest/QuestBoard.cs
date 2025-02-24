@@ -143,7 +143,7 @@ public class QuestBoard : MonoBehaviour
                 quest.QuestID = id;
                 quest.OriginZ = pos.z;
                 questCanvas.overrideSorting = true;
-                questCanvas.sortingOrder = Mathf.RoundToInt(pos.z * -10);
+                //questCanvas.sortingOrder = Mathf.RoundToInt(pos.z * -10);
                 _questList.Add(Clone);
             }
         }

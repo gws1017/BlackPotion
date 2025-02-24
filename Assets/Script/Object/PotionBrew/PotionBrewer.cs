@@ -121,7 +121,6 @@ public class PotionBrewer : MonoBehaviour
                 if (_currentMount[sid] > _maxMount[sid]) return false;
             }
         }
-
         return ret;
     }
 

@@ -10,6 +10,10 @@ public class CraftResult : MonoBehaviour
     [SerializeField]
     private Canvas _canvas;
     private PotionBrewer _brewer;
+    [SerializeField]
+    private Image _succImage;
+    [SerializeField]
+    private Animator _animator;
 
     //UI
     [SerializeField]
@@ -79,8 +83,11 @@ public class CraftResult : MonoBehaviour
 
         var quest = _brewer._currentQuest;
         PlayInfo pinfo = GameManager.GM.PlayInfomation;
+        //완성 애니메이션
+        _animator.SetTrigger("PlayOnce");
+        _succImage.enabled = true;
 
-        if (result)
+        if (_result)
         {
             //특정 레시피가 아니라 레시피 등급중 무작위로 가져온다
             int RewardRecipeGrade = quest.QuestRewardRecipeGrade;
@@ -114,17 +121,29 @@ public class CraftResult : MonoBehaviour
                 _recipeNameText.text = RecipeData.potionName.ToString() + " 레시피";
             }
             _selectText.text = "선택";
-            _questResultText.text = "의뢰 성공";
-            _resultText.text = "성공";
+            
             pinfo._questSuccCnt++;
         }
         else
         {
             _rewardButtons.SetActive(false);
             _selectText.text = "다음";
+            
+            pinfo.ConsumeGold((int)(quest.QuestRewardMoney * 0.1));
+        }
+    }
+
+    public void ShowResultText()
+    {
+        if (_result)
+        {
+            _questResultText.text = "의뢰 성공";
+            _resultText.text = "성공";
+        }
+        else
+        {
             _questResultText.text = "의뢰 실패";
             _resultText.text = "실패";
-            pinfo.ConsumeGold((int)(quest.QuestRewardMoney * 0.1));
         }
     }
 
@@ -152,6 +171,7 @@ public class CraftResult : MonoBehaviour
 
         //버프 상점 오픈
         _brewer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
+        _succImage.enabled = false;
         gameObject.SetActive(false);
     }
 

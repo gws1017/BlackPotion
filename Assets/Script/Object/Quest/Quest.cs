@@ -192,6 +192,7 @@ public class Quest : MonoBehaviour
         CanvasRef.worldCamera = GameManager.GM.MainCamera;
 
         _openDetailQuestButton = GetComponent<Button>();
+        _openDetailQuestButton.onClick.RemoveAllListeners();
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
 
         if(_questID == 0 )
