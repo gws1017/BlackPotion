@@ -12,33 +12,28 @@ public class PlayInfo : MonoBehaviour
     private int _currentGold = 0;
 
     //누적 데이터
-    public int _questSuccCnt = 0;
+    public int _questSuccCount = 0;
     public int _maxCraftDay = 0;
 
     //보유 레시피 - 보유는 true 미보유는 false
     private Dictionary<int, bool> _recipeDict;
 
-    public int CurrentGold
-    {
-        get { return _currentGold; }
-    }
-
-    public int CurrentDay
-    {
-        get { return _currentCraftDay; }
-    }
+    public int CurrentGold => _currentGold;
+    public int CurrentDay => _currentCraftDay;
+    public int MaxCraftDay => _maxCraftDay;
+    public int QuestSuccessCount { get => _questSuccCount;set => _questSuccCount = value; }
 
     public List<int> PossessRecipeList
     {
         get
         {
-            List<int> ret = new List<int>();
-            foreach (var data in _recipeDict)
+            List<int> list = new List<int>();
+            foreach (var recipe in _recipeDict)
             {
-                if (data.Value == true)
-                    ret.Add(data.Key);
+                if (recipe.Value)
+                    list.Add(recipe.Key);
             }
-            return ret;
+            return list;
         }
     }
 
@@ -46,55 +41,55 @@ public class PlayInfo : MonoBehaviour
     public void SetGold(int value) { _currentGold = value; }
     public void SetDay(int value) { _currentCraftDay = value; }
 
-    void Start()
+    private void Start()
     {
-       IntializeGetRecipeDict();
-        //Test Code
-        //_currentGold = 1000;
+       IntializeRecipeDict();
     }
 
     //레시피 함수
     //레시피 보유 정보 초기화
-    public void IntializeGetRecipeDict()
+    public void IntializeRecipeDict()
     {
         _recipeDict = new Dictionary<int, bool>();
-        foreach (var RecipeData in ReadJson._dictPotion)
+        foreach (var recipeData in ReadJson._dictPotion)
         {
-            if(RecipeData.Value.recipeCost !=0)
-                _recipeDict.Add(RecipeData.Key, false);
-            else // 0골드인 레시피는 기본 레시피이다.
-                _recipeDict[RecipeData.Key] = true;
+            // 0골드인 레시피는 기본 레시피이다.
+            if (recipeData.Value.recipeCost != 0)
+                _recipeDict.Add(recipeData.Key, false);
+            else
+                _recipeDict.Add(recipeData.Key, true);
         }
     }
     
     //레시피 획득 함수
     public void AddRecipe(int recipeID)
     {
-        _recipeDict[recipeID] = true;
+        
+        if (_recipeDict == null) return;
+
+        if(_recipeDict.ContainsKey(recipeID))
+            _recipeDict[recipeID] = true;
     }
     //레시피 보유 확인 함수
     public bool HasRecipe(int recipeID)
     {
-        if (_recipeDict == null) return false;
-        if (_recipeDict.ContainsKey(recipeID))
-            return _recipeDict[recipeID];
-        else 
-            return false;
+        return _recipeDict != null &&
+                _recipeDict.TryGetValue(recipeID, out bool hasRecipe) &&
+                hasRecipe;
     }
 
-    //보유중인 레시피와 미보유레시피의 리스트를 돌려준다.
-    public void SplitQuest(out List<int> AcceptableQuest, out List<int>UnaccpeptableQuest)
+    //보유중인 레시피와 미보유레시피의 리스트를 분리해서 반환한다
+    public void SplitQuest(out List<int> acceptableQuest, out List<int> unaccpeptableQuest)
     {
-        //레시피를 분리하는게아니라 퀘스트를 분리해야한다
-        AcceptableQuest = new List<int>();
-        UnaccpeptableQuest = new List<int>();
+        acceptableQuest = new List<int>();
+        unaccpeptableQuest = new List<int>();
 
-        foreach(var Data in ReadJson._dictQuest.Values)
+        foreach(var questData in ReadJson._dictQuest.Values)
         {
-            if(HasRecipe(Data.potionId))
-                AcceptableQuest.Add(Data.questId);
+            if(HasRecipe(questData.potionId))
+                acceptableQuest.Add(questData.questId);
             else
-                UnaccpeptableQuest.Add(Data.questId);
+                unaccpeptableQuest.Add(questData.questId);
         }
     }
     //골드 소모 함수
@@ -104,13 +99,11 @@ public class PlayInfo : MonoBehaviour
         GameManager.GM.SM.SavePlayInfo();
     }
     //골드 획득 함수
-    public void IncreamentGold(int value)
+    public void IncrementGold(int value)
     {
         _currentGold += value;
         GameManager.GM.SM.SavePlayInfo();
     }
-
-   
 
     //날짜 함수
     public void IncrementCraftDay()
@@ -121,13 +114,13 @@ public class PlayInfo : MonoBehaviour
     }
 
     //0일차 초기화시 사용됨
-    public void Resetinfo()
+    public void ResetInfo()
     {
         _currentCraftDay = 0;
         _currentGold = 0;
         GameManager.GM.BM.ResetBuffList();
         GameManager.GM.SM.SavePlayInfo();
-        IntializeGetRecipeDict();
+        IntializeRecipeDict();
     }
 
 }

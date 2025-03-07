@@ -209,7 +209,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            PlayInformation.Resetinfo();
+            PlayInformation.ResetInfo();
         }
         ShowQuestBoard();
     }

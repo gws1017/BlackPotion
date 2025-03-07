@@ -134,7 +134,7 @@ public class CraftResult : MonoBehaviour
             }
             _selectText.text = "º±≈√";
             
-            pinfo._questSuccCnt++;
+            pinfo.QuestSuccessCount++;
         }
         else
         {
@@ -169,7 +169,7 @@ public class CraftResult : MonoBehaviour
             if (_selectReward == 1)
             {
                 //∞ÒµÂ »πµÊ
-                GameManager.GM.PlayInformation.IncreamentGold(quest.QuestRewardMoney);
+                GameManager.GM.PlayInformation.IncrementGold(quest.QuestRewardMoney);
             }
             else if (_selectReward == 2)
             {
