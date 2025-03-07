@@ -42,7 +42,7 @@ public class CraftReceipt : MonoBehaviour
     {
         _canvas.worldCamera = GameManager.GM.MainCamera;
         _board = GameManager.GM.Board;
-        _playInfo = GameManager.GM.PlayInfomation;
+        _playInfo = GameManager.GM.PlayInformation;
         _nextButton.onClick.AddListener(ShowRecipeStore);
     }
 

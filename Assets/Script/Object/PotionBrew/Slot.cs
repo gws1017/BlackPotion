@@ -168,7 +168,7 @@ public class Slot : MonoBehaviour
     {
         Debug.Log("재료를 수급합니다!");
         //골드를 소모함
-        GameManager.GM.PlayInfomation.ConsumeGold(REFILL_GOLD);
+        GameManager.GM.PlayInformation.ConsumeGold(REFILL_GOLD);
         IngredientAmount = SUM_NUMBER;
 
         _inputButtonText.text = "투입";

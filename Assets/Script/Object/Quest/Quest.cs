@@ -261,7 +261,7 @@ public class Quest : MonoBehaviour
         _reqPotionQuality = Random.Range(_minPotionQuality, _maxPotionQuality);
 
         //미보유 레시피 의뢰 마우스와 상호작용되지 않아야함
-        if(GameManager.GM.PlayInfomation.HasRecipe(PInfo.potionId) == false)
+        if(GameManager.GM.PlayInformation.HasRecipe(PInfo.potionId) == false)
         {
             _disableQuest = true;
             Vector3 originPos = gameObject.transform.position;

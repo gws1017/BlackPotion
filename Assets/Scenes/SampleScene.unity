@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 568ac7435e027ca4aa7374cef953aeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyOjbect: []
+  destroyObjects: []
   _questStartButton: {fileID: 1513628926}
 --- !u!114 &374720874
 MonoBehaviour:
@@ -614,9 +614,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27da01bc720779a4d8a3c82f9797570d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffUIPrefab: {fileID: 0}
-  buffListButton: {fileID: 0}
-  buffListUI: {fileID: 0}
+  _buffUIPrefab: {fileID: 2796793494692962225, guid: e6513e2a26a8d0c47ac2a7cad6eb470b,
+    type: 3}
+  _buffListButton: {fileID: 1784809190}
+  _buffListUI: {fileID: 2124370172}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2461,6 +2462,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _saveData:
     acceptQuestId: 
+    buffList: 
+    recipeList: 
     camRotation: {x: 0, y: 0, z: 0, w: 0}
     gold: 0
     day: 0
@@ -2517,6 +2520,7 @@ MonoBehaviour:
   _questPrefab: {fileID: 7024418843332693245, guid: 2af10ea4938d1ca448c2dc7736fc6607,
     type: 3}
   _currentQuestUIObject: {fileID: 1735403086}
+  _zRotRandRange: 0
   _maxQuestCnt: 10
   _maxAcceptQuestCnt: 5
   _rowCnt: 5

@@ -11,6 +11,6 @@ public class HUD : MonoBehaviour
 
     private void LateUpdate()
     {
-        _currentGoldUIText.text = GameManager.GM.PlayInfomation.CurrentGold.ToString();
+        _currentGoldUIText.text = GameManager.GM.PlayInformation.CurrentGold.ToString();
     }
 }

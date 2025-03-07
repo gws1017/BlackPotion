@@ -21,7 +21,7 @@ public class ItemSlot : MonoBehaviour
 
     void Start()
     {
-        _playInfo = GameManager.GM.PlayInfomation;
+        _playInfo = GameManager.GM.PlayInformation;
         _itemSlotButton.onClick.AddListener(ShowPurchaseUI);
     }
 

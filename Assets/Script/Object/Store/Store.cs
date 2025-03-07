@@ -95,7 +95,7 @@ public class Store : MonoBehaviour
             //미보유 레시피만 상점에 등장
             foreach (var ID in ReadJson._dictPotion.Keys)
             {
-                if(GameManager.GM.PlayInfomation.HasRecipe(ID) == false)
+                if(GameManager.GM.PlayInformation.HasRecipe(ID) == false)
                     _ItemIdList.Add(ID);
             }
 

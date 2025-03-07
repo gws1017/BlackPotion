@@ -93,7 +93,7 @@ public class CraftResult : MonoBehaviour
         gameObject.SetActive(true);
 
         var quest = Brwer._currentQuest;
-        PlayInfo pinfo = GameManager.GM.PlayInfomation;
+        PlayInfo pinfo = GameManager.GM.PlayInformation;
         //완성 애니메이션
         _animatorLeft.SetTrigger("PlayOnce");
         _animatorRight.SetTrigger("PlayOnce");
@@ -169,12 +169,12 @@ public class CraftResult : MonoBehaviour
             if (_selectReward == 1)
             {
                 //골드 획득
-                GameManager.GM.PlayInfomation.IncreamentGold(quest.QuestRewardMoney);
+                GameManager.GM.PlayInformation.IncreamentGold(quest.QuestRewardMoney);
             }
             else if (_selectReward == 2)
             {
                 var RecipeData = ReadJson._dictPotion[_rewardRecipeId];
-                GameManager.GM.PlayInfomation.AddRecipe(_rewardRecipeId);
+                GameManager.GM.PlayInformation.AddRecipe(_rewardRecipeId);
                 //UI로 표기할 것인가?
                 Debug.Log(RecipeData.potionName.ToString() + " 레시피 해금되었습니다.");
             }

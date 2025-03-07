@@ -80,12 +80,12 @@ public class QuestBoard : MonoBehaviour
 
     void Start()
     {
-        IntitilizeQuestBoard();
+        InitilizeQuestBoard();
         CreateQuestObject();
     }
 
 
-    public void IntitilizeQuestBoard()
+    public void InitilizeQuestBoard()
     {
         Debug.Log("퀘스트보드 초기화");
 
@@ -118,12 +118,12 @@ public class QuestBoard : MonoBehaviour
         _curretnQuestUIHidePannel.onClick.AddListener(CloseAcceptQuestUI);
 
         //전체 레시피에서 보유/ 미보유 리스트를 나눠서 가져온다
-        GameManager.GM.PlayInfomation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
+        GameManager.GM.PlayInformation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
     }
 
     public void CreateQuestObject()
     {
-        GameManager.GM.PlayInfomation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
+        GameManager.GM.PlayInformation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
         int pCnt = 0, upCnt = 0;
         //의뢰 객체를 생성함
         int col = _maxQuestCnt / _rowCnt;

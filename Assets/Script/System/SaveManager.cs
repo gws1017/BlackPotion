@@ -40,10 +40,10 @@ public class SaveManager : MonoBehaviour
 
     public void SavePlayInfo()
     {
-        _saveData.gold = GameManager.GM.PlayInfomation.CurrentGold;
-        _saveData.day = GameManager.GM.PlayInfomation.CurrentDay;
+        _saveData.gold = GameManager.GM.PlayInformation.CurrentGold;
+        _saveData.day = GameManager.GM.PlayInformation.CurrentDay;
         _saveData.buffList = GameManager.GM.BM.GetCurrentBuffList();
-        _saveData.recipeList = GameManager.GM.PlayInfomation.PossessRecipeList;
+        _saveData.recipeList = GameManager.GM.PlayInformation.PossessRecipeList;
         GameSave();
     }
 
@@ -84,7 +84,7 @@ public class SaveManager : MonoBehaviour
         var gm = GameManager.GM;
         QuestBoard board = gm.Board;
         PotionBrewer brewer = gm.Brewer;
-        PlayInfo playInfo = gm.PlayInfomation;
+        PlayInfo playInfo = gm.PlayInformation;
 
         playInfo.SetGold(_saveData.gold);
         playInfo.SetDay(_saveData.day);
@@ -96,7 +96,7 @@ public class SaveManager : MonoBehaviour
         //수주 의뢰 Load
         if (_saveData.acceptQuestId.Count > 0)
         {
-            board.IntitilizeQuestBoard();
+            board.InitilizeQuestBoard();
             //_isSaveData = true;
             int idCnt = Mathf.Min(5, _saveData.acceptQuestId.Count);
             for (int i = 0; i < idCnt; ++i)
@@ -113,7 +113,7 @@ public class SaveManager : MonoBehaviour
         {
             foreach(int recipeID in _saveData.recipeList)
             {
-                GameManager.GM.PlayInfomation.AddRecipe(recipeID);
+                GameManager.GM.PlayInformation.AddRecipe(recipeID);
             }
         }
         //버프 로드

@@ -19,9 +19,11 @@ public class GameManager : MonoBehaviour
     private SaveManager _saveManager;
     private BuffManager _buffManager;
 
-    public List<GameObject> destroyOjbect;
+    public List<GameObject> destroyObjects;
     [SerializeField]
     private Button _questStartButton;
+
+    //Getter Setter
 
     public static GameManager GM
     {
@@ -35,7 +37,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Getter Setter
     public Camera MainCamera
     {
         get
@@ -85,14 +86,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public PlayInfo PlayInfomation
+    public PlayInfo PlayInformation
     {
-        get { 
-            if(_playInfo == null)
+        get
+        {
+            if (_playInfo == null)
             {
                 _playInfo = GetComponent<PlayInfo>();
             }
-            return _playInfo; 
+            return _playInfo;
         }
 
     }
@@ -113,7 +115,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if(_buffManager == null)
+            if (_buffManager == null)
             {
                 _buffManager = GameObject.Find("Pixel Perfect Camera").GetComponentInChildren<BuffManager>();
             }
@@ -135,24 +137,37 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        _camera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
-        _board = GameObject.Find("QuestBoard").GetComponent<QuestBoard>();
-        _brewer = GameObject.Find("PotionBrewer").GetComponent<PotionBrewer>(); 
-        _craftReceipt = GameObject.Find("CraftReceipt").GetComponent<CraftReceipt>();
-        _saveManager = GameObject.Find("SaveManager").GetComponent<SaveManager>();
-        _buffManager = GameObject.Find("Pixel Perfect Camera").GetComponentInChildren<BuffManager>();
-        _playInfo = GetComponent<PlayInfo>();
+        InitializeManagerComponent();
 
-        _questStartButton.onClick.AddListener(QuestStart);
+        if (_questStartButton != null)
+            _questStartButton.onClick.AddListener(QuestStart);
+    }
+
+    private void InitializeManagerComponent()
+    {
+        if (_camera == null)
+            _camera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
+        if (_board == null)
+            _board = GameObject.Find("QuestBoard").GetComponent<QuestBoard>();
+        if (_brewer == null)
+            _brewer = GameObject.Find("PotionBrewer").GetComponent<PotionBrewer>();
+        if (_craftReceipt == null)
+            _craftReceipt = GameObject.Find("CraftReceipt").GetComponent<CraftReceipt>();
+        if (_saveManager == null)
+            _saveManager = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+        if (_buffManager == null)
+            _buffManager = GameObject.Find("Pixel Perfect Camera").GetComponentInChildren<BuffManager>();
+        if (_playInfo == null)
+            _playInfo = GetComponent<PlayInfo>();
     }
 
     //의뢰 시작(포션제조) 단계 전환
     private void QuestStart()
     {
         //수주 의뢰 저장
-        if (_board.CurrrentAcceptQuestCnt > 0)
+        if (Board.CurrrentAcceptQuestCnt > 0)
         {
-            _camera.transform.rotation = Quaternion.Euler(0, 90, 0);
+            RotateCamera(new Vector3(0, 90, 0));
             Brewer.UpdateQuestInfo();
             SM.SaveQuest();
             SM.SaveStage();
@@ -165,21 +180,21 @@ public class GameManager : MonoBehaviour
     //정산 단계로 전환
     public void ShowCraftReceipt()
     {
-        _camera.transform.rotation = Quaternion.Euler(0, 180, 0);
+        RotateCamera(new Vector3(0, 180, 0));
         SM.SaveStage();
     }
     //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()
     {
-        Board.IntitilizeQuestBoard();
+        Board.InitilizeQuestBoard();
         Board.CreateQuestObject();
-        if (destroyOjbect.Count > 0)
-        {
-            foreach(var item in destroyOjbect)
-                Destroy(item);
-            destroyOjbect = new List<GameObject>();
-        }
-        _camera.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+
+        foreach (var item in destroyObjects)
+            Destroy(item);
+        destroyObjects.Clear();
+
+        RotateCamera(new Vector3(0, 0, 0));
         SM.SaveQuest();
         SM.SaveStage();
 
@@ -188,20 +203,25 @@ public class GameManager : MonoBehaviour
     //정산 결과에 따라 0일차로 재시작인지 다음날로 넘어가는 지 확인한다
     public void CheckRecipt()
     {
-        if(Receipt.TargetSuccess)
+        if (Receipt.TargetSuccess)
         {
-            _playInfo.IncrementCraftDay();
+            PlayInformation.IncrementCraftDay();
         }
         else
         {
-            _playInfo.Resetinfo();
+            PlayInformation.Resetinfo();
         }
         ShowQuestBoard();
     }
 
     public void DestoryQuest(GameObject gameObject)
     {
-        destroyOjbect.Add(gameObject);
+        destroyObjects.Add(gameObject);
     }
 
+    private void RotateCamera(Vector3 eulerAngles)
+    {
+        if (_camera != null)
+            _camera.transform.rotation = Quaternion.Euler(eulerAngles);
+    }
 }
