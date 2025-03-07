@@ -7,7 +7,7 @@ public class PotionBrewer : MonoBehaviour
 {
     //Component
     [SerializeField]
-    private Slot[] _slots;
+    private IngredientSlot[] _slots;
     [SerializeField]
     private Store _storeUI;
 
