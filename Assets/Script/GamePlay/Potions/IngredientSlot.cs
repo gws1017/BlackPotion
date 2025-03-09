@@ -15,6 +15,10 @@ public class IngredientSlot : MonoBehaviour
     private Button _inputButton;
     [SerializeField] 
     private Text _inputButtonText;
+    [SerializeField]
+    private Button _inputInfoButton;
+    [SerializeField]
+    private GameObject _inputInfoUIInstance;
 
     //투입 가능한 량
     [SerializeField]
@@ -22,11 +26,13 @@ public class IngredientSlot : MonoBehaviour
 
     [SerializeField]
     private Image _ingredientImage;
+    [SerializeField]
+    private Image[] _inputInfoImages;
     private int _ingredientId;
 
     [SerializeField]
-    private GameObject _infoUIPrefab;
-    private GameObject _infoUIInstance;
+    private GameObject _ingridientInfoUIPrefab;
+    private GameObject _ingridientInfoUIInstance;
     [SerializeField]
     private Canvas _canvas;
 
@@ -72,6 +78,7 @@ public class IngredientSlot : MonoBehaviour
         _brewer = GameManager.GM.Brewer;
 
         _inputButton.onClick.AddListener(InputIngredient);
+        _inputInfoButton.onClick.AddListener(ToggleInputInfoUI);
 
         _ingredientCountCheckDict = new Dictionary<int, int>();
         _ingredientCountFullList = new List<bool> { false };
@@ -83,14 +90,14 @@ public class IngredientSlot : MonoBehaviour
     {
 
         Vector3 offset = new Vector3(-2,1, -1);
-        _infoUIInstance = Instantiate<GameObject>(_infoUIPrefab, _ingredientImage.transform.position + offset, _ingredientImage.transform.rotation);
+        _ingridientInfoUIInstance = Instantiate<GameObject>(_ingridientInfoUIPrefab, _ingredientImage.transform.position + offset, _ingredientImage.transform.rotation);
 
-        _infoUIInstance.GetComponentInChildren<Text>().text
+        _ingridientInfoUIInstance.GetComponentInChildren<Text>().text
             = _brewer._currentQuest.PInfo.ingredientName[SlotId];
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        Destroy(_infoUIInstance);
+        Destroy(_ingridientInfoUIInstance);
         Debug.Log("mouse exit");
 
     }
@@ -103,7 +110,11 @@ public class IngredientSlot : MonoBehaviour
         //_ingredientId = _brewer._currentQuest.PInfo.materialIdList[SlotId];
         _ingredientImage.sprite = Resources.Load<Sprite>(ReadJson._dictMaterial[4001].materialImage);
 
-        for (int i = 1; i <= MAX_NUMBER; ++i) _ingredientCountCheckDict[i] = 0;
+        for (int i = 1; i <= MAX_NUMBER; ++i)
+        {
+            _ingredientCountCheckDict[i] = 0;
+            _inputInfoImages[i].color = Color.white;
+        }
         _ingredientCountFullList = Enumerable.Repeat(false, MAX_NUMBER+1).ToList();
     }
 
@@ -117,7 +128,11 @@ public class IngredientSlot : MonoBehaviour
         _ingredientCountCheckDict[amount]++;
 
         if (_ingredientCountCheckDict[amount] >= _brewer._currentQuest.QuestGrade)
+        {
             _ingredientCountFullList[amount] = true;
+            Color usedColor = new Color32(120, 120, 120,255);
+            _inputInfoImages[amount].color = usedColor;
+        }
 
         //양조기강화 버프 체크
         GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
@@ -176,6 +191,11 @@ public class IngredientSlot : MonoBehaviour
 
         _inputButton.onClick.RemoveAllListeners();
         _inputButton.onClick.AddListener(InputIngredient);
+    }
+
+    private void ToggleInputInfoUI()
+    {
+        _inputInfoUIInstance.SetActive(!_inputInfoUIInstance.activeSelf);
     }
 
     //투입 기능 ON / OFF
