@@ -550,7 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466318a75bd4eda4fa45c6369e5cf9d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questSuccCnt: 0
+  _questSuccCount: 0
   _maxCraftDay: 0
 --- !u!114 &374720875
 MonoBehaviour:
@@ -575,7 +575,7 @@ GameObject:
   - component: {fileID: 388009794}
   - component: {fileID: 388009795}
   m_Layer: 5
-  m_Name: CurrentBuffList
+  m_Name: CurrentItemList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -599,7 +599,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 800, y: 227.6}
+  m_AnchoredPosition: {x: -750, y: -350}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &388009795
@@ -2132,7 +2132,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uBC84\uD504 \uBAA9\uB85D"
+  m_Text: "\uB3C4\uAD6C\uD568"
 --- !u!222 &1653668266
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2214,7 +2214,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: 30}
   m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1784809190
@@ -2988,7 +2988,7 @@ GameObject:
   - component: {fileID: 2124370175}
   - component: {fileID: 2124370174}
   m_Layer: 5
-  m_Name: BuffListUI
+  m_Name: ItemListUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3008,10 +3008,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 388009794}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 150, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2124370174
 MonoBehaviour:
