@@ -1,0 +1,17 @@
+{
+  "root": [
+    {
+      "materialId": 4001,
+      "materialName": "허브",
+      "materialGrade": 1,
+      "materialImage": "Images/redpotion"
+    },
+    {
+      "materialId": 4002,
+      "materialName": "약초",
+      "materialGrade": 1,
+      "materialImage": "Images/redpotion"
+    }
+  ]
+  
+}

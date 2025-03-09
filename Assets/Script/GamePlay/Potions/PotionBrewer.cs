@@ -17,21 +17,12 @@ public class PotionBrewer : MonoBehaviour
     //재료 투입 현황 텍스트
     [SerializeField]
     private Text[] _ingredientInputAmountText;
-    //현재 품질 수치 텍스트
-    [SerializeField]
-    private Text _currentQualityText;
-    //재료 이미지
-    [SerializeField]
-    private Image[] _ingredientImage;
     //투입 결과 오브젝트
     [SerializeField]
     private GameObject[] _capacityObject;
     //제조버튼
     [SerializeField]
     private Button _craftButton;
-    //+ 이미지 오브젝트 0 -> 투입구 하나일때 1 -> 투입구2
-    [SerializeField]
-    private GameObject[] _plusImageObjects;
 
     //보상UI 오브젝트
     [SerializeField]
@@ -51,6 +42,12 @@ public class PotionBrewer : MonoBehaviour
     [SerializeField]
     private int _currentQuestIndex;
     public Quest _currentQuest;
+
+    [Header("Current Recipe Info")]
+    [SerializeField]
+    private Text _recipeNameText;
+    [SerializeField]
+    private Text[] _IngridientNameText;
 
     //솥 표기 정보
     //재료 종류
@@ -175,6 +172,7 @@ public class PotionBrewer : MonoBehaviour
         }
 
         //수량 텍스트 업데이트
+        //추후 비율 DB 업데이트후 수정예정
         _ingredientInputAmountText[slotId].text = _currentMount[slotId].ToString() + " / " + _maxMount[slotId].ToString();
 
         //현재 품질 업데이트
@@ -183,9 +181,6 @@ public class PotionBrewer : MonoBehaviour
         {
             _currentPotionQuality += val;
         }
-        _currentQualityText.text = _currentPotionQuality.ToString();
-
-
     }
 
     //지금 제조하는 의뢰에 맞게 양조기 정보를 업데이트한다.
@@ -199,18 +194,24 @@ public class PotionBrewer : MonoBehaviour
         _maxMount = new int[3];
 
         _currentPotionQuality = 0;
-        _currentQualityText.text = _currentPotionQuality.ToString();
 
         var potionInfo = _currentQuest.PInfo;
         _ingreCnt = potionInfo.ingredientCount;
 
+        _recipeNameText.text = potionInfo.potionName;
+        int index = 1;
         for (int i = 0; i < 3; ++i)
         {
-            if(i!=2)_plusImageObjects[i].SetActive(false);
             _capacityObject[i].SetActive(true);
             _slots[i].gameObject.SetActive(true);
             _slots[i].InitializeSlot();
             _slots[i].EnableInputButton();
+
+            if (potionInfo.ingredientName[i] == "x")
+                _IngridientNameText[i].text = "";
+            else
+                _IngridientNameText[i].text = (index++).ToString() + ". "+ potionInfo.ingredientName[i];
+
             _ingredientInputAmountText[i].color = Color.black;
             _maxMount[i] = potionInfo.maxMount[i] * _currentQuest.QuestGrade;
             _ingredientInputAmountText[i].text = _currentMount[i].ToString() + " / " + _maxMount[i].ToString();
@@ -226,18 +227,16 @@ public class PotionBrewer : MonoBehaviour
                 _slots[i].gameObject.SetActive(false);
             }
         }
-        else if(_ingreCnt == 2) //1 3번째만
+        else if (_ingreCnt == 2) //1 3번째만
         {
-            _plusImageObjects[_ingreCnt - 2].SetActive(true);
             _capacityObject[1].SetActive(false);
             _slots[1].gameObject.SetActive(false);
 
         }
-        else if(_ingreCnt == 3)
-            _plusImageObjects[_ingreCnt - 2].SetActive(true);
-
+        else if (_ingreCnt == 3) ;
 
         UpdateQuestUIInfo();
+
     }
 
     //현재 의뢰 정보 UI를 업데이트하는 함수

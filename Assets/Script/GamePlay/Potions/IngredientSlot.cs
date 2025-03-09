@@ -15,14 +15,15 @@ public class IngredientSlot : MonoBehaviour
     private Button _inputButton;
     [SerializeField] 
     private Text _inputButtonText;
+
     //투입 가능한 량
-    [SerializeField]
-    private Text _ingredientAmountText;
     [SerializeField]
     private int _ingredientAmount;
 
     [SerializeField]
     private Image _ingredientImage;
+    private int _ingredientId;
+
     [SerializeField]
     private GameObject _infoUIPrefab;
     private GameObject _infoUIInstance;
@@ -55,7 +56,6 @@ public class IngredientSlot : MonoBehaviour
         set
         {
             _ingredientAmount = value;
-            _ingredientAmountText.text = _ingredientAmount.ToString();
         }
     }
 
@@ -72,8 +72,6 @@ public class IngredientSlot : MonoBehaviour
         _brewer = GameManager.GM.Brewer;
 
         _inputButton.onClick.AddListener(InputIngredient);
-
-        _ingredientAmountText.text = _ingredientAmount.ToString();
 
         _ingredientCountCheckDict = new Dictionary<int, int>();
         _ingredientCountFullList = new List<bool> { false };
@@ -102,7 +100,8 @@ public class IngredientSlot : MonoBehaviour
     {
         IngredientAmount = SUM_NUMBER * _brewer._currentQuest.QuestGrade;
 
-        _ingredientAmountText.color = Color.black;
+        //_ingredientId = _brewer._currentQuest.PInfo.materialIdList[SlotId];
+        _ingredientImage.sprite = Resources.Load<Sprite>(ReadJson._dictMaterial[4001].materialImage);
 
         for (int i = 1; i <= MAX_NUMBER; ++i) _ingredientCountCheckDict[i] = 0;
         _ingredientCountFullList = Enumerable.Repeat(false, MAX_NUMBER+1).ToList();
@@ -128,7 +127,6 @@ public class IngredientSlot : MonoBehaviour
         //재료 다 사용했을 경우
         if (IngredientAmount <= 0)
         {
-            _ingredientAmountText.color = Color.red;
             _inputButtonText.text = "재료 수급";
             _inputButton.onClick.RemoveAllListeners();
             _inputButton.onClick.AddListener(IngredientSupply);
@@ -172,7 +170,6 @@ public class IngredientSlot : MonoBehaviour
         IngredientAmount = SUM_NUMBER;
 
         _inputButtonText.text = "투입";
-        _ingredientAmountText.color = Color.white;
 
         _ingredientCountCheckDict.Clear();
         _ingredientCountFullList.Clear();
