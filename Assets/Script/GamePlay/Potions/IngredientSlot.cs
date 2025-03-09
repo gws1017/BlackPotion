@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 
 public class IngredientSlot : MonoBehaviour
     ,IPointerEnterHandler
@@ -35,6 +36,8 @@ public class IngredientSlot : MonoBehaviour
     private GameObject _ingridientInfoUIInstance;
     [SerializeField]
     private Canvas _canvas;
+    [SerializeField]
+    private ParticleSystem _particle;
 
     public const int REFILL_GOLD = 10;
 
@@ -110,6 +113,11 @@ public class IngredientSlot : MonoBehaviour
         //_ingredientId = _brewer._currentQuest.PInfo.materialIdList[SlotId];
         _ingredientImage.sprite = Resources.Load<Sprite>(ReadJson._dictMaterial[4001].materialImage);
 
+        ParticleSystemRenderer renderer = _particle.GetComponent<ParticleSystemRenderer>();
+        Material particleMaterial = new Material(Shader.Find("Unlit/Transparent"));
+        particleMaterial.mainTexture = _ingredientImage.sprite.texture;
+        renderer.material = particleMaterial;
+
         for (int i = 1; i <= MAX_NUMBER; ++i)
         {
             _ingredientCountCheckDict[i] = 0;
@@ -147,6 +155,8 @@ public class IngredientSlot : MonoBehaviour
             _inputButton.onClick.AddListener(IngredientSupply);
 
         }
+        
+        _particle.Play();
     }
 
     //투입될 무작위 수량을 뽑는 함수
