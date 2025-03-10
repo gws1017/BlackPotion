@@ -60,6 +60,18 @@ public class PotionBrewer : MonoBehaviour
 
     private int _currentPotionQuality;
 
+    public string _potionCraftGrade;
+
+    public enum CraftState
+    {
+        None,
+        Restart,
+        Next
+    
+    }
+
+    public CraftState _craftState;
+
     //Getter Setter
     public int CurrentPotionQuality
     {
@@ -121,24 +133,46 @@ public class PotionBrewer : MonoBehaviour
         return ret;
     }
 
-    //포션 제조 함수
     public void PotionCraft()
     {
-        //제조 결과 UI 띄우기
-        if (IsSuccCraft())
-        {
-            _craftResult.ShowCraftResultUI(true);
-            Board.SetQuestResult(_currentQuest, true);
-        }
-        else
-        {
-            _craftResult.ShowCraftResultUI(false);
-            Board.SetQuestResult(_currentQuest, false);
-        }
-        _craftResult.PotionQuality = _currentPotionQuality;
-        _reqQulaityValueText.text = _currentQuest.RequirePotionQuality.ToString();
-
+        StartCoroutine(PotionCraftCoroutine());
     }
+
+    //포션 제조 함수
+    public IEnumerator PotionCraftCoroutine()
+    {
+        _craftResult.ShowResultCheckUI();
+
+        _craftState = CraftState.None;
+
+        yield return new WaitUntil(() => _craftState != CraftState.None);
+
+        if(_craftState == CraftState.Next)
+        {
+            //제조 결과 UI 띄우기
+            if (IsSuccCraft())
+            {
+                _craftResult.PotionCraftResult = true;
+                Board.SetQuestResult(_currentQuest, true);
+            }
+            else
+            {
+                _craftResult.PotionCraftResult = false;
+                Board.SetQuestResult(_currentQuest, false);
+            }
+
+            _craftResult.UpdateCraftResultUI();
+            _craftResult.PotionQuality = _currentPotionQuality;
+            _reqQulaityValueText.text = _currentQuest.RequirePotionQuality.ToString();
+        }
+        else if(_craftState == CraftState.Restart)
+        {
+            GameManager.GM.PlayInformation.ConsumeGold(PlayInfo.RESTART_GOLD);
+            Debug.Log("포션 제조를 재시작합니다");
+            UpdateQuestInfo(_currentQuestIndex);
+        }
+    }
+
     //다음 제조 혹은 정산 단계로 이동하는 함수
     public void GetNextCraft()
     {
