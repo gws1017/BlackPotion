@@ -141,7 +141,7 @@ public class QuestBoard : MonoBehaviour
                 var quest = Clone.GetComponent<Quest>();
                 var questCanvas = Clone.GetComponentInChildren<Canvas>();
                 quest.QuestID = id;
-                quest.OriginZ = pos.z;
+                quest._originZ = pos.z;
                 questCanvas.overrideSorting = true;
                 //questCanvas.sortingOrder = Mathf.RoundToInt(pos.z * -10);
                 _questList.Add(Clone);
@@ -235,7 +235,7 @@ public class QuestBoard : MonoBehaviour
         {
             if (go.GetComponent<Quest>().IsDisable) continue;
             Vector3 originPos = go.transform.position;
-            originPos.z = go.GetComponent<Quest>().OriginZ;
+            originPos.z = go.GetComponent<Quest>()._originZ;
             go.transform.position = originPos;
         }
     }

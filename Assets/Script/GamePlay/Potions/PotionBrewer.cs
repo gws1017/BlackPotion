@@ -168,8 +168,10 @@ public class PotionBrewer : MonoBehaviour
         else if(_craftState == CraftState.Restart)
         {
             GameManager.GM.PlayInformation.ConsumeGold(PlayInfo.RESTART_GOLD);
+            _currentQuest._isRestart = true;
             Debug.Log("포션 제조를 재시작합니다");
             UpdateQuestInfo(_currentQuestIndex);
+            GameManager.GM.SM.SaveQuest();
         }
     }
 

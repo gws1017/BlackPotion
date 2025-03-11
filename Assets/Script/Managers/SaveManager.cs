@@ -9,6 +9,7 @@ public class SaveManager : MonoBehaviour
     public struct SaveData
     {
         public List<int> acceptQuestId;
+        public List<bool> restartList;
         public List<int> buffList;
         public List<int> recipeList;
         public Quaternion camRotation;
@@ -50,9 +51,11 @@ public class SaveManager : MonoBehaviour
     public void SaveQuest()
     {
         _saveData.acceptQuestId = new List<int>();
+        _saveData.restartList = new List<bool>();
         foreach (var quest in GameManager.GM.Board.AcceptQuestList)
         {
             _saveData.acceptQuestId.Add(quest.QuestID);
+            _saveData.restartList.Add(quest._isRestart);
         }
         GameSave();
     }
@@ -104,10 +107,13 @@ public class SaveManager : MonoBehaviour
                 int id = _saveData.acceptQuestId[i];
                 var questObject = Instantiate(board.QuestPrefab);
                 questObject.GetComponent<Quest>().InitializeQuestFromID(id);
+                if(_saveData.restartList!= null && _saveData.restartList.Count > 0)
+                questObject.GetComponent<Quest>()._isRestart = _saveData.restartList[i];
                 gm.DestoryQuest(questObject);
                 board.AcceptQuest(questObject.GetComponent<Quest>());
             }
             brewer.UpdateQuestInfo(_saveData.currentQuest);
+
         }
         if(_saveData.recipeList.Count > 0)
         {

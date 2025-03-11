@@ -75,6 +75,7 @@ public class CraftResult : MonoBehaviour
     private bool _result;
     //보상 레시피의 ID
     private int _rewardRecipeId;
+    private float _rewardMultiplier = 1;
 
     public int PotionQuality
     {
@@ -110,6 +111,7 @@ public class CraftResult : MonoBehaviour
         _selectButton.onClick.AddListener(SelectReward);
         _moneyButton.onClick.AddListener(SelectMoney);
         _recipeButton.onClick.AddListener(SelectRecipe);
+
     }
 
     private void InitializeResultCheckUI()
@@ -120,6 +122,7 @@ public class CraftResult : MonoBehaviour
         _nextButton.onClick.AddListener(ShowCraftResultUI);
         _restartButton.onClick.AddListener(RestartCraft);
 
+        if (Brewer._currentQuest._isRestart) _restartButton.interactable = false;
         _potionQualityProgressBar.maxValue = 100;
     }
 
@@ -129,6 +132,7 @@ public class CraftResult : MonoBehaviour
         InitializeRewardUI();
         //외곽선 효과 오프
         OffHighlight();
+        _restartButton.interactable = true;
 
         _resultCheckUIInstance.SetActive(false);
         _rewardUIInstance.SetActive(true);
@@ -150,6 +154,14 @@ public class CraftResult : MonoBehaviour
             //특정 레시피가 아니라 레시피 등급중 무작위로 가져온다
             int RewardRecipeGrade = quest.QuestRewardRecipeGrade;
 
+            //최고 등급 달성시 보상 증가
+            if (PlayInfo.PotionCraftGrade.RANK_1 == Brewer._potionCraftGrade)
+            {
+                _rewardMultiplier = PlayInfo.CRITICAL_SUCCESS;
+                if(PlayInfo.MAX_RECIPE_GRADE> RewardRecipeGrade) RewardRecipeGrade++;
+            }
+            else _rewardMultiplier = 1;
+
             //획득가능한 레시피 가져오기
             List<int> recipes = new List<int>();
             foreach (var RecipeData in ReadJson._dictPotion.Values)
@@ -162,7 +174,7 @@ public class CraftResult : MonoBehaviour
             }
 
             _rewardButtons.SetActive(true);
-            _moneyValueText.text = quest.QuestRewardMoney.ToString() + " 골드";
+            _moneyValueText.text = ((int)(quest.QuestRewardMoney * _rewardMultiplier)).ToString() + " 골드";
 
             //획득 가능한 레시피 확인
             if (recipes.Count == 0)
@@ -174,8 +186,8 @@ public class CraftResult : MonoBehaviour
             {
                 int rndId = UnityEngine.Random.Range(0, recipes.Count);
                 _rewardRecipeId = recipes[rndId];
-                var RecipeData = ReadJson._dictPotion[_rewardRecipeId];
 
+                var RecipeData = ReadJson._dictPotion[_rewardRecipeId];
                 _recipeNameText.text = RecipeData.potionName.ToString() + " 레시피";
             }
             _selectText.text = "선택";
@@ -254,12 +266,15 @@ public class CraftResult : MonoBehaviour
         if (Brewer._craftState == PotionBrewer.CraftState.None) return;
         if (_result)
         {
+            if(Brewer._potionCraftGrade == PlayInfo.PotionCraftGrade.RANK_1)
+            _questResultText.text = "의뢰 대성공";
+            else
             _questResultText.text = "의뢰 성공";
             _resultText.text = "성공";
         }
         else
         {
-            _questResultText.text = "의뢰 실패";
+            _questResultText.text = "의뢰 실패\n위약금 발생";
             _resultText.text = "실패";
         }
     }
@@ -274,7 +289,7 @@ public class CraftResult : MonoBehaviour
             if (_selectReward == 1)
             {
                 //골드 획득
-                GameManager.GM.PlayInformation.IncrementGold(quest.QuestRewardMoney);
+                GameManager.GM.PlayInformation.IncrementGold((int)(quest.QuestRewardMoney * _rewardMultiplier));
             }
             else if (_selectReward == 2)
             {
@@ -296,6 +311,7 @@ public class CraftResult : MonoBehaviour
 
     public void RestartCraft()
     {
+        if (Brewer._currentQuest._isRestart) return;
         Brewer._craftState = PotionBrewer.CraftState.Restart;
         gameObject.SetActive(false);
     }
