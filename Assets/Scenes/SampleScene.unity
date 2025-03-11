@@ -960,7 +960,7 @@ GameObject:
   - component: {fileID: 506032757}
   - component: {fileID: 506032756}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Pannel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -974,7 +974,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 506032754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2387,6 +2387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _saveData:
     acceptQuestId: 
+    restartList: 
     buffList: 
     recipeList: 
     camRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -2438,14 +2439,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04506dd7a4ce054087689b1c6326aa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _layerOffset: 0
+  _curtainPannel: {fileID: 506032754}
   _currentQuestButton: {fileID: 1360930466}
   _curretnQuestUIHidePannel: {fileID: 2085354251}
-  _questList: []
   _acceptQuestList: []
   _questPrefab: {fileID: 7024418843332693245, guid: 2af10ea4938d1ca448c2dc7736fc6607,
     type: 3}
   _currentQuestUIObject: {fileID: 1735403086}
-  _zRotRandRange: 0
+  _maxLoopCount: 100
+  _zRotRandRange: 30
   _maxQuestCnt: 10
   _maxAcceptQuestCnt: 5
   _rowCnt: 5
