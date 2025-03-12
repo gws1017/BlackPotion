@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +37,10 @@ public class Quest : MonoBehaviour
     protected QuestInfo _questInfo;
     protected PotionInfo _potionInfo;
 
-    public float OriginZ;
+    public float _originZ;
+    public bool _isRestart;
+
+    QuestBoard.ZLayer _layer;
 
     //의뢰 상세내용 오브젝트
     [SerializeField]
@@ -121,6 +121,8 @@ public class Quest : MonoBehaviour
             return _potionQualityValue.text;
         }
     }
+
+    public QuestBoard.ZLayer QuestLayer { get => _layer; set => _layer = value; }
     public Sprite PotionImage
     {
         get

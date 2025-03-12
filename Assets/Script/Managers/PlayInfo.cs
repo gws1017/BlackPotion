@@ -5,6 +5,24 @@ using UnityEngine;
 
 public class PlayInfo : MonoBehaviour
 {
+    public const int RESTART_GOLD = 50; //재시작 골드
+    public const int MAX_RECIPE_GRADE = 4; //레시피 최고 등급
+    public const float CRITICAL_SUCCESS = 1.5f; //대성공
+    public struct PotionCraftGrade
+    {
+        public const string RANK_1 = "A";
+        public const string RANK_2 = "B+";
+        public const string RANK_3 = "B";
+        public const string RANK_4 = "C+";
+        public const string RANK_5 = "C";
+
+        public const int BORDER_1 = 100;
+        public const int BORDER_2 = 80;
+        public const int BORDER_3 = 60;
+        public const int BORDER_4 = 40;
+        public const int BORDER_5 = 20;
+    };
+
     //public DaylightTime _playTime;
     //현재 일차
     private int _currentCraftDay = 0;
@@ -14,6 +32,7 @@ public class PlayInfo : MonoBehaviour
     //누적 데이터
     public int _questSuccCount = 0;
     public int _maxCraftDay = 0;
+
 
     //보유 레시피 - 보유는 true 미보유는 false
     private Dictionary<int, bool> _recipeDict;
