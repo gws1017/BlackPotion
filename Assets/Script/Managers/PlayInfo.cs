@@ -8,6 +8,8 @@ public class PlayInfo : MonoBehaviour
     public const int RESTART_GOLD = 50; //재시작 골드
     public const int MAX_RECIPE_GRADE = 4; //레시피 최고 등급
     public const float CRITICAL_SUCCESS = 1.5f; //대성공
+    public const int MAX_ACCEPT_QUEST_COUNT = 5;
+
     public struct PotionCraftGrade
     {
         public const string RANK_1 = "A";

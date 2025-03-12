@@ -1,29 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameManager;
 
 public class SaveManager : MonoBehaviour
 {
+
     [System.Serializable]
-    public struct SaveData
+    public class SaveData
     {
-        public List<int> acceptQuestId;
-        public List<bool> restartList;
-        public List<int> buffList;
-        public List<int> recipeList;
-        public Quaternion camRotation;
-        public int gold;
-        public int day;
-        //몇번째까지 퀘스트를 완료햇는지 기본값은 -1 == 퀘스트아얘시작도안함
-        public int currentQuest;
+        public List<int> acceptQuestIds = new List<int>();
+        public List<bool> isQuestRestarted = new List<bool>();
+        public List<int> buffIds = new List<int>();
+        public List<int> recipeIds = new List<int>();
+        public Quaternion cameraRotation = Quaternion.identity;
+        public int currentGold;
+        public int currentDay;
+        //퀘스트 진행도 기본값은 -1(시작x)
+        public int currentQuestOrder = -1;
     }
 
+    private const string SaveKey = "Save";
+
     [SerializeField]
-    private SaveData _saveData;
+    private SaveData _saveData = new SaveData();
 
 
-    // Start is called before the first frame update
     void Start()
     {
         GameLoad();
@@ -36,98 +38,138 @@ public class SaveManager : MonoBehaviour
 
     public void SaveQuestOrder(int value)
     {
-        _saveData.currentQuest = value;
+        _saveData.currentQuestOrder = value;
+        GameSave();
     }
 
     public void SavePlayInfo()
     {
-        _saveData.gold = GameManager.GM.PlayInformation.CurrentGold;
-        _saveData.day = GameManager.GM.PlayInformation.CurrentDay;
-        _saveData.buffList = GameManager.GM.BM.GetCurrentBuffList();
-        _saveData.recipeList = GameManager.GM.PlayInformation.PossessRecipeList;
+        var gm = GameManager.GM;
+        _saveData.currentGold = gm.PlayInformation.CurrentGold;
+        _saveData.currentDay = gm.PlayInformation.CurrentDay;
+        _saveData.buffIds = gm.BM.GetCurrentBuffList();
+        _saveData.recipeIds = gm.PlayInformation.PossessRecipeList;
         GameSave();
     }
 
     public void SaveQuest()
     {
-        _saveData.acceptQuestId = new List<int>();
-        _saveData.restartList = new List<bool>();
-        foreach (var quest in GameManager.GM.Board.AcceptQuestList)
+        var gm = GameManager.GM;
+
+        _saveData.acceptQuestIds.Clear();
+        _saveData.isQuestRestarted.Clear();
+
+        foreach (var quest in gm.Board.AcceptQuestList)
         {
-            _saveData.acceptQuestId.Add(quest.QuestID);
-            _saveData.restartList.Add(quest._isRestart);
+            _saveData.acceptQuestIds.Add(quest.QuestID);
+            _saveData.isQuestRestarted.Add(quest._isRestart);
         }
         GameSave();
     }
 
     public void SaveBuff()
     {
-        _saveData.buffList = GameManager.GM.BM.GetCurrentBuffList();
+        _saveData.buffIds = GameManager.GM.BM.GetCurrentBuffList();
         GameSave();
     }
 
     public void SaveStage()
     {
-        _saveData.camRotation = GameManager.GM.MainCamera.transform.rotation;
+        _saveData.cameraRotation = GameManager.GM.MainCamera.transform.rotation;
         GameSave();
     }
 
     private void GameSave()
     {
-        PlayerPrefs.SetString("Save", JsonUtility.ToJson(_saveData));
-        PlayerPrefs.Save();
+        try
+        {
+            string json = JsonUtility.ToJson(_saveData);
+            PlayerPrefs.SetString(SaveKey, json);
+            PlayerPrefs.Save();
+            Debug.Log("Game Save Success");
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError("Save Error : " + ex.Message);
+        }
+
+        
     }
+
     public void GameLoad()
     {
         if (!PlayerPrefs.HasKey("Save"))
+        {
+            Debug.LogError("Save is not found");
             return;
-        string loadJson = PlayerPrefs.GetString("Save");
-        _saveData = JsonUtility.FromJson<SaveData>(loadJson);
+        }
+
+        string loadJson = PlayerPrefs.GetString(SaveKey);
+        try
+        {
+            _saveData = JsonUtility.FromJson<SaveData>(loadJson);
+            if (_saveData == null)
+            {
+                Debug.LogError("Load Fail : Data is null");
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Load Error " + ex.Message);
+            return;
+        }
 
         var gm = GameManager.GM;
         QuestBoard board = gm.Board;
         PotionBrewer brewer = gm.Brewer;
         PlayInfo playInfo = gm.PlayInformation;
 
-        playInfo.SetGold(_saveData.gold);
-        playInfo.SetDay(_saveData.day);
+        playInfo.SetGold(_saveData.currentGold);
+        playInfo.SetDay(_saveData.currentDay);
 
-        //제조 단계(카메라 회전) Load
-        gm.MainCamera.transform.rotation = _saveData.camRotation;
+        //Stage 로드(카메라 회전) Load
+        gm.MainCamera.transform.rotation = _saveData.cameraRotation;
         brewer.InitializeBrewer();
 
         //수주 의뢰 Load
-        if (_saveData.acceptQuestId.Count > 0)
+        if (_saveData.acceptQuestIds != null && _saveData.acceptQuestIds.Count > 0)
         {
             board.InitilizeQuestBoard();
             //_isSaveData = true;
-            int idCnt = Mathf.Min(5, _saveData.acceptQuestId.Count);
+            int idCnt = Mathf.Min(PlayInfo.MAX_ACCEPT_QUEST_COUNT, _saveData.acceptQuestIds.Count);
+
             for (int i = 0; i < idCnt; ++i)
             {
-                int id = _saveData.acceptQuestId[i];
+                int id = _saveData.acceptQuestIds[i];
                 var questObject = Instantiate(board.QuestPrefab);
-                questObject.GetComponent<Quest>().InitializeQuestFromID(id);
-                if(_saveData.restartList!= null && _saveData.restartList.Count > 0)
-                questObject.GetComponent<Quest>()._isRestart = _saveData.restartList[i];
+
+                Quest quest = questObject.GetComponent<Quest>();
+                quest.InitializeQuestFromID(id);
+
+                if(_saveData.isQuestRestarted!= null && _saveData.isQuestRestarted.Count > i)
+                    quest._isRestart = _saveData.isQuestRestarted[i];
+
                 gm.DestoryQuest(questObject);
-                board.AcceptQuest(questObject.GetComponent<Quest>());
+                board.AcceptQuest(quest);
             }
-            brewer.UpdateQuestInfo(_saveData.currentQuest);
+            brewer.UpdateQuestInfo(_saveData.currentQuestOrder);
 
         }
-        if(_saveData.recipeList.Count > 0)
+        //레시피 로드
+        if(_saveData.recipeIds != null && _saveData.recipeIds.Count > 0)
         {
-            foreach(int recipeID in _saveData.recipeList)
+            foreach(int recipeID in _saveData.recipeIds)
             {
-                GameManager.GM.PlayInformation.AddRecipe(recipeID);
+                gm.PlayInformation.AddRecipe(recipeID);
             }
         }
         //버프 로드
-        if (_saveData.buffList.Count > 0)
+        if (_saveData.buffIds != null && _saveData.buffIds.Count > 0)
         {
-           foreach(int buffID in _saveData.buffList)
+           foreach(int buffID in _saveData.buffIds)
            {
-                GameManager.GM.BM.AddBuff(buffID);
+               gm.BM.AddBuff(buffID);
            }
         }
 
