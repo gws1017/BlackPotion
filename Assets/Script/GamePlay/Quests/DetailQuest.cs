@@ -62,6 +62,16 @@ public class DetailQuest : Quest
         _rewardMoney.text = _questInfo.money.ToString();
         ShowRewardRecipeGrade();
         UpdateQuestGradeMark();
+
+        //미보유 레시피 의뢰 마우스와 상호작용되지 않아야함
+        if (GameManager.GM.PlayInformation.HasRecipe(PInfo.potionId) == false)
+        {
+            _acceptButton.interactable = false;
+        }
+        else
+        {
+            _acceptButton.interactable = true;
+        }
     }
 
     //상세의뢰 Object 닫는 함수

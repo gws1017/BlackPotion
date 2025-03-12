@@ -262,18 +262,7 @@ public class Quest : MonoBehaviour
         //포션 품질 범위내에서 무작위 값으로 요구 품질 값을 생성한다
         _reqPotionQuality = Random.Range(_minPotionQuality, _maxPotionQuality);
 
-        //미보유 레시피 의뢰 마우스와 상호작용되지 않아야함
-        if(GameManager.GM.PlayInformation.HasRecipe(PInfo.potionId) == false)
-        {
-            _disableQuest = true;
-            Vector3 originPos = gameObject.transform.position;
-            originPos.z = 10;
-            gameObject.transform.position = originPos;
-        }
-        else
-        {
-            _disableQuest = false;
-        }
+        
     }
 
     //의뢰등급에 맞게 테두리 색을 변경함
