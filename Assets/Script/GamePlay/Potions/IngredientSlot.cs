@@ -171,7 +171,8 @@ public class IngredientSlot : MonoBehaviour
             amount = Random.Range(1, MAX_NUMBER);
         }
         //È¦Â¦¹öÇÁ È®ÀÎ
-        GameManager.GM.BM.CheckBuff(BuffType.EvenOddNumber,ref amount);
+        GameManager.GM.BM.CheckBuff(BuffType.EvenNumber,ref amount);
+        GameManager.GM.BM.CheckBuff(BuffType.OddNumber,ref amount);
         return amount;
     }
 

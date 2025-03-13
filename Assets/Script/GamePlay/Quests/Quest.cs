@@ -8,19 +8,15 @@ public class Quest : MonoBehaviour
     private Canvas _canvas;
 
     //UI
-    //의뢰 내용
     [SerializeField]
     protected Text _questText;
-    //포션 품질 범위
     [SerializeField]
     protected Text _potionQualityValue;
-    //의뢰 등급을 나타내는 테두리 색상
     [SerializeField]
     protected Image _gradeColor;
-    //포션 이미지
     [SerializeField]
     protected Image _potionImage;
-    //의뢰 상세내용 오픈 버튼
+    [SerializeField]
     private Button _openDetailQuestButton;
 
     //JSON에서 읽은 데이터
@@ -37,10 +33,10 @@ public class Quest : MonoBehaviour
     protected QuestInfo _questInfo;
     protected PotionInfo _potionInfo;
 
-    public float _originZ;
-    public bool _isRestart;
+    private float _originZ;
+    private bool _isRestart;
 
-    QuestBoard.ZLayer _layer;
+    private QuestBoard.ZLayer _layer;
 
     //의뢰 상세내용 오브젝트
     [SerializeField]
@@ -51,72 +47,28 @@ public class Quest : MonoBehaviour
     private bool _disableQuest = false;
 
     //Getter&Setter
-    public bool IsDisable
-    {
-        get {return _disableQuest;}
-        set { _disableQuest = value;}
-    }
+    public float OriginZ { get => _originZ; set => _originZ = value; }
+    public bool IsRestart { get => _isRestart; set => _isRestart = value; }
 
-    public int QuestID
-    {
-        get
-        {
-            return _questID;
-        }
-        set
-        {
-            _questID = value;
-        }
-    }
-    public int RequirePotionQuality
-    {
-        get
-        {
-            return _reqPotionQuality;
-        }
-    }
-
-    public int QuestGrade
-    {
-        get { return _questGrade; }
-    }
-
+    public bool IsDisable { get => _disableQuest; set => _disableQuest = value; }
+    public int QuestID { get=> _questID; set => _questID = value; }
+    public int QuestGrade => _questGrade;
     //의뢰 보상
-    public int QuestRewardMoney
-    {
-        get { return QInfo.money; }
-    }
-    public int QuestRewardRecipeGrade
-    {
-        get { return QInfo.recipeGrade; }
-    }
+    public int QuestRewardMoney => QInfo.money;
+    public int QuestRewardRecipeGrade => QInfo.recipeGrade;
 
-    public string QuestText
-    {
-        get
-        {
-            return _questInfo.questText;
-        }
-        set
-        {
-            _questText.text = value;
-        }
-    }
-    public string PotionName
-    {
-        get
-        {
-            return _potionInfo.potionName;
-        }
-    }
+    public string QuestText { get => _questInfo.questText;  set => _questText.text = value; }
+
+    public int RequirePotionQuality => _reqPotionQuality;
+    public string PotionName => _potionInfo.potionName;
+
     public string PotionQualityValue
     {
         get
         {
             if(_potionQualityValue == null)
             {
-               return ( "( " + _minPotionQuality.ToString() + " ~ "
-            + _maxPotionQuality.ToString() + " )");
+               return $"({_minPotionQuality} ~ {_maxPotionQuality} )";
             }
             return _potionQualityValue.text;
         }
@@ -127,9 +79,9 @@ public class Quest : MonoBehaviour
     {
         get
         {
-            if (_potionImage == null)
+            if (_potionImage.sprite == null)
             {
-                return Resources.Load<Sprite>(_potionInfo.potionImage);
+                _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);
             }
             return _potionImage.sprite;
         }
@@ -142,13 +94,10 @@ public class Quest : MonoBehaviour
             {
                 Vector3 pos = new Vector3(0, 0, -10);
                 _detailQuestObject = Instantiate(_detailQuestPrefab, pos,Quaternion.identity);
-                //상세 퀘스트 객체 생성
                 var dq = _detailQuestObject.GetComponent<DetailQuest>();
-                //부모 ID와 객체를 Set한다.
                 dq.QuestID = _questID;
                 dq.ParentQuest = this;
-                //부모 정보를 기반으로 데이터를 초기화한다.
-                dq.InitilizeData();
+                dq.InitializeData();
                 Debug.Log("상세퀘스트 생성되었습니다.");
 
             }
@@ -168,26 +117,12 @@ public class Quest : MonoBehaviour
         }
     }
 
-    protected QuestBoard Board
-    {
-        get { return GameManager.GM.Board; }
-    }
-    
+    protected QuestBoard _board;
+    protected QuestBoard Board => _board ?? (_board = GameManager.GM.Board);
 
-    public QuestInfo QInfo
-    {
-        get
-        {
-            return _questInfo;
-        }
-    }
-    public PotionInfo PInfo
-    {
-        get
-        {
-            return _potionInfo;
-        }
-    }
+    public QuestInfo QInfo => _questInfo;
+    public PotionInfo PInfo => _potionInfo;
+
 
     void Start()
     {
@@ -201,13 +136,11 @@ public class Quest : MonoBehaviour
             _questID = Random.Range(3001, 3005);
 
         InitializeQuestInfo();
-        InitilizeData();
+        InitializeData();
     }
 
-    //마우스 오버된 의뢰를 강조하기위해 추가함
     private void OnMouseEnter()
     {
-        //버튼 비활성화때는 아무것도하지마라
         if (_disableQuest)
             return;
         if(Board._CanActiveSelectEffect)
@@ -222,77 +155,61 @@ public class Quest : MonoBehaviour
             Board.QuestDisableEffectOff();
     }
 
-    //QuestID 기반으로 UI와 정보를 초기화한다
     public void InitializeQuestFromID(int id)
     {
         _questID = id;
         InitializeQuestInfo();
-        InitilizeData();
+        InitializeData();
     }
 
-    //QuestID로 의뢰정보를 JSON에서 읽어온다
     protected void InitializeQuestInfo()
     {
         _questInfo = ReadJson._dictQuest[_questID];
     }
 
-    //DetailQuest 객체에서 부모Quest정보로 초기화할 때 사용
-    protected void InitializeQuestInfo(Quest quest)
+    protected void CopyQuestInfo(Quest quest)
     {
         _questInfo = quest._questInfo;
     }
 
-    //Ques UI 표기 데이터나 실제 값들이 초기화된다
-    virtual protected void InitilizeData()
+    virtual protected void InitializeData()
     {
-        //UI 정보 초기화
-        _questText.text = _questInfo.questText;
+        //데이터 초기화
         _questGrade = _questInfo.questGrade;
         _minPotionQuality = _questInfo.minQuality;
         _maxPotionQuality = _questInfo.maxQuality;
-
-        _potionQualityValue.text = "( " + _minPotionQuality.ToString() + " ~ " 
-            + _maxPotionQuality.ToString() + " )";
-
-        CheckQuestGrade();
-        //포션ID를 사용해서 정보를 읽자
-        _potionInfo = ReadJson._dictPotion[_questInfo.potionId];
-        _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);
-
-        //포션 품질 범위내에서 무작위 값으로 요구 품질 값을 생성한다
         _reqPotionQuality = Random.Range(_minPotionQuality, _maxPotionQuality);
+        _potionInfo = ReadJson._dictPotion[_questInfo.potionId];
 
-        
+        //UI 업데이트
+        _questText.text = _questInfo.questText;
+        _potionQualityValue.text = $"( {_minPotionQuality} ~ {_maxPotionQuality}  )";
+        CheckQuestGrade();
+        _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);
     }
 
-    //의뢰등급에 맞게 테두리 색을 변경함
     private void CheckQuestGrade()
     {
-        if (_questGrade == 1)
+        switch (_questGrade)
         {
-            _gradeColor.color = Color.black;
-        }
-        else if (_questGrade == 2 )
-        {
-            _gradeColor.color = Color.magenta;
-        }
-        else if (_questGrade == 3)
-        {
-            _gradeColor.color = Color.yellow;
-
-        }
-        else if (_questGrade == 4)
-        {
-            _gradeColor.color = Color.red;
-
+            case 1:
+                _gradeColor.color = Color.black;
+                break;
+            case 2:
+                _gradeColor.color = Color.magenta;
+                break;
+            case 3:
+                _gradeColor.color = Color.yellow;
+                break;
+            case 4:
+                _gradeColor.color = Color.red;
+                break;
         }
     }
 
-    //의뢰 상세 내용 오픈
     public void OpenDetailQuest()
     {
         DetailQuestObject.SetActive(true);
-        //상세퀘스트 열려있을경우 뒷 부분 클릭을 차단한다.
         Board._CanActiveSelectEffect = false;
         Board.DisableOpenButtons();
     }

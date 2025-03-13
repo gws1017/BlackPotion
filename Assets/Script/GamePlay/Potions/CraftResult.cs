@@ -122,7 +122,7 @@ public class CraftResult : MonoBehaviour
         _nextButton.onClick.AddListener(ShowCraftResultUI);
         _restartButton.onClick.AddListener(RestartCraft);
 
-        if (Brewer._currentQuest._isRestart) _restartButton.interactable = false;
+        if (Brewer._currentQuest.IsRestart) _restartButton.interactable = false;
         _potionQualityProgressBar.maxValue = 100;
     }
 
@@ -311,7 +311,7 @@ public class CraftResult : MonoBehaviour
 
     public void RestartCraft()
     {
-        if (Brewer._currentQuest._isRestart) return;
+        if (Brewer._currentQuest.IsRestart) return;
         Brewer._craftState = PotionBrewer.CraftState.Restart;
         gameObject.SetActive(false);
     }

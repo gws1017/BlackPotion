@@ -62,7 +62,7 @@ public class SaveManager : MonoBehaviour
         foreach (var quest in gm.Board.AcceptQuestList)
         {
             _saveData.acceptQuestIds.Add(quest.QuestID);
-            _saveData.isQuestRestarted.Add(quest._isRestart);
+            _saveData.isQuestRestarted.Add(quest.IsRestart);
         }
         GameSave();
     }
@@ -135,7 +135,7 @@ public class SaveManager : MonoBehaviour
         //¼öÁÖ ÀÇ·Ú Load
         if (_saveData.acceptQuestIds != null && _saveData.acceptQuestIds.Count > 0)
         {
-            board.InitilizeQuestBoard();
+            board.InitializeQuestBoard();
             //_isSaveData = true;
             int idCnt = Mathf.Min(PlayInfo.MAX_ACCEPT_QUEST_COUNT, _saveData.acceptQuestIds.Count);
 
@@ -148,7 +148,7 @@ public class SaveManager : MonoBehaviour
                 quest.InitializeQuestFromID(id);
 
                 if(_saveData.isQuestRestarted!= null && _saveData.isQuestRestarted.Count > i)
-                    quest._isRestart = _saveData.isQuestRestarted[i];
+                    quest.IsRestart = _saveData.isQuestRestarted[i];
 
                 gm.DestoryQuest(questObject);
                 board.AcceptQuest(quest);

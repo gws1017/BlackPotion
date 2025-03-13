@@ -26,125 +26,98 @@ public class DetailQuest : Quest
 
     //부모 퀘스트
     private Quest _parentQuest;
-
-    public Quest ParentQuest
-    {
-        get { return _parentQuest; }
-        set { _parentQuest = value; }
-    }
+    public Quest ParentQuest { get =>_parentQuest; set => _parentQuest = value; }
 
     void Start()
     {
         CanvasRef.worldCamera = GameManager.GM.MainCamera;
-
-        //의뢰 ID는 부모 퀘스트 객체에서
-        //자식인 Detail 퀘스트 프리팹을 생성 시에 전달하고 초기화 한다.
-
-        SetAcceptQuestText(Board.CurrrentAcceptQuestCnt);
+        SetAcceptQuestText(Board.CurrentAcceptQuestCount);
 
         //버튼 초기화
         _quitButton.onClick.RemoveAllListeners();
         _acceptButton.onClick.RemoveAllListeners();
         _quitButton.onClick.AddListener(CloseDetailQuest);
         _acceptButton.onClick.AddListener(AcceptQuest);
-
     }
 
-   
-    protected override void InitilizeData()
+    protected override void InitializeData()
     {
         //부모 의뢰정보로 상세 의뢰 객체를 업데이트한다
-        InitializeQuestInfo(_parentQuest);
-        base.InitilizeData();
+        CopyQuestInfo(_parentQuest);
+        base.InitializeData();
 
         //상세의뢰에만 있는 추가적인 데이터를 업데이트
         _potionName.text = _potionInfo.potionName;
         _rewardMoney.text = _questInfo.money.ToString();
+
         ShowRewardRecipeGrade();
         UpdateQuestGradeMark();
 
-        //미보유 레시피 의뢰 마우스와 상호작용되지 않아야함
-        if (GameManager.GM.PlayInformation.HasRecipe(PInfo.potionId) == false)
-        {
-            _acceptButton.interactable = false;
-        }
-        else
-        {
-            _acceptButton.interactable = true;
-        }
+        //미보유 레시피 비활성화
+        _acceptButton.interactable = GameManager.GM.PlayInformation.HasRecipe(PInfo.potionId);
     }
 
-    //상세의뢰 Object 닫는 함수
     public void CloseDetailQuest()
     {
         Board.EnableOpenButtons();
-        Debug.Log("상세의뢰 파괴");
-
         Destroy(gameObject);
     }
 
-    //의뢰 수락 함수
     public void AcceptQuest()
     {
-        Debug.Log("의뢰 수락했습니다.");
         Board.AcceptQuest(ParentQuest);
-        SetAcceptQuestText(Board.CurrrentAcceptQuestCnt);
+        SetAcceptQuestText(Board.CurrentAcceptQuestCount);
         CloseDetailQuest();
     }
 
-    //수락 현황 UI 업데이트
     private void SetAcceptQuestText(int count)
     {
-        _currentAcceptQuest.text = "( " + count + " / " + Board.MaxAcceptQuestCount + " )";
+        _currentAcceptQuest.text = $"( {count} / {Board.MaxAcceptQuestCount} )";
     }
 
     //레시피 보상 등급에 따라 색으로 표기
     private void ShowRewardRecipeGrade()
     {
-        int recipeGrade = _questInfo.recipeGrade;
+        switch (_questInfo.recipeGrade)
+        {
+            case 1:
+                _rewardRecipe.color = Color.black;
+                break;
+            case 2:
+                _rewardRecipe.color = Color.magenta;
+                break;
+            case 3:
+                _rewardRecipe.color = Color.yellow;
+                break;
+            case 4:
+                _rewardRecipe.color = Color.red;
+                break;
+        }
 
-        if (recipeGrade == 1)
-        {
-            _rewardRecipe.color = Color.black;
-        }
-        else if (recipeGrade == 2)
-        {
-            _rewardRecipe.color = Color.magenta;
-        }
-        else if (recipeGrade == 3)
-        {
-            _rewardRecipe.color = Color.yellow;
-
-        }
-        else if (recipeGrade == 4)
-        {
-            _rewardRecipe.color = Color.red;
-        }
     }
 
     //의뢰 등급에 맞는 이미지를 업데이트함
     private void UpdateQuestGradeMark()
     {
-        if (_questGrade == 1)
+        switch (_questGrade)
         {
-            _gradeColor.color = Color.black;
-            _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkSmall");
-        }
-        else if (_questGrade == 2)
-        {
-            _gradeColor.color = Color.magenta;
-            _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkMid");
-        }
-        else if (_questGrade == 3)
-        {
-            _gradeColor.color = Color.yellow;
-            _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkLarge");
+            case 1:
+                _gradeColor.color = Color.black;
+                _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkSmall");
+                break;
+            case 2:
+                _gradeColor.color = Color.magenta;
+                _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkMid");
+                break;
+            case 3:
+                _gradeColor.color = Color.yellow;
+                _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkLarge");
 
-        }
-        else if (_questGrade == 4)
-        {
-            _gradeColor.color = Color.red;
-            _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkXLarge");
+                break;
+            case 4:
+                _gradeColor.color = Color.red;
+                _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkXLarge");
+                break;
         }
     }
 }

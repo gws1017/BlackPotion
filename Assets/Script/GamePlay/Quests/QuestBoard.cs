@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using UnityEngine.UIElements;
 
 public class QuestBoard : MonoBehaviour
 {
-    public const int MAX_QUEST_COUNT = 5;
     public const float LAYER_OFFSET_MULTIPLIER = 2.5f;
     public enum ZLayer
     {
@@ -14,246 +12,222 @@ public class QuestBoard : MonoBehaviour
         QuestFloor2 = 2,
         QuestFloor3 = 1,
         Curtain = 0,
-        HighLight = -1
+        Highlight = -1
     }
+
+    //UI
+    [SerializeField]
+    private GameObject _curtainPanel;
+    [SerializeField]
+    private Button _currentQuestButton;
 
     [ReadOnly]
     public float _layerOffset;
-    //UI
-    [SerializeField]
-    private GameObject _curtainPannel;
-    [SerializeField]
-    private Button _currentQuestButton;
-    [SerializeField]
-    private Button _curretnQuestUIHidePannel;
 
+    //Quest 저장 목록
     [ReadOnly, SerializeField]
-    //private List<GameObject> _questList;
     private Dictionary<ZLayer, List<GameObject>> _questList;
-    //수락한 의뢰 목록
-    
+    //수락 Quest 목록
     [SerializeField]
     private List<Quest> _acceptQuestList;
 
-    //포션 제조 결과를 의뢰별로 저장하는 Dictionary
+    //Quest 결과
     public Dictionary<Quest, bool> _questResultDict;
 
-    //모든 의뢰중 보유중인 레시피를 기준으로 수락 가능 / 수락 불가 목록을 저장하기 위한 List
+    //보유 / 미보유 레시피 목록
     private List<int> _acceptableQuestList;
     private List<int> _unAcceptableQuestList;
 
     //의뢰 프리펩
     [SerializeField]
     private GameObject _questPrefab;
-    //현재 의뢰 버튼을 누르면 활성화되는 UI
     [SerializeField]
     private GameObject _currentQuestUIObject;
 
     [SerializeField]
-    private int _maxLoopCount;
-    //의뢰 무작위 회전 값 기본 30
+    private int _maxLoopCount;//충돌 검사 횟수
     [SerializeField]
-    private float _zRotRandRange;
-    //의뢰 게시판에 붙는 최대 의뢰 수
+    private float _zRotRandRange; //Quest 회전 범위
     [SerializeField]
-    private int _maxQuestCnt;
-    //최대로 수락가능한 의뢰 수
+    private int _maxQuestCnt; //의뢰 최대 생성수
     [SerializeField]
-    private int _maxAcceptQuestCnt;
-    //한 행에 나열 하는 의뢰 수
+    private int _maxAcceptQuestCount; //최대 수락가능 Quest
+    private Vector3 _meshExtents;
+
     [SerializeField]
-    private int _rowCnt;
-    //의뢰 마우스 오버 효과에 사용되는 변수
+    private Vector3 _firstRowStartPos = new Vector3(-20, 4, -23);
+    [SerializeField]
+    private Vector3 _secondRowStartPos = new Vector3(-10, -8, -23);
+    [SerializeField]
+    private float _questSpacing = 20f;
+
     [ReadOnly]
     public bool _CanActiveSelectEffect = true;
-    public GameObject QuestPrefab
-    {
-        get { return _questPrefab; }
-    }
 
-    public int MaxAcceptQuestCount
-    {
-        get { return _maxAcceptQuestCnt; }
-    }
-  
-    public int CurrrentAcceptQuestCnt
-    {
-        get { return _acceptQuestList.Count; }
-    }
 
-    public List<Quest> AcceptQuestList
-    {
-        get { return _acceptQuestList; }
-        set
-        {
-            Debug.Log(_acceptQuestList.Count);
-            AcceptQuestList = value;
-        }
-    }
+    public GameObject QuestPrefab { get=> _questPrefab; }
+
+    public int MaxAcceptQuestCount { get => _maxAcceptQuestCount; }
+
+    public int CurrentAcceptQuestCount => _acceptQuestList.Count;
+
+    public List<Quest> AcceptQuestList { get => _acceptQuestList; set => AcceptQuestList = value; }
+
     public Quest GetCurrentQuest(int id)
     {
-       id = Mathf.Clamp(id, 0, AcceptQuestList.Count-1);
-       return AcceptQuestList[id];
+        id = Mathf.Clamp(id, 0, AcceptQuestList.Count - 1);
+        return AcceptQuestList[id];
     }
 
     void Start()
     {
-        Vector3 extent = _questPrefab.GetComponent<MeshFilter>().sharedMesh.bounds.extents;
-        extent.Scale(_questPrefab.transform.localScale);
-        _layerOffset = extent.z;
-        InitilizeQuestBoard();
-        CreateQuestObject();
+        MeshFilter meshFilter = _questPrefab.GetComponent<MeshFilter>();
+        _meshExtents = meshFilter.sharedMesh.bounds.extents;
+        _meshExtents.Scale(_questPrefab.transform.localScale);
+        _layerOffset = _meshExtents.z;
 
+        InitializeQuestBoard();
+        CreateQuestObject();
     }
 
 
-    public void InitilizeQuestBoard()
+    public void InitializeQuestBoard()
     {
-        Debug.Log("퀘스트보드 초기화");
-
-        //2일차의 경우 기존 의뢰를 삭제하고 새로 생성한다.
+        //기존 오브젝트 삭제
         if (_questList != null)
         {
-            foreach (var _quests in _questList.Values)
+            foreach (var quests in _questList.Values)
             {
-                foreach(var _quest in _quests)
+                foreach (var questObj in quests)
                 {
-                    Destroy(_quest);
+                    Destroy(questObj);
                 }
             }
-
         }
-        if(_acceptQuestList != null)
+        if (_acceptQuestList != null)
         {
-            foreach(Quest obj in _acceptQuestList)
-                Destroy(obj.gameObject);
+            foreach (Quest quest in _acceptQuestList)
+                Destroy(quest.gameObject);
         }
 
-        //변수들 초기화
+        //변수 초기화
         _currentQuestUIObject.SetActive(false);
-        if(_questList == null || _questList.Count > 0)
-        _questList = new Dictionary<ZLayer, List<GameObject>>();
-        if(_acceptQuestList == null || _acceptQuestList.Count > 0)
-        _acceptQuestList = new List<Quest>();
-        
-        if(_questResultDict == null || _questResultDict.Count > 0)
-        _questResultDict = new Dictionary<Quest, bool>();
+        if (_questList == null || _questList.Count > 0)
+            _questList = new Dictionary<ZLayer, List<GameObject>>();
+        if (_acceptQuestList == null || _acceptQuestList.Count > 0)
+            _acceptQuestList = new List<Quest>();
+        if (_questResultDict == null || _questResultDict.Count > 0)
+            _questResultDict = new Dictionary<Quest, bool>();
 
         _currentQuestButton.onClick.RemoveAllListeners();
-        _curretnQuestUIHidePannel.onClick.RemoveAllListeners();
         _currentQuestButton.onClick.AddListener(OpenAcceptQuestUI);
-        _curretnQuestUIHidePannel.onClick.AddListener(CloseAcceptQuestUI);
-
-        //전체 레시피에서 보유/ 미보유 리스트를 나눠서 가져온다
-        GameManager.GM.PlayInformation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
     }
 
     public void CreateQuestObject()
     {
+        //레시피 나누기
         GameManager.GM.PlayInformation.SplitQuest(out _acceptableQuestList, out _unAcceptableQuestList);
-        int pCnt = 0, upCnt = 0;
-        //의뢰 객체를 생성함
-        int col = _maxQuestCnt / _rowCnt;
-        for (int j = 0; j < col; ++j)
+
+        foreach (ZLayer layer in Enum.GetValues(typeof(ZLayer)))
         {
-            for (int i = 0; i < _rowCnt; ++i)
+            if (layer == ZLayer.Curtain || layer == ZLayer.Highlight) continue;
+            _questList[layer] = new List<GameObject>();
+        }
+
+        int acceptableCount = 0, unacceptableCount = 0;
+
+        //의뢰 객체를 생성
+        for (int i = 0; i < _maxQuestCnt; ++i)
+        {
+            Vector3 pos;
+            Quaternion rot;
+
+            ZLayer selectedlayer = ZLayer.QuestFloor3;
+            foreach (ZLayer layer in new[] { ZLayer.QuestFloor3, ZLayer.QuestFloor2, ZLayer.QuestFloor1 })
             {
-                Vector3 pos;
-                Quaternion rot;
-
-                ZLayer layer = ZLayer.QuestFloor3;
-                for(ZLayer k = ZLayer.QuestFloor3; k <= ZLayer.QuestFloor1; ++k)
-                {
-                    if (_questList.ContainsKey(k))
-                    {
-                        if (_questList[k].Count < MAX_QUEST_COUNT)
-                            layer = k;
-                    }
-                    else _questList.Add(k,new List<GameObject>());
-                }
-
-                GenarateRandomPositionAndRotation(layer, out pos, out rot);
-
-                int id = GetQuestID(ref pCnt, ref upCnt);
-
-                var Clone = Instantiate(_questPrefab, pos, rot);
-                var quest = Clone.GetComponent<Quest>();
-                var questCanvas = Clone.GetComponentInChildren<Canvas>();
-                quest.QuestID = id;
-                quest._originZ = pos.z;
-                quest.QuestLayer = layer;
-                questCanvas.overrideSorting = true;
-                //questCanvas.sortingOrder = Mathf.RoundToInt(pos.z * -10);
-                _questList[layer].Add(Clone);
+                if (_questList[layer].Count < PlayInfo.MAX_QUEST_COUNT_LAYER)
+                    selectedlayer = layer;
             }
+
+            GenerateRandomPositionAndRotation(selectedlayer, out pos, out rot);
+
+            //생성 현황 확인하면서 ID 생성
+            int questId = GetQuestID(ref acceptableCount,ref unacceptableCount);
+
+            GameObject Clone = Instantiate(_questPrefab, pos, rot);
+            Quest quest = Clone.GetComponent<Quest>();
+            Canvas questCanvas = Clone.GetComponentInChildren<Canvas>();
+
+            quest.QuestID = questId;
+            quest.OriginZ = pos.z;
+            quest.QuestLayer = selectedlayer;
+            //questCanvas.overrideSorting = true;
+
+            _questList[selectedlayer].Add(Clone);
         }
     }
 
-    private void GenarateRandomPositionAndRotation(ZLayer layer, out Vector3 Position , out Quaternion Rotation)
+    private void GenerateRandomPositionAndRotation(ZLayer layer, out Vector3 position, out Quaternion rotation)
     {
-        var cam = GameManager.GM.MainCamera;
+        Camera cam = GameManager.GM.MainCamera;
         Bounds bounds = cam.GetComponentInChildren<Collider2D>().bounds;
-        
-        Vector3 extent = _questPrefab.GetComponent<MeshFilter>().sharedMesh.bounds.extents;
-        extent.Scale(_questPrefab.transform.localScale);
 
-        float randZ = (float)layer * _layerOffset* LAYER_OFFSET_MULTIPLIER;
+        float randZ = (float)layer * _layerOffset * LAYER_OFFSET_MULTIPLIER;
         float randX = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
         float randY = UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
-        Position = new Vector3(randX, randY, randZ);
+        position = new Vector3(randX, randY, randZ);
 
-        Collider[] colliders = Physics.OverlapBox(Position, extent);
+        Collider[] colliders = Physics.OverlapBox(position, _meshExtents);
         int loopCount = 0;
-        while(colliders.Length != 0)
+        while (colliders.Length != 0)
         {
             if (loopCount > _maxLoopCount) break;
             loopCount++;
             randX = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
             randY = UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
-            Position = new Vector3(randX, randY, randZ);
-            colliders = Physics.OverlapBox(Position, extent);
+            position = new Vector3(randX, randY, randZ);
+            colliders = Physics.OverlapBox(position, _meshExtents);
         }
 
         float randRotZ = UnityEngine.Random.Range(-_zRotRandRange, _zRotRandRange);
-        Rotation = Quaternion.Euler(0f, 0f, randRotZ);
+        rotation = Quaternion.Euler(0f, 0f, randRotZ);
     }
 
-    //의뢰 수락하는 함수
-    public void AcceptQuest(Quest questObject)
+    public void AcceptQuest(Quest quest)
     {
-        if (_acceptQuestList.Contains(questObject))
+        if (_acceptQuestList.Contains(quest))
         {
             Debug.Log("이미 수락한 퀘스트 입니다.");
             return;
         }
-        if (_acceptQuestList.Count < _maxAcceptQuestCnt)
+        if (_acceptQuestList.Count >= _maxAcceptQuestCount)
         {
-            _acceptQuestList.Add(questObject);
-            _questResultDict.Add(questObject, false);
+            Debug.Log("퀘스트를 최대치로 수락했습니다.");
+            return;
+        }
 
-            _questList[questObject.QuestLayer].Remove(questObject.gameObject);
-            questObject.IsDisable = true;
+        _acceptQuestList.Add(quest);
+        _questResultDict.Add(quest, false);
 
-            //수락한 의뢰는 현재 의뢰 UI로 이동된다.
-            questObject.gameObject.transform.SetParent(_currentQuestUIObject.transform);
-            int i = _acceptQuestList.Count - 1;
-            Vector3 start;
-            if (i < 3)
-            {
-                start = new Vector3(-20, 4, -23);
-                questObject.gameObject.transform.position = start + new Vector3(i * 20, 0, 0);
-            }
-            else
-            {
-                start = new Vector3(-10, -8, -23);
-                questObject.gameObject.transform.position = start + new Vector3((i % 3) * 20, 0, 0);
-            }
+        if (_questList.TryGetValue(quest.QuestLayer, out List<GameObject> questLayerList))
+        {
+            questLayerList.Remove(quest.gameObject);
+        }
+        quest.IsDisable = true;
 
+        //수락한 의뢰는 현재 의뢰 UI로 이동
+        quest.gameObject.transform.SetParent(_currentQuestUIObject.transform);
+        int index = _acceptQuestList.Count - 1;
+        Vector3 startPos;
+        if (index < 3)
+        {
+            startPos = _firstRowStartPos;
+            quest.gameObject.transform.position = startPos + new Vector3(index * _questSpacing, 0, 0);
         }
         else
         {
-            Debug.Log("퀘스트를 최대치로 수락했습니다.");
-            //현재 의뢰 리스트에추가하기
+            startPos = _secondRowStartPos;
+            quest.gameObject.transform.position = startPos + new Vector3((index % 3) * _questSpacing, 0, 0);
         }
     }
 
@@ -261,140 +235,130 @@ public class QuestBoard : MonoBehaviour
     {
         _currentQuestUIObject.SetActive(!_currentQuestUIObject.activeSelf);
     }
-    public void CloseAcceptQuestUI()
-    {
-        _currentQuestUIObject.SetActive(false);
-    }
 
-    //마우스 오버된 오브젝트를 제외하고 나머지를 어둡게 보이게만듬
-    public void QuestDisableEffectOn(GameObject go)
+    //마우스 오버효과On
+    public void QuestDisableEffectOn(GameObject target)
     {
         if (_currentQuestUIObject.activeSelf)
             return;
 
-        Vector3 newPos = _curtainPannel.transform.position;
-        newPos.z = (float)ZLayer.Curtain;
-        _curtainPannel.transform.position = newPos;
+        Vector3 curtainPos = _curtainPanel.transform.position;
+        curtainPos.z = (float)ZLayer.Curtain;
+        _curtainPanel.transform.position = curtainPos;
 
-        if (go == null) return;
-        Vector3 objectPos = go.transform.position;
-        objectPos.z = (float)ZLayer.HighLight * _layerOffset;
-        go.transform.position = objectPos;
-        //foreach (var quests in _questList.Values)
-        //{
-        //    foreach(var go in quests)
-        //    {
-        //        if (go != gameObject)
-        //        {
-        //            Vector3 originPos = go.transform.position;
-        //            originPos.z += 20f;
-        //            go.transform.position = originPos;
-        //            go.transform.position = originPos;
-        //        }
-        //    }
-        //}
+        if (target == null)
+            return;
+
+        Vector3 targetPos = target.transform.position;
+        targetPos.z = (float)ZLayer.Highlight * _layerOffset;
+        target.transform.position = targetPos;
     }
 
-    //마우스 오버 효과를 해제함
+    //마우스 오버 효과 Off
     public void QuestDisableEffectOff()
     {
         if (_currentQuestUIObject.activeSelf)
             return;
 
-        Vector3 newPos = _curtainPannel.transform.position;
-        newPos.z = (float)ZLayer.QuestFloor1 * _layerOffset * LAYER_OFFSET_MULTIPLIER;
-        _curtainPannel.transform.position = newPos;
+        Vector3 curtainPos = _curtainPanel.transform.position;
+        curtainPos.z = (float)ZLayer.QuestFloor1 * _layerOffset * LAYER_OFFSET_MULTIPLIER;
+        _curtainPanel.transform.position = curtainPos;
 
         foreach (var quests in _questList.Values)
         {
-            foreach (GameObject go in quests)
+            foreach (GameObject questObj in quests)
             {
-                if (go.GetComponent<Quest>().IsDisable) continue;
-                Vector3 originPos = go.transform.position;
-                originPos.z = go.GetComponent<Quest>()._originZ;
-                go.transform.position = originPos;
+                Quest quest = questObj.GetComponent<Quest>();
+                if (quest.IsDisable)
+                    continue;
+
+                Vector3 originPos = questObj.transform.position;
+                originPos.z = quest.OriginZ;
+                questObj.transform.position = originPos;
             }
         }
     }
 
-    //상세 퀘스트 오픈시 다른 버튼 입력을 막음
+    //버튼 Off
     public void DisableOpenButtons()
     {
         foreach (var quests in _questList.Values)
         {
-            foreach (GameObject go in quests)
+            foreach (GameObject questObj in quests)
             {
-                go.GetComponent<Quest>().DisableOpenButton();
+                questObj.GetComponent<Quest>().DisableOpenButton();
             }
         }
+
         //전체 블러
         QuestDisableEffectOn(null);
         _CanActiveSelectEffect = false;
     }
-    //상세 퀘스트 닫을 시 버튼 입력 복구
+    //버튼 On
     public void EnableOpenButtons()
     {
         foreach (var quests in _questList.Values)
         {
-            foreach (GameObject go in quests)
+            foreach (GameObject questObj in quests)
             {
-                go.GetComponent<Quest>().EnableOpenButton();
+                questObj.GetComponent<Quest>().EnableOpenButton();
             }
         }
-            
+
         QuestDisableEffectOff();
         _CanActiveSelectEffect = true;
     }
 
-    //퀘스트 결과를 저장하는 함수, 외부에서 호출된다
     public void SetQuestResult(Quest quest, bool value)
     {
-        _questResultDict[quest] = value;
+        if (_questResultDict.ContainsKey(quest))
+            _questResultDict[quest] = value;
+        else
+        {
+            Debug.LogWarning("Quest Not Found.");
+            _questResultDict.Add(quest, value);
+        }
     }
 
     //가져올 의뢰가 보유 레시피 / 미보유레시피 둘중에하나를 결정하는 함수
-    private bool SelectPossess(int pCnt, int upCnt)
+    private bool SelectPossess(int acceptableCount,int unacceptableCount)
     {
-        //true == possess false == unpossess
-        bool possess = (UnityEngine.Random.value > 0.5f);
+        bool selectAcceptable = (UnityEngine.Random.value > 0.5f);
 
-        //모든 레시피 보유했거나 어떠한레시피도 없으면 더 확인할 이유가 없다
         if (_unAcceptableQuestList.Count == 0) return true;
         else if (_acceptableQuestList.Count == 0) return false;
 
-        int maxPCnt = Convert.ToInt32(_maxQuestCnt * 0.65);
-        int maxUpCnt = _maxQuestCnt - maxPCnt;
+        int maxAcceptableCount = Convert.ToInt32(_maxQuestCnt * 0.65f);
+        int maxUnacceptableCount = _maxQuestCnt - maxAcceptableCount;
 
-        if (possess)
+        if (selectAcceptable)
         {
             //65% 못채웠으면 그대로
-            if (pCnt >= maxPCnt) possess = !possess;
+            if (acceptableCount >= maxAcceptableCount) selectAcceptable = !selectAcceptable;
         }
-        else if (!possess)
+        else if (!selectAcceptable)
         {
-            //위와 동일
-            if (upCnt >= maxUpCnt) possess = !possess;
+            if (unacceptableCount >= maxUnacceptableCount) selectAcceptable = !selectAcceptable;
         }
-        return possess;
+        return selectAcceptable;
     }
-    
+
     //보유 레시피에 해당하는 의뢰가 전체 의뢰중 65% 이상 차지하도록 무작위로 의뢰 ID를 얻어오는 함수
-    private int GetQuestID(ref int pCnt, ref int upCnt)
+    private int GetQuestID(ref int acceptableCount, ref int unacceptableCount)
     {
-        //최종 의뢰ID
         int questID = 0;
 
-        bool possess = SelectPossess(pCnt, upCnt);
-        //보유중이고,뽑은 레시피의 65%를넘지 않았을때, 혹은 모든레시피를 보유중이라면
-        if (possess)
+        bool selectAcceptable = SelectPossess(acceptableCount,unacceptableCount);
+
+        if (selectAcceptable)
         {
-            pCnt++;
+            acceptableCount++;
             int rndID = UnityEngine.Random.Range(0, _acceptableQuestList.Count - 1);
             questID = _acceptableQuestList[rndID];
         }
         else
         {
-            upCnt++;
+            unacceptableCount++;
             int rndID = UnityEngine.Random.Range(0, _unAcceptableQuestList.Count - 1);
             questID = _unAcceptableQuestList[rndID];
         }

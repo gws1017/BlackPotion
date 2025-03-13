@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
     private void QuestStart()
     {
         //수주 의뢰 저장
-        if (Board.CurrrentAcceptQuestCnt > 0)
+        if (Board.CurrentAcceptQuestCount > 0)
         {
             RotateCamera(new Vector3(0, 90, 0));
             Brewer.UpdateQuestInfo();
@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour
     //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()
     {
-        Board.InitilizeQuestBoard();
+        Board.InitializeQuestBoard();
         Board.CreateQuestObject();
 
 
