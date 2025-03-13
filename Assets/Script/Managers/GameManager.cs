@@ -167,6 +167,7 @@ public class GameManager : MonoBehaviour
         //수주 의뢰 저장
         if (Board.CurrentAcceptQuestCount > 0)
         {
+            Board.CloseCurrentQuestUI();
             RotateCamera(new Vector3(0, 90, 0));
             Brewer.UpdateQuestInfo();
             SM.SaveQuest();

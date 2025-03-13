@@ -269,7 +269,7 @@ public class PotionBrewer : MonoBehaviour
             _slots[1].gameObject.SetActive(false);
 
         }
-        else if (_ingreCnt == 3) ;
+        //else if (_ingreCnt == 3) ;
 
         UpdateQuestUIInfo();
 

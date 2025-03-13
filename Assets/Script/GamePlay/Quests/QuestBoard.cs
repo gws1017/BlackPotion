@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,8 +19,7 @@ public class QuestBoard : MonoBehaviour
     //UI
     [SerializeField]
     private GameObject _curtainPanel;
-    [SerializeField]
-    private Button _currentQuestButton;
+    
 
     [ReadOnly]
     public float _layerOffset;
@@ -41,8 +41,6 @@ public class QuestBoard : MonoBehaviour
     //의뢰 프리펩
     [SerializeField]
     private GameObject _questPrefab;
-    [SerializeField]
-    private GameObject _currentQuestUIObject;
 
     [SerializeField]
     private int _maxLoopCount;//충돌 검사 횟수
@@ -58,12 +56,21 @@ public class QuestBoard : MonoBehaviour
     private Vector3 _firstRowStartPos = new Vector3(-20, 4, -23);
     [SerializeField]
     private Vector3 _secondRowStartPos = new Vector3(-10, -8, -23);
-    [SerializeField]
-    private float _questSpacing = 20f;
 
     [ReadOnly]
     public bool _CanActiveSelectEffect = true;
 
+    [Header("Current Quest")]
+    [SerializeField]
+    private Button _questBoardButton;
+    [SerializeField]
+    private Button _questCanelButton;
+    [SerializeField]
+    private Button _questNextButton;
+    [SerializeField]
+    private Button _currentQuestButton;
+    [SerializeField]
+    private GameObject _currentQuestUIObject;
 
     public GameObject QuestPrefab { get=> _questPrefab; }
 
@@ -71,7 +78,7 @@ public class QuestBoard : MonoBehaviour
 
     public int CurrentAcceptQuestCount => _acceptQuestList.Count;
 
-    public List<Quest> AcceptQuestList { get => _acceptQuestList; set => AcceptQuestList = value; }
+    public List<Quest> AcceptQuestList { get => _acceptQuestList; }
 
     public Quest GetCurrentQuest(int id)
     {
@@ -119,8 +126,14 @@ public class QuestBoard : MonoBehaviour
         if (_questResultDict == null || _questResultDict.Count > 0)
             _questResultDict = new Dictionary<Quest, bool>();
 
+        _questNextButton.onClick.RemoveAllListeners();
+        _questCanelButton.onClick.RemoveAllListeners();
+        _questBoardButton.onClick.RemoveAllListeners();
         _currentQuestButton.onClick.RemoveAllListeners();
-        _currentQuestButton.onClick.AddListener(OpenAcceptQuestUI);
+        _currentQuestButton.onClick.AddListener(OpenCurrentQuestUI);
+        //_questNextButton.onClick.AddListener(OpenAcceptQuestUI);
+        //_questCanelButton.onClick.AddListener(OpenAcceptQuestUI);
+        _questBoardButton.onClick.AddListener(CloseCurrentQuestUI);
     }
 
     public void CreateQuestObject()
@@ -205,7 +218,7 @@ public class QuestBoard : MonoBehaviour
             Debug.Log("퀘스트를 최대치로 수락했습니다.");
             return;
         }
-
+        
         _acceptQuestList.Add(quest);
         _questResultDict.Add(quest, false);
 
@@ -216,24 +229,33 @@ public class QuestBoard : MonoBehaviour
         quest.IsDisable = true;
 
         //수락한 의뢰는 현재 의뢰 UI로 이동
+        Vector3 position = new Vector3(0, 0, (float)ZLayer.Highlight) *_layerOffset * LAYER_OFFSET_MULTIPLIER;
         quest.gameObject.transform.SetParent(_currentQuestUIObject.transform);
-        int index = _acceptQuestList.Count - 1;
-        Vector3 startPos;
-        if (index < 3)
-        {
-            startPos = _firstRowStartPos;
-            quest.gameObject.transform.position = startPos + new Vector3(index * _questSpacing, 0, 0);
-        }
-        else
-        {
-            startPos = _secondRowStartPos;
-            quest.gameObject.transform.position = startPos + new Vector3((index % 3) * _questSpacing, 0, 0);
-        }
+        quest.transform.SetPositionAndRotation(position, Quaternion.identity);
+        //x 1.5 , rot -10
+
     }
 
-    public void OpenAcceptQuestUI()
+    public void OpenCurrentQuestUI()
     {
-        _currentQuestUIObject.SetActive(!_currentQuestUIObject.activeSelf);
+        _currentQuestUIObject.SetActive(true);
+        _currentQuestButton.gameObject.SetActive(false);
+
+        foreach(GameObject questObject in _questList.SelectMany(Dict => Dict.Value))
+        {
+            questObject.SetActive(false);
+        }
+
+    }
+    public void CloseCurrentQuestUI()
+    {
+        _currentQuestUIObject.SetActive(false);
+        _currentQuestButton.gameObject.SetActive(true);
+
+        foreach(GameObject questObject in _questList.SelectMany(Dict => Dict.Value))
+        { 
+            questObject.SetActive(true);
+        }
     }
 
     //마우스 오버효과On
