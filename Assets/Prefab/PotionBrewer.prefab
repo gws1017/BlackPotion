@@ -89,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4822472770451207544}
   m_Layer: 5
-  m_Name: IngridientRatio3
+  m_Name: IngridientRatioCapacity3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -927,7 +927,7 @@ MonoBehaviour:
   - {fileID: 2791986685347973928}
   - {fileID: 9064076052529057188}
   - {fileID: 3971386556866383598}
-  _capacityObject:
+  _capacityObjects:
   - {fileID: 5529468794691625332}
   - {fileID: 5122471998772356013}
   - {fileID: 416674602352135709}
@@ -936,16 +936,13 @@ MonoBehaviour:
   _potionImage: {fileID: 8005663644062160458}
   _potionNameText: {fileID: 2498289147838701295}
   _questText: {fileID: 317060454097061578}
-  _reqQulaityValueText: {fileID: 1282843859134050742}
+  _reqQualityValueText: {fileID: 1282843859134050742}
   _currentQuestIndex: 0
-  _currentQuest: {fileID: 0}
   _recipeNameText: {fileID: 2844189992398345291}
-  _IngridientNameText:
+  _ingredientNameText:
   - {fileID: 7897809678396756168}
   - {fileID: 6896896130605207406}
   - {fileID: 1716711509194935950}
-  _currentMount: 
-  _craftState: 0
 --- !u!1 &3120342671664970869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,7 +1507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7248319850780099855}
   m_Layer: 5
-  m_Name: IngridientRatio2
+  m_Name: IngridientRatioCapacity2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1547,7 +1544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7923699048738430703}
   m_Layer: 5
-  m_Name: IngridientRatio
+  m_Name: IngridientRatioCapacity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

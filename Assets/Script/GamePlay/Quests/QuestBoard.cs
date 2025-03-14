@@ -432,6 +432,7 @@ public class QuestBoard : MonoBehaviour
         }
     }
 
+    //Á¤»ê¿ë
     public void SetQuestResult(Quest quest, bool value)
     {
         if (_questResultDict.ContainsKey(quest))

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using static PlayInfo;
 
 public class PlayInfo : MonoBehaviour
 {
@@ -144,6 +145,30 @@ public class PlayInfo : MonoBehaviour
         GameManager.GM.BM.ClearBuffList();
         GameManager.GM.SM.SavePlayInfo();
         IntializeRecipeDict();
+    }
+    public static string CheckPotionCraftGrade(float qualityPercent)
+    {
+        if (qualityPercent <= PotionCraftGrade.BORDER_5)
+        {
+            return PotionCraftGrade.RANK_5;
+        }
+        else if (qualityPercent <= PotionCraftGrade.BORDER_4 && qualityPercent > PotionCraftGrade.BORDER_5 + 1)
+        {
+            return PotionCraftGrade.RANK_4;
+        }
+        else if (qualityPercent <= PotionCraftGrade.BORDER_3 && qualityPercent > PotionCraftGrade.BORDER_4 + 1)
+        {
+            return PotionCraftGrade.RANK_3;
+        }
+        else if (qualityPercent <= PotionCraftGrade.BORDER_2 && qualityPercent > PotionCraftGrade.BORDER_3 + 1)
+        {
+            return PotionCraftGrade.RANK_2;
+        }
+        else if (qualityPercent <= PotionCraftGrade.BORDER_1 && qualityPercent > PotionCraftGrade.BORDER_2 + 1)
+        {
+            return PotionCraftGrade.RANK_1;
+        }
+        return PotionCraftGrade.RANK_5;
     }
 
 }

@@ -5277,11 +5277,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3928626d23cd42d408b1d867a382da88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvas: {fileID: 5306419546928096057}
+  _particle: {fileID: 8164031845768313401}
   _inputButton: {fileID: 3055768078913097448}
   _inputButtonText: {fileID: 3662903964869993445}
   _inputInfoButton: {fileID: 3012172125052843025}
-  _inputInfoUIInstance: {fileID: 7718824687527676230}
-  _ingredientAmount: 78
   _ingredientImage: {fileID: 1299666652029640331}
   _inputInfoImages:
   - {fileID: 0}
@@ -5295,10 +5295,10 @@ MonoBehaviour:
   - {fileID: 3729834527306495435}
   - {fileID: 3917072562878550469}
   - {fileID: 7908447125917520618}
-  _ingridientInfoUIPrefab: {fileID: 2514927131761075172, guid: 543eae283629d6c4188307ad68e11487,
+  _inputInfoUIInstance: {fileID: 7718824687527676230}
+  _ingredientInfoUIPrefab: {fileID: 2514927131761075172, guid: 543eae283629d6c4188307ad68e11487,
     type: 3}
-  _canvas: {fileID: 5306419546928096057}
-  _particle: {fileID: 8164031845768313401}
+  _ingredientAmount: 78
 --- !u!1 &1291053406126825966
 GameObject:
   m_ObjectHideFlags: 0

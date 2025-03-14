@@ -218,12 +218,14 @@ public class Quest : MonoBehaviour
 
     public void DisableOpenButton()
     {
+        if(_openDetailQuestButton != null)
         _openDetailQuestButton.interactable = false;
         IsDisable = true;
     }
     public void EnableOpenButton()
     {
-        _openDetailQuestButton.interactable = true;
+        if(_openDetailQuestButton != null)
+            _openDetailQuestButton.interactable = true;
         IsDisable = false;
     }
 }

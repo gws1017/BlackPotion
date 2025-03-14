@@ -1036,6 +1036,11 @@ PrefabInstance:
       propertyPath: _craftReceipt
       value: 
       objectReference: {fileID: 329885823}
+    - target: {fileID: 7253857426430935559, guid: 3b79ec9b38f13514b870a9a99e8c8235,
+        type: 3}
+      propertyPath: _ingredientNameText.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7618282512686833844, guid: 3b79ec9b38f13514b870a9a99e8c8235,
         type: 3}
       propertyPath: m_Text
