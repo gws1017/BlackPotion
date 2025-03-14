@@ -33,7 +33,9 @@ public class Quest : MonoBehaviour
     protected QuestInfo _questInfo;
     protected PotionInfo _potionInfo;
 
-    private float _originZ;
+    private Vector3 _originPosition;
+    private Quaternion _originRotation;
+
     private bool _isRestart;
 
     private QuestBoard.ZLayer _layer;
@@ -47,9 +49,10 @@ public class Quest : MonoBehaviour
     private bool _disableQuest = false;
 
     //Getter&Setter
-    public float OriginZ { get => _originZ; set => _originZ = value; }
+    public float OriginZ => _originPosition.z; 
     public bool IsRestart { get => _isRestart; set => _isRestart = value; }
-
+    public Vector3 OriginPosition { get => _originPosition; set => _originPosition = value; }
+    public Quaternion OriginRotation { get => _originRotation; set => _originRotation = value; }
     public bool IsDisable { get => _disableQuest; set => _disableQuest = value; }
     public int QuestID { get=> _questID; set => _questID = value; }
     public int QuestGrade => _questGrade;
@@ -217,9 +220,11 @@ public class Quest : MonoBehaviour
     public void DisableOpenButton()
     {
         _openDetailQuestButton.interactable = false;
+        IsDisable = true;
     }
     public void EnableOpenButton()
     {
         _openDetailQuestButton.interactable = true;
+        IsDisable = false;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+//using UnityEngine.UIElements;
 
 public class QuestBoard : MonoBehaviour
 {
@@ -52,11 +53,6 @@ public class QuestBoard : MonoBehaviour
     private int _maxAcceptQuestCount; //최대 수락가능 Quest
     private Vector3 _meshExtents;
 
-    [SerializeField]
-    private Vector3 _firstRowStartPos = new Vector3(-20, 4, -23);
-    [SerializeField]
-    private Vector3 _secondRowStartPos = new Vector3(-10, -8, -23);
-
     [ReadOnly]
     public bool _CanActiveSelectEffect = true;
 
@@ -71,6 +67,10 @@ public class QuestBoard : MonoBehaviour
     private Button _currentQuestButton;
     [SerializeField]
     private GameObject _currentQuestUIObject;
+    [SerializeField]
+    private float _currentQuestPositionX = 1.5f;
+    [SerializeField]
+    private Quaternion _currentQuestRotation = Quaternion.Euler(0, 0, -10);
 
     public GameObject QuestPrefab { get=> _questPrefab; }
 
@@ -131,8 +131,8 @@ public class QuestBoard : MonoBehaviour
         _questBoardButton.onClick.RemoveAllListeners();
         _currentQuestButton.onClick.RemoveAllListeners();
         _currentQuestButton.onClick.AddListener(OpenCurrentQuestUI);
-        //_questNextButton.onClick.AddListener(OpenAcceptQuestUI);
-        //_questCanelButton.onClick.AddListener(OpenAcceptQuestUI);
+        _questNextButton.onClick.AddListener(NextCurrentQuest);
+        _questCanelButton.onClick.AddListener(QuestCancel);
         _questBoardButton.onClick.AddListener(CloseCurrentQuestUI);
     }
 
@@ -172,7 +172,8 @@ public class QuestBoard : MonoBehaviour
             Canvas questCanvas = Clone.GetComponentInChildren<Canvas>();
 
             quest.QuestID = questId;
-            quest.OriginZ = pos.z;
+            quest.OriginPosition = pos;
+            quest.OriginRotation = rot;
             quest.QuestLayer = selectedlayer;
             //questCanvas.overrideSorting = true;
 
@@ -220,19 +221,28 @@ public class QuestBoard : MonoBehaviour
         }
         
         _acceptQuestList.Add(quest);
-        _questResultDict.Add(quest, false);
+        if(!_questResultDict.ContainsKey(quest))
+            _questResultDict.Add(quest, false);
 
         if (_questList.TryGetValue(quest.QuestLayer, out List<GameObject> questLayerList))
         {
             questLayerList.Remove(quest.gameObject);
         }
-        quest.IsDisable = true;
+        quest.DisableOpenButton();
 
         //수락한 의뢰는 현재 의뢰 UI로 이동
-        Vector3 position = new Vector3(0, 0, (float)ZLayer.Highlight) *_layerOffset * LAYER_OFFSET_MULTIPLIER;
+        float zSpacing = (AcceptQuestList.Count-1) * LAYER_OFFSET_MULTIPLIER;
+        float zStartPos = (float)ZLayer.Highlight *_layerOffset * LAYER_OFFSET_MULTIPLIER;
+
+        Vector3 position = new Vector3(0, 0, zStartPos + zSpacing);
+        Quaternion rotation = Quaternion.identity;
+        if (_acceptQuestList.Count > 1)
+        {
+            position.x = _currentQuestPositionX;
+            rotation = _currentQuestRotation;
+        }
         quest.gameObject.transform.SetParent(_currentQuestUIObject.transform);
-        quest.transform.SetPositionAndRotation(position, Quaternion.identity);
-        //x 1.5 , rot -10
+        quest.transform.SetPositionAndRotation(position, rotation);
 
     }
 
@@ -256,6 +266,58 @@ public class QuestBoard : MonoBehaviour
         { 
             questObject.SetActive(true);
         }
+    }
+
+    public void QuestCancel()
+    {
+        if (AcceptQuestList.Count <= 0) return;
+
+        Quest quest = AcceptQuestList[0];
+        GameObject questObject = quest.gameObject;
+
+        ShiftCurrentQuest();
+
+        AcceptQuestList.Remove(quest);
+        _questList[quest.QuestLayer].Add(questObject);
+
+        questObject.transform.SetParent(null);
+        questObject.transform.SetLocalPositionAndRotation(quest.OriginPosition, quest.OriginRotation);
+        questObject.SetActive(false);
+
+        quest.EnableOpenButton();
+    }
+
+    public void NextCurrentQuest()
+    {
+        if (AcceptQuestList.Count <= 1) return;
+        ShiftCurrentQuest();
+    }
+
+    private void ShiftCurrentQuest()
+    {
+        Quest lastQuest = AcceptQuestList.Last<Quest>();
+
+        Vector3 lastPosition = lastQuest.gameObject.transform.position;
+        Quaternion lastRotation = lastQuest.gameObject.transform.rotation;
+
+        for (int i = AcceptQuestList.Count - 1; i > 0; --i)
+        {
+            Transform currentQuestTransform = AcceptQuestList[i].gameObject.transform;
+            Transform prevQuestTransform = AcceptQuestList[i - 1].gameObject.transform;
+            currentQuestTransform.position = prevQuestTransform.position;
+            currentQuestTransform.rotation = prevQuestTransform.rotation;
+        }
+        Quest frontQuest = AcceptQuestList[0];
+        frontQuest.gameObject.transform.position = lastPosition;
+        frontQuest.gameObject.transform.rotation = lastRotation;
+
+        AcceptQuestList.RemoveAt(0);
+        AcceptQuestList.Add(frontQuest);
+
+        Transform frontQuestTransform = AcceptQuestList[0].gameObject.transform;
+        Vector3 frontPosition = frontQuestTransform.position;
+
+        frontQuestTransform.position = frontPosition;
     }
 
     //마우스 오버효과On
