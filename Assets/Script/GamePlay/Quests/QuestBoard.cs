@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -49,8 +50,6 @@ public class QuestBoard : MonoBehaviour
     private float _zRotRandRange; //Quest 회전 범위
     [SerializeField]
     private int _maxQuestCnt; //의뢰 최대 생성수
-    [SerializeField]
-    private int _maxAcceptQuestCount; //최대 수락가능 Quest
     private Vector3 _meshExtents;
 
     [ReadOnly]
@@ -66,15 +65,17 @@ public class QuestBoard : MonoBehaviour
     [SerializeField]
     private Button _currentQuestButton;
     [SerializeField]
+    private Outline _buttonActiveOuline;
+    [SerializeField]
     private GameObject _currentQuestUIObject;
+    [SerializeField]
+    private float _oulineEffectSpeed = 1;
     [SerializeField]
     private float _currentQuestPositionX = 1.5f;
     [SerializeField]
     private Quaternion _currentQuestRotation = Quaternion.Euler(0, 0, -10);
 
     public GameObject QuestPrefab { get=> _questPrefab; }
-
-    public int MaxAcceptQuestCount { get => _maxAcceptQuestCount; }
 
     public int CurrentAcceptQuestCount => _acceptQuestList.Count;
 
@@ -214,7 +215,7 @@ public class QuestBoard : MonoBehaviour
             Debug.Log("이미 수락한 퀘스트 입니다.");
             return;
         }
-        if (_acceptQuestList.Count >= _maxAcceptQuestCount)
+        if (_acceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
         {
             Debug.Log("퀘스트를 최대치로 수락했습니다.");
             return;
@@ -223,6 +224,9 @@ public class QuestBoard : MonoBehaviour
         _acceptQuestList.Add(quest);
         if(!_questResultDict.ContainsKey(quest))
             _questResultDict.Add(quest, false);
+
+        if (_acceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
+            CurrentQuestOutlineEffectOn();
 
         if (_questList.TryGetValue(quest.QuestLayer, out List<GameObject> questLayerList))
         {
@@ -271,6 +275,9 @@ public class QuestBoard : MonoBehaviour
     public void QuestCancel()
     {
         if (AcceptQuestList.Count <= 0) return;
+
+        if (AcceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
+            CurrentQuestOutlineEffectOff();
 
         Quest quest = AcceptQuestList[0];
         GameObject questObject = quest.gameObject;
@@ -391,6 +398,38 @@ public class QuestBoard : MonoBehaviour
 
         QuestDisableEffectOff();
         _CanActiveSelectEffect = true;
+    }
+
+    public void CurrentQuestOutlineEffectOff()
+    {
+        StopCoroutine(BlinkCurrentQuestOutline());
+    }
+    public void CurrentQuestOutlineEffectOn()
+    {
+        StartCoroutine(BlinkCurrentQuestOutline());
+    }
+    IEnumerator BlinkCurrentQuestOutline()
+    {
+        while (true)
+        {
+            float alpha = 0;
+            float direction = 1;
+
+            while (true)
+            {
+                alpha += direction * _oulineEffectSpeed * Time.deltaTime * 255f;
+                alpha = Mathf.Clamp(alpha, 0, 255);
+
+                Color color = _buttonActiveOuline.effectColor;
+                color.a = alpha / 255f;
+                _buttonActiveOuline.effectColor = color;
+
+                if (alpha >= 255) direction = -1; 
+                else if (alpha <= 0) direction = 1;
+
+                yield return null;
+            }
+        }
     }
 
     public void SetQuestResult(Quest quest, bool value)

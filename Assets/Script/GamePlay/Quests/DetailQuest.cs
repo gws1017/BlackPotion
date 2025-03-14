@@ -72,7 +72,7 @@ public class DetailQuest : Quest
 
     private void SetAcceptQuestText(int count)
     {
-        _currentAcceptQuest.text = $"( {count} / {Board.MaxAcceptQuestCount} )";
+        _currentAcceptQuest.text = $"( {count} / {PlayInfo.MAX_ACCEPT_QUEST_COUNT} )";
     }
 
     //레시피 보상 등급에 따라 색으로 표기

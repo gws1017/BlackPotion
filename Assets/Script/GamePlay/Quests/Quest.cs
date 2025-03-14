@@ -101,7 +101,6 @@ public class Quest : MonoBehaviour
                 dq.QuestID = _questID;
                 dq.ParentQuest = this;
                 dq.InitializeData();
-                Debug.Log("상세퀘스트 생성되었습니다.");
 
             }
                 return _detailQuestObject;
