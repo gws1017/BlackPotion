@@ -385,18 +385,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 7057665861996985418}
-  _storeType: 0
   _titleText: {fileID: 1647084664646949329}
   _nextText: {fileID: 215663347716909358}
   _nextButton: {fileID: 3855582636928865759}
+  PurchaseUI: {fileID: 5341640848895176128}
+  PurchaseCancelButton: {fileID: 8559524130938941801}
+  PurchaseAcceptButton: {fileID: 9075846794378705228}
+  ConfirmText: {fileID: 8563229689971480570}
   _itemListObject: {fileID: 3987370387404442518}
-  _ItemIdList: 
   _itemSlotPrefab: {fileID: 8057349026261632840, guid: 6153545f6e3240a4ca4b77cd35d932ed,
     type: 3}
-  _purchaseUI: {fileID: 5341640848895176128}
-  _puchaseCancelButton: {fileID: 8559524130938941801}
-  _purchaseAcceptButton: {fileID: 9075846794378705228}
-  _ConfirmText: {fileID: 8563229689971480570}
+  _itemIdList: 
+  _storeType: 0
 --- !u!1 &3987370387404442518
 GameObject:
   m_ObjectHideFlags: 0

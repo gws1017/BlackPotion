@@ -3,94 +3,88 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-//상점 판매 제품 버튼 하나에 할당되는 클래스
 public class ItemSlot : MonoBehaviour
 {
     //판매 제품의 정보
-    public int _itemId;
-    public int _itemCost;
-    public Image _itemImage;
-    public Text _itemNameText;
-    public Text _itemCostText;
-    public Button _itemSlotButton;
+    public int ItemId;
+    public int ItemCost;
+    public Image ItemImage;
+    public Text ItemNameText;
+    public Text ItemCostText;
+    public Button ItemSlotButton;
 
-    //상점의 레퍼런스
-    public Store _parentStore;
+    public Store ParentStore;
     private PlayInfo _playInfo;
 
     void Start()
     {
         _playInfo = GameManager.GM.PlayInformation;
-        _itemSlotButton.onClick.AddListener(ShowPurchaseUI);
+        ItemSlotButton.onClick.AddListener(ShowPurchaseUI);
     }
 
-    //판매되는 버프정보를 초기화
-    public void InitializeItemSlot(BuffInfo ItemInfo)
+    public void InitializeItemSlot(BuffInfo buffInfo)
     {
-        _itemId = ItemInfo.buffId;
-        _itemImage.sprite = Resources.Load<Sprite>(ItemInfo.buffImage);
-        _itemNameText.text = ItemInfo.buffName;
-        _itemCost = ItemInfo.buffCost;
-        _itemCostText.text = "가격 : " + _itemCost.ToString() + "골드";
-        _parentStore._puchaseCancelButton.onClick.RemoveAllListeners();
-        _parentStore._puchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
+        SetupItemSlot(buffInfo.buffId, buffInfo.buffCost, buffInfo.buffImage, buffInfo.buffName);
     }
-    //판매되는 포션레시피 정보를 초기화
-    public void InitializeItemSlot(PotionInfo ItemInfo)
+
+    public void InitializeItemSlot(PotionInfo potionInfo)
     {
-        _itemId = ItemInfo.potionId;
-        _itemImage.sprite = Resources.Load<Sprite>(ItemInfo.potionImage);
-        _itemNameText.text = ItemInfo.potionName;
-        _itemCost = ItemInfo.recipeCost;
-        _itemCostText.text = "가격 : " + _itemCost.ToString() + "골드";
-        _parentStore._puchaseCancelButton.onClick.RemoveAllListeners();
-        _parentStore._puchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
+        SetupItemSlot(potionInfo.potionId, potionInfo.recipeCost, potionInfo.potionImage, potionInfo.potionName);
     }
-    //구매 확인 창 오픈
+
+    private void SetupItemSlot(int id, int cost, string imagePath, string name)
+    {
+        ItemId = id;
+        ItemCost = cost;
+        ItemImage.sprite = Resources.Load<Sprite>(imagePath);
+        ItemNameText.text = name;
+        ItemCostText.text = $"가격 : {ItemCost}골드";
+
+        ParentStore.PurchaseCancelButton.onClick.RemoveAllListeners();
+        ParentStore.PurchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
+    }
+
     public void ShowPurchaseUI()
     {
-        _parentStore._purchaseUI.SetActive(true);
-        _parentStore._ConfirmText.text = _itemNameText.text + "를 " + " 구매합니다.";
-        _parentStore._purchaseAcceptButton.onClick.RemoveAllListeners();
-        _parentStore._purchaseAcceptButton.onClick.AddListener(AcceptPurchase);
+        ParentStore.PurchaseUI.SetActive(true);
+        ParentStore.ConfirmText.text = $"{ItemNameText.text}를 구매합니다.";
+        ParentStore.PurchaseAcceptButton.onClick.RemoveAllListeners();
+        ParentStore.PurchaseAcceptButton.onClick.AddListener(AcceptPurchase);
     }
 
-    //구매 확인 창 닫기
     public void ClosePurchaseUI()
     {
-        _parentStore._purchaseUI.SetActive(false);
+        ParentStore.PurchaseUI.SetActive(false);
     }
 
-    //구매 확정
     public void AcceptPurchase()
     {
-        int currGold = _playInfo.CurrentGold;
+        int currentGold = _playInfo.CurrentGold;
 
-        if (currGold >= _itemCost)
+        if (currentGold >= ItemCost)
         {
-            if (_parentStore.SType == Store.StoreType.Recipe)
+            if (ParentStore.SType == Store.StoreType.Recipe)
             {
-                _playInfo.AddRecipe(_itemId);
+                _playInfo.AddRecipe(ItemId);
             }
-            else if (_parentStore.SType == Store.StoreType.Buff)
+            else if (ParentStore.SType == Store.StoreType.Buff)
             {
                 if (GameManager.GM.BM.IsFullBuffList())
                 {
-                    _parentStore._purchaseUI.SetActive(false);
+                    ParentStore.PurchaseUI.SetActive(false);
                     return;
                 }
-                GameManager.GM.BM.AddBuff(_itemId);
+                GameManager.GM.BM.AddBuff(ItemId);
             }
-            _playInfo.ConsumeGold(_itemCost);
-            _itemSlotButton.enabled = false;
-            _itemNameText.text = "매진";
+            _playInfo.ConsumeGold(ItemCost);
+            ItemSlotButton.interactable = false;
+            ItemNameText.text = "매진";
         }
         else
         {
             //추후 UI로 표기
             Debug.Log("골드가 부족합니다.");
         }
-        _parentStore._purchaseUI.SetActive(false);
+        ParentStore.PurchaseUI.SetActive(false);
     }
 }

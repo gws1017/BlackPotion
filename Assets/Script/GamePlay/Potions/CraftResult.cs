@@ -9,7 +9,6 @@ public class CraftResult : MonoBehaviour
 {
 
     private const float MAX_QUALITY_VALUE = 100f;
-    private const float QUEST_PENALTY_RATIO = 0.1f;
 
     //Component
     [SerializeField]
@@ -197,7 +196,7 @@ public class CraftResult : MonoBehaviour
         _rewardButtons.SetActive(false);
         _selectText.text = "¥Ÿ¿Ω";
 
-        playInfo.ConsumeGold((int)(quest.QuestRewardMoney * QUEST_PENALTY_RATIO));
+        playInfo.ConsumeGold((int)(quest.QuestRewardMoney * PlayInfo.QUEST_PENALTY_RATIO));
     }
 
     public void ShowResultCheckUI()

@@ -6,16 +6,16 @@ using UnityEngine.UI;
 public class CraftReceipt : MonoBehaviour
 {
     //Component
+    [Header("Component")]
     [SerializeField]
     private Canvas _canvas;
-
-    //레퍼런스
-    private PlayInfo _playInfo;
-    private QuestBoard _board;
     [SerializeField]
     private Store _storeUI;
+    private PlayInfo _playInfo;
+    private QuestBoard _board;
 
     //UI
+    [Header("UI")]
     [SerializeField]
     private Button _nextButton;
     [SerializeField]
@@ -27,86 +27,80 @@ public class CraftReceipt : MonoBehaviour
     [SerializeField]
     private Text _targetMoneyText;
 
-    //목표 금액
+    [Header("Setting Variable")]
     [SerializeField]
     private int[] _targetMoney;
-    //목표 달성 여부
-    private bool _targetSucc;
-
-    public bool TargetSuccess
-    {
-        get { return _targetSucc; }
-    }
+    private bool _isTargetAchieved;
+    private Sprite _targetSuccessSprite;
+    private Sprite _targetFailSprite;
+    public bool TargetSuccess => _isTargetAchieved;
 
     void Start()
     {
         _canvas.worldCamera = GameManager.GM.MainCamera;
         _board = GameManager.GM.Board;
         _playInfo = GameManager.GM.PlayInformation;
+
+        _targetSuccessSprite = Resources.Load<Sprite>(PlayInfo.TARGET_SUCCESS_IMAGE);
+        _targetFailSprite = Resources.Load<Sprite>(PlayInfo.TARGET_FAIL_IMAGE);
+
         _nextButton.onClick.AddListener(ShowRecipeStore);
     }
 
-    //정산 내용을 업데이트한다
     public void UpdateReceipt()
     {
-        var questList = _board.AcceptQuestList;
-        var questResult = _board._questResultDict;
+        List<Quest> questList = _board.AcceptQuestList;
+        Dictionary<Quest, bool> questResult = _board._questResultDict;
         int totalGold = 0;
+        int uiCount = Mathf.Min(questList.Count, _potionNameText.Length);
 
-        //정산은 현재 보유 골드가 아니라 의뢰 성공여부에 따른 수익만 체크한다
-        //상점에서 사용한 돈은 고려하지 않는다.
-        for (int i = 0; i < questList.Count; i++)
+        for (int i = 0; i < _potionNameText.Length; i++)
         {
-            _potionNameText[i].text = questList[i].PotionName + " 제조";
-            int gold = 0;
-
-            //의뢰별 결과 UI 업데이트
-            if (questResult[questList[i]])
+                int gold = 0;
+            if(i <uiCount)
             {
-                _potionNameText[i].color = Color.green;
-                _moneyText[i].color = Color.green;
-                gold = questList[i].QuestRewardMoney;
+                _potionNameText[i].text = $"{questList[i].PotionName} 제조";
+                Quest quest = questList[i];
+
+                if (questResult.ContainsKey(quest) && questResult[quest])
+                {
+                    _potionNameText[i].color = Color.green;
+                    _moneyText[i].color = Color.green;
+                    gold = questList[i].QuestRewardMoney;
+                }
+                else
+                {
+                    _potionNameText[i].color = Color.red;
+                    _moneyText[i].color = Color.red;
+                    gold -= (int)(questList[i].QuestRewardMoney * PlayInfo.QUEST_PENALTY_RATIO);
+                }
+                _potionNameText[i].enabled = true;
+                _moneyText[i].enabled = true;
             }
             else
             {
-                _potionNameText[i].color = Color.red;
-                _moneyText[i].color = Color.red;
-                //의뢰 실패시 보상금의 10퍼센트 위약금 적용
-                gold -= (int)(questList[i].QuestRewardMoney * 0.1);
+                _potionNameText[i].enabled = false;
+                _moneyText[i].enabled = false;
             }
-
             totalGold += gold;
-            _moneyText[i].text = gold.ToString() + "G";
+            _moneyText[i].text = $"{gold} G";
+
         }
 
-        //수락한 의뢰 수만큼 만 보여준다
-        for (int i = 0; i < questList.Count; i++)
+        int currentTarget = _targetMoney[_playInfo.CurrentDay];
+        if (totalGold >= currentTarget)
         {
-            _potionNameText[i].enabled = true;
-            _moneyText[i].enabled = true;
-        }
-        for (int i = questList.Count; i < _potionNameText.Length; i++)
-        {
-            _potionNameText[i].enabled = false;
-            _moneyText[i].enabled = false;
-        }
-
-        if(totalGold >= _targetMoney[_playInfo.CurrentDay])
-        {
-            //이미지 경로를 저장하는 클래스를 따로만들까?
-            //아니면 #define?
-            _resultImage.sprite = Resources.Load<Sprite>("Images/targetSucc");
-            _targetSucc = true;
+            _resultImage.sprite = _targetSuccessSprite;
+            _isTargetAchieved = true;
         }
         else
         {
-            _resultImage.sprite = Resources.Load<Sprite>("Images/targetFail");
-            _targetSucc = false;
+            _resultImage.sprite = _targetFailSprite;
+            _isTargetAchieved = false;
         }
-        _targetMoneyText.text = totalGold.ToString() + " / " + _targetMoney[_playInfo.CurrentDay].ToString();
+        _targetMoneyText.text = $"{totalGold} / {_targetMoney[_playInfo.CurrentDay]}";
     }
 
-    //레시피상점 오픈
     public void ShowRecipeStore()
     {
         _storeUI.OpenStoreUI(Store.StoreType.Recipe);

@@ -6,11 +6,16 @@ using static PlayInfo;
 
 public class PlayInfo : MonoBehaviour
 {
+
+    public const string TARGET_SUCCESS_IMAGE = "Images/targetSuccess";
+    public const string TARGET_FAIL_IMAGE = "Images/targetFail";
+
     public const int RESTART_GOLD = 50; //재시작 골드
     public const int MAX_RECIPE_GRADE = 4; //레시피 최고 등급
     public const int MAX_ACCEPT_QUEST_COUNT = 5;
     public const int MAX_BUFF_COUNT = 3;
     public const int MAX_QUEST_COUNT_LAYER = 5;
+    public const float QUEST_PENALTY_RATIO = 0.1f;
     public const float CRITICAL_SUCCESS = 1.5f; //대성공
 
     public struct PotionCraftGrade

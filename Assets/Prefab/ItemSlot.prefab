@@ -405,9 +405,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50990e523000771458fa7a55b0622b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemId: 0
-  _itemCost: 0
-  _itemImage: {fileID: 8375584053825486346}
-  _itemNameText: {fileID: 8501447124822850118}
-  _itemCostText: {fileID: 7258219458648569879}
-  _itemSlotButton: {fileID: 6261522114201912765}
+  ItemId: 0
+  ItemCost: 0
+  ItemImage: {fileID: 8375584053825486346}
+  ItemNameText: {fileID: 8501447124822850118}
+  ItemCostText: {fileID: 7258219458648569879}
+  ItemSlotButton: {fileID: 6261522114201912765}
+  ParentStore: {fileID: 0}
