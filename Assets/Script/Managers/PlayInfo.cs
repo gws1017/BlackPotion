@@ -33,20 +33,17 @@ public class PlayInfo : MonoBehaviour
         public const int BORDER_5 = 20;
     };
 
-    //public DaylightTime _playTime;
-    //현재 일차
-    private int _currentCraftDay = 0;
-    //현재 소유하고 있는 골드량
-    private int _currentGold = 0;
+    private int _currentCraftDay = 0;//현재 일차
+    private int _currentGold = 0;//현재 소유하고 있는 골드량
 
     //누적 데이터
+    //public DaylightTime _playTime;
     public int _questSuccCount = 0;
     public int _maxCraftDay = 0;
+    
+    private Dictionary<int, bool> _recipeDict; //보유 레시피 - 보유는 true 미보유는 false
 
-
-    //보유 레시피 - 보유는 true 미보유는 false
-    private Dictionary<int, bool> _recipeDict;
-
+    //Getter Setter
     public int CurrentGold => _currentGold;
     public int CurrentDay => _currentCraftDay;
     public int MaxCraftDay => _maxCraftDay;
@@ -66,7 +63,7 @@ public class PlayInfo : MonoBehaviour
         }
     }
 
-    //데이터 로드시에만 사용
+   
     public void SetGold(int value) { _currentGold = value; }
     public void SetDay(int value) { _currentCraftDay = value; }
 

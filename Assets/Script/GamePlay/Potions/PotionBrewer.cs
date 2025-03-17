@@ -10,44 +10,30 @@ public class PotionBrewer : MonoBehaviour
 
     //Component
     [Header("Main Component")]
-    [SerializeField]
-    private IngredientSlot[] _slots;
-    [SerializeField]
-    private Store _storeUI;
+    [SerializeField] private IngredientSlot[] _slots;
+    [SerializeField] private Store _storeUI;
+    private GameManager _gameManager;
 
     //UI
     [Header("UI")]
-    [SerializeField]
-    private Canvas _canvas;
-    [SerializeField]
-    private Text[] _ingredientInputAmountText;
-    [SerializeField]
-    private GameObject[] _capacityObjects = new GameObject[INGREDIENT_SLOT_COUNT];
-    [SerializeField]
-    private Button _craftButton;
-    [SerializeField]
-    private CraftResult _craftResult;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Text[] _ingredientInputAmountText;
+    [SerializeField] private GameObject[] _capacityObjects = new GameObject[INGREDIENT_SLOT_COUNT];
+    [SerializeField] private Button _craftButton;
+    [SerializeField] private CraftResult _craftResult;
 
     //현재 제조 포션 정보
     [Header("Current Quest Info")]
-    [SerializeField]
-    private Image _potionImage;
-    [SerializeField]
-    private Text _potionNameText;
-    [SerializeField]
-    private Text _questText;
-    [SerializeField]
-    private Text _reqQualityValueText;
-    [SerializeField]
-    private int _currentQuestIndex;
+    [SerializeField] private Image _potionImage;
+    [SerializeField] private Text _potionNameText;
+    [SerializeField] private Text _questText;
+    [SerializeField] private Text _reqQualityValueText;
+    [SerializeField] private int _currentQuestIndex;
     private Quest _currentQuest;
-    public Quest CurrentQuest => _currentQuest;
 
     [Header("Current Recipe Info")]
-    [SerializeField]
-    private Text _recipeNameText;
-    [SerializeField]
-    private Text[] _ingredientNameText = new Text[INGREDIENT_SLOT_COUNT];
+    [SerializeField] private Text _recipeNameText;
+    [SerializeField] private Text[] _ingredientNameText = new Text[INGREDIENT_SLOT_COUNT];
 
     //내부 변수
     private int _ingredientCount;
@@ -69,7 +55,7 @@ public class PotionBrewer : MonoBehaviour
     public int CurrentPotionQuality => _currentPotionQuality;
     public Store StoreUI => _storeUI;
     public QuestBoard Board => GameManager.GM.Board;
-    private GameManager _gameManager;
+    public Quest CurrentQuest => _currentQuest;
 
     void Start()
     {

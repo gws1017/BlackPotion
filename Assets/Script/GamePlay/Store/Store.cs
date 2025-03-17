@@ -16,16 +16,12 @@ public class Store : MonoBehaviour
     }
 
     [Header("Compnent")]
-    [SerializeField]
-    private Canvas _canvas;
+    [SerializeField] private Canvas _canvas;
 
     [Header("UI")]
-    [SerializeField]
-    private Text _titleText;
-    [SerializeField]
-    private Text _nextText;
-    [SerializeField]
-    private Button _nextButton;
+    [SerializeField] private Text _titleText;
+    [SerializeField] private Text _nextText;
+    [SerializeField] private Button _nextButton;
 
     [Header("Purchase UI")]
     public GameObject PurchaseUI;
@@ -34,15 +30,11 @@ public class Store : MonoBehaviour
     public Text ConfirmText;
 
     [Header("Store")]
-    [SerializeField]
-    private GameObject _itemListObject;
-    [SerializeField]
-    private GameObject _itemSlotPrefab;
+    [SerializeField] private GameObject _itemListObject;
+    [SerializeField] private GameObject _itemSlotPrefab;
     private List<GameObject> _itemSlotsList;
-    [SerializeField]
-    List<int> _itemIdList;
-    [SerializeField]
-    private StoreType _storeType;
+    [SerializeField] List<int> _itemIdList;
+    [SerializeField] private StoreType _storeType;
 
     public StoreType SType => _storeType;
     void Start()

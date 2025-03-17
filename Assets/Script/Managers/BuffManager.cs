@@ -24,20 +24,14 @@ public enum BuffType
 
 public class BuffManager : MonoBehaviour
 {
-    [SerializeField]
-    private Dictionary<int, List<BuffObject>> _buffDictionary;
+    [SerializeField] private Dictionary<int, List<BuffObject>> _buffDictionary;
 
-    [SerializeField]
-    private GameObject _buffUIPrefab;
-    [SerializeField]
-    private Button _buffListButton;
-    [SerializeField]
-    private GameObject _buffListUI;
+    [SerializeField] private GameObject _buffUIPrefab;
+    [SerializeField] private Button _buffListButton;
+    [SerializeField] private GameObject _buffListUI;
 
-    [SerializeField] 
-    private Vector2 uiStartPosition = new Vector2(-40, -10);
-    [SerializeField] 
-    private int uiSpacing = 40;
+    [SerializeField] private Vector2 uiStartPosition = new Vector2(-40, -10);
+    [SerializeField] private int uiSpacing = 40;
 
     //Getter
     public int GetStateFromBuffId(int id) =>ReadJson._dictBuff[id].buffState;

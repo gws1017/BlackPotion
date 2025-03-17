@@ -18,64 +18,38 @@ public class QuestBoard : MonoBehaviour
         Highlight = -1
     }
 
-    //UI
-    [SerializeField]
-    private GameObject _curtainPanel;
-    
+    [Header("UI")]
+    [SerializeField] private GameObject _curtainPanel;
+    [ReadOnly] public float _layerOffset;
+    [ReadOnly] public bool _CanActiveSelectEffect = true;
 
-    [ReadOnly]
-    public float _layerOffset;
-
-    //Quest 저장 목록
-    [ReadOnly, SerializeField]
-    private Dictionary<ZLayer, List<GameObject>> _questList;
-    //수락 Quest 목록
-    [SerializeField]
-    private List<Quest> _acceptQuestList;
-
-    //Quest 결과
+    [Header("Quest")]
+    [ReadOnly, SerializeField] private Dictionary<ZLayer, List<GameObject>> _questList;
+    [SerializeField] private List<Quest> _acceptQuestList;
+    [SerializeField] private GameObject _questPrefab;
     public Dictionary<Quest, bool> _questResultDict;
-
-    //보유 / 미보유 레시피 목록
-    private List<int> _acceptableQuestList;
-    private List<int> _unAcceptableQuestList;
-
-    //의뢰 프리펩
-    [SerializeField]
-    private GameObject _questPrefab;
-
-    [SerializeField]
-    private int _maxLoopCount;//충돌 검사 횟수
-    [SerializeField]
-    private float _zRotRandRange; //Quest 회전 범위
-    [SerializeField]
-    private int _maxQuestCnt; //의뢰 최대 생성수
-    private Vector3 _meshExtents;
-
-    [ReadOnly]
-    public bool _CanActiveSelectEffect = true;
+    private List<int> _acceptableQuestList; //보유 레시피
+    private List<int> _unAcceptableQuestList; //미보유 레시피
 
     [Header("Current Quest")]
-    [SerializeField]
-    private Button _questBoardButton;
-    [SerializeField]
-    private Button _questCanelButton;
-    [SerializeField]
-    private Button _questNextButton;
-    [SerializeField]
-    private Button _currentQuestButton;
-    [SerializeField]
-    private Outline _buttonActiveOuline;
-    [SerializeField]
-    private GameObject _currentQuestUIObject;
-    [SerializeField]
-    private float _oulineEffectSpeed = 1;
-    [SerializeField]
-    private float _currentQuestPositionX = 1.5f;
-    [SerializeField]
-    private Quaternion _currentQuestRotation = Quaternion.Euler(0, 0, -10);
+    [SerializeField] private Button _questBoardButton;
+    [SerializeField] private Button _questCanelButton;
+    [SerializeField] private Button _questNextButton;
+    [SerializeField] private Button _currentQuestButton;
+    [SerializeField] private Outline _buttonActiveOuline;
+    [SerializeField] private GameObject _currentQuestUIObject;
+    [SerializeField] private float _oulineEffectSpeed = 1;
+    [SerializeField] private float _currentQuestPositionX = 1.5f;
+    [SerializeField] private Quaternion _currentQuestRotation = Quaternion.Euler(0, 0, -10);
 
-    public GameObject QuestPrefab { get=> _questPrefab; }
+    [Header("Quest Create Setting")]
+    [SerializeField] private int _maxLoopCount;//충돌 검사 횟수
+    [SerializeField] private float _zRotRandRange; //Quest 회전 범위
+    [SerializeField] private int _maxQuestCnt; //의뢰 최대 생성수
+    private Vector3 _meshExtents;
+
+    //Getter Setter
+    public GameObject QuestPrefab { get => _questPrefab; }
 
     public int CurrentAcceptQuestCount => _acceptQuestList.Count;
 

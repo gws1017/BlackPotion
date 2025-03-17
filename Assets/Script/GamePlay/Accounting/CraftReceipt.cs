@@ -7,29 +7,21 @@ public class CraftReceipt : MonoBehaviour
 {
     //Component
     [Header("Component")]
-    [SerializeField]
-    private Canvas _canvas;
-    [SerializeField]
-    private Store _storeUI;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Store _storeUI;
     private PlayInfo _playInfo;
     private QuestBoard _board;
 
     //UI
     [Header("UI")]
-    [SerializeField]
-    private Button _nextButton;
-    [SerializeField]
-    private Text[] _potionNameText;
-    [SerializeField]
-    private Text[] _moneyText;
-    [SerializeField]
-    private Image _resultImage;
-    [SerializeField]
-    private Text _targetMoneyText;
+    [SerializeField] private Button _nextButton;
+    [SerializeField] private Text[] _potionNameText;
+    [SerializeField] private Text[] _moneyText;
+    [SerializeField] private Image _resultImage;
+    [SerializeField] private Text _targetMoneyText;
 
     [Header("Setting Variable")]
-    [SerializeField]
-    private int[] _targetMoney;
+    [SerializeField] private int[] _targetMoney;
     private bool _isTargetAchieved;
     private Sprite _targetSuccessSprite;
     private Sprite _targetFailSprite;

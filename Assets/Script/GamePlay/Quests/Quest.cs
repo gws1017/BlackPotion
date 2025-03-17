@@ -6,47 +6,33 @@ public class Quest : MonoBehaviour
 {
     //컴포넌트
     private Canvas _canvas;
+    protected QuestBoard _board;
 
-    //UI
-    [SerializeField]
-    protected Text _questText;
-    [SerializeField]
-    protected Text _potionQualityValue;
-    [SerializeField]
-    protected Image _gradeColor;
-    [SerializeField]
-    protected Image _potionImage;
-    [SerializeField]
-    private Button _openDetailQuestButton;
+    [Header("UI")]
+    [SerializeField] protected Text _questText;
+    [SerializeField] protected Text _potionQualityValue;
+    [SerializeField] protected Image _gradeColor;
+    [SerializeField] protected Image _potionImage;
+    [SerializeField] private Button _openDetailQuestButton;
 
-    //JSON에서 읽은 데이터
-    [ReadOnly,SerializeField]
-    protected int _questID;
-    [SerializeField]
-    protected int _minPotionQuality;
-    [SerializeField]
-    protected int _maxPotionQuality;
-    [ReadOnly,SerializeField]
-    protected int _reqPotionQuality;
-    [SerializeField]
-    protected int _questGrade;
+    [Header("Quest Data")]
+    [ReadOnly,SerializeField] protected int _questID;
+    [SerializeField] protected int _minPotionQuality;
+    [SerializeField] protected int _maxPotionQuality;
+    [ReadOnly,SerializeField] protected int _reqPotionQuality;
+    [SerializeField] protected int _questGrade;
     protected QuestInfo _questInfo;
     protected PotionInfo _potionInfo;
 
     private Vector3 _originPosition;
     private Quaternion _originRotation;
-
-    private bool _isRestart;
-
     private QuestBoard.ZLayer _layer;
-
-    //의뢰 상세내용 오브젝트
-    [SerializeField]
-    private GameObject _detailQuestPrefab;
-    private GameObject _detailQuestObject;
-
-    //비활성화된 퀘스트 체크
+    private bool _isRestart;
     private bool _disableQuest = false;
+
+    [Header("Deatil Quest")]
+    [SerializeField] private GameObject _detailQuestPrefab;
+    private GameObject _detailQuestObject;
 
     //Getter&Setter
     public float OriginZ => _originPosition.z; 
@@ -119,9 +105,7 @@ public class Quest : MonoBehaviour
         }
     }
 
-    protected QuestBoard _board;
     protected QuestBoard Board => _board ?? (_board = GameManager.GM.Board);
-
     public QuestInfo QInfo => _questInfo;
     public PotionInfo PInfo => _potionInfo;
 
@@ -143,18 +127,14 @@ public class Quest : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (_disableQuest)
-            return;
-        if(Board._CanActiveSelectEffect)
-            Board.QuestDisableEffectOn(gameObject);
+        if (_disableQuest || !Board._CanActiveSelectEffect) return;
+        Board.QuestDisableEffectOn(gameObject);
     }
 
     private void OnMouseExit()
     {
-        if (_disableQuest)
-            return;
-        if (Board._CanActiveSelectEffect)
-            Board.QuestDisableEffectOff();
+        if (_disableQuest || !Board._CanActiveSelectEffect) return;
+        Board.QuestDisableEffectOff();
     }
 
     public void InitializeQuestFromID(int id)

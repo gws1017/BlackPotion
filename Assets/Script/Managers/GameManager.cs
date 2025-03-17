@@ -20,8 +20,7 @@ public class GameManager : MonoBehaviour
     private BuffManager _buffManager;
 
     public List<GameObject> destroyObjects;
-    [SerializeField]
-    private Button _questStartButton;
+    [SerializeField] private Button _questStartButton;
 
     //Getter Setter
 

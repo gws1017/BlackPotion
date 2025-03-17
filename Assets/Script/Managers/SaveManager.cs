@@ -22,8 +22,7 @@ public class SaveManager : MonoBehaviour
 
     private const string SaveKey = "Save";
 
-    [SerializeField]
-    private SaveData _saveData = new SaveData();
+    [SerializeField] private SaveData _saveData = new SaveData();
 
 
     void Start()

@@ -14,42 +14,28 @@ public class IngredientSlot : MonoBehaviour
     public const int MAX_NUMBER = 10;
     public const int SUM_NUMBER = ((MAX_NUMBER - 1) * MAX_NUMBER) / 2;
 
-    //Component
     [Header("Component")]
-    [SerializeField]
-    private Canvas _canvas;
-    [SerializeField]
-    private ParticleSystem _particle;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private ParticleSystem _particle;
 
-    //UI
     [Header("UI")]
-    [SerializeField]
-    private Button _inputButton;
-    [SerializeField] 
-    private Text _inputButtonText;
-    [SerializeField]
-    private Button _inputInfoButton;
-    [SerializeField]
-    private Image _ingredientImage;
-    [SerializeField]
-    private Image[] _inputInfoImages;
-    [SerializeField]
-    private GameObject _inputInfoUIInstance;
-    [SerializeField]
-    private GameObject _ingredientInfoUIPrefab;
+    [SerializeField] private Button _inputButton;
+    [SerializeField] private Text _inputButtonText;
+    [SerializeField] private Button _inputInfoButton;
+    [SerializeField] private Image _ingredientImage;
+    [SerializeField] private Image[] _inputInfoImages;
+    [SerializeField] private GameObject _inputInfoUIInstance;
+    [SerializeField] private GameObject _ingredientInfoUIPrefab;
     private GameObject _ingredientInfoUIInstance;
 
-    [SerializeField]
-    private int _ingredientAmount;
+    [SerializeField] private int _ingredientAmount;
     private int _ingredientId;
 
     private PotionBrewer _brewer;
     private int _slotId;
-
-    //현재까지 투입된 수량
-    private Dictionary<int,int> _ingredientCountDict = new Dictionary<int,int>();
-    //각 숫자가 최대 투입 가능 여부 (자연수)
-    private List<bool> _isIngredientFullList = new List<bool>(14);
+    
+    private Dictionary<int,int> _ingredientCountDict = new Dictionary<int,int>(); //현재까지 투입된 수량
+    private List<bool> _isIngredientFullList = new List<bool>(14);//각 숫자가 최대 투입 가능 여부 (자연수)
 
     //Getter Setter
     public int IngredientAmount { get=>_ingredientAmount; set => _ingredientAmount = value; }

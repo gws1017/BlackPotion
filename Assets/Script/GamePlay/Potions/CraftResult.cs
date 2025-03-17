@@ -10,65 +10,39 @@ public class CraftResult : MonoBehaviour
 
     private const float MAX_QUALITY_VALUE = 100f;
 
-    //Component
-    [SerializeField]
-    private Canvas _canvas;
+    [Header("Component")]
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Animator _animatorLeft;
+    [SerializeField] private Animator _animatorRight;
+    [SerializeField] private GameObject _rewardUIInstance;
+    [SerializeField] private GameObject _resultCheckUIInstance;
     private PotionBrewer _brewer;
-    [SerializeField]
-    private Animator _animatorLeft;
-    [SerializeField]
-    private Animator _animatorRight;
-    [SerializeField]
-    private GameObject _rewardUIInstance;
-    [SerializeField]
-    private GameObject _resultCheckUIInstance;
 
     //UI
     [Header("Reward UI")]
-    [SerializeField]
-    private GameObject _rewardButtons;
-    [SerializeField]
-    private Text _questResultText;
-    [SerializeField]
-    private Text _moneyValueText;
-    [SerializeField]
-    private Text _recipeNameText;
-    [SerializeField]
-    private Text _selectText;
-    [SerializeField]
-    private Text _potionQualityValueText;
-    [SerializeField]
-    private Text _resultText;
-    [SerializeField]
-    private Button _selectButton;
-    [SerializeField]
-    private Button _moneyButton;
-    [SerializeField]
-    private Button _recipeButton;
-    [SerializeField]
-    private Outline _moneyOutline;
-    [SerializeField]
-    private Outline _recipeOutline;
+    [SerializeField] private GameObject _rewardButtons;
+    [SerializeField] private Text _questResultText;
+    [SerializeField] private Text _moneyValueText;
+    [SerializeField] private Text _recipeNameText;
+    [SerializeField] private Text _selectText;
+    [SerializeField] private Text _potionQualityValueText;
+    [SerializeField] private Text _resultText;
+    [SerializeField] private Button _selectButton;
+    [SerializeField] private Button _moneyButton;
+    [SerializeField] private Button _recipeButton;
+    [SerializeField] private Outline _moneyOutline;
+    [SerializeField] private Outline _recipeOutline;
 
     [Header("Result Check UI")]
-    [SerializeField]
-    private Image _potionImage;
-    [SerializeField]
-    private Text _potionName;
-    [SerializeField]
-    private Text _potionGrade;
-    [SerializeField]
-    private Text _potionQuality;
-    [SerializeField]
-    private Text _potionMinQuality;
-    [SerializeField]
-    private Text _potionMaxQuality;
-    [SerializeField]
-    private Slider _potionQualityProgressBar;
-    [SerializeField]
-    private Button _restartButton;
-    [SerializeField]
-    private Button _nextButton;
+    [SerializeField] private Image _potionImage;
+    [SerializeField] private Text _potionName;
+    [SerializeField] private Text _potionGrade;
+    [SerializeField] private Text _potionQuality;
+    [SerializeField] private Text _potionMinQuality;
+    [SerializeField] private Text _potionMaxQuality;
+    [SerializeField] private Slider _potionQualityProgressBar;
+    [SerializeField] private Button _restartButton;
+    [SerializeField] private Button _nextButton;
     private string _potionCraftGrade;
 
     //내부 변수

@@ -6,23 +6,14 @@ using UnityEngine.UI;
 
 public class DetailQuest : Quest
 {
-    //UI
-    [SerializeField]
-    private Text _potionName;
-    [SerializeField]
-    private Text _rewardMoney;
-    [SerializeField]
-    private Text _currentAcceptQuest;
-    [SerializeField]
-    private Image _questGradeMark;
-    [SerializeField]
-    private Image _rewardRecipe;
-
-    [SerializeField]
-    private Button _quitButton;
-    [SerializeField]
-    private Button _acceptButton;
-
+    [Header("UI")]
+    [SerializeField] private Text _potionName;
+    [SerializeField] private Text _rewardMoney;
+    [SerializeField] private Text _currentAcceptQuest;
+    [SerializeField] private Image _questGradeMark;
+    [SerializeField] private Image _rewardRecipe;
+    [SerializeField] private Button _quitButton;
+    [SerializeField] private Button _acceptButton;
 
     //ºÎ¸ð Äù½ºÆ®
     private Quest _parentQuest;
