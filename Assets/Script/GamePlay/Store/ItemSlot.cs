@@ -15,6 +15,7 @@ public class ItemSlot : MonoBehaviour
 
     public Store ParentStore;
     private PlayInfo _playInfo;
+    [SerializeField] private Image _soldOutImage;
 
     void Start()
     {
@@ -42,6 +43,7 @@ public class ItemSlot : MonoBehaviour
 
         ParentStore.PurchaseCancelButton.onClick.RemoveAllListeners();
         ParentStore.PurchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
+        _soldOutImage.gameObject.SetActive(false);
     }
 
     public void ShowPurchaseUI()
@@ -77,6 +79,7 @@ public class ItemSlot : MonoBehaviour
                 GameManager.GM.BM.AddBuff(ItemId);
             }
             _playInfo.ConsumeGold(ItemCost);
+            _soldOutImage.gameObject.SetActive(true);
             ItemSlotButton.interactable = false;
             ItemNameText.text = "¸ÅÁø";
         }
