@@ -7,7 +7,7 @@ using static PlayInfo;
 public class PlayInfo : MonoBehaviour
 {
 
-    public const string TARGET_SUCCESS_IMAGE = "Images/targetSuccess";
+    public const string TARGET_SUCCESS_IMAGE = "Images/targetSucc";
     public const string TARGET_FAIL_IMAGE = "Images/targetFail";
 
     public const int RESTART_GOLD = 50; //¿ÁΩ√¿€ ∞ÒµÂ

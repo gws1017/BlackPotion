@@ -201,6 +201,8 @@ public class QuestBoard : MonoBehaviour
 
         if (_acceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
             CurrentQuestOutlineEffectOn();
+        else
+            CurrentQuestOutlineEffectOff();
 
         if (_questList.TryGetValue(quest.QuestLayer, out List<GameObject> questLayerList))
         {
@@ -250,7 +252,7 @@ public class QuestBoard : MonoBehaviour
     {
         if (AcceptQuestList.Count <= 0) return;
 
-        if (AcceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
+        if (AcceptQuestList.Count <= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
             CurrentQuestOutlineEffectOff();
 
         Quest quest = AcceptQuestList[0];
@@ -376,7 +378,8 @@ public class QuestBoard : MonoBehaviour
 
     public void CurrentQuestOutlineEffectOff()
     {
-        StopCoroutine(BlinkCurrentQuestOutline());
+        StopAllCoroutines();
+        _buttonActiveOuline.effectColor = Color.clear;
     }
     public void CurrentQuestOutlineEffectOn()
     {
