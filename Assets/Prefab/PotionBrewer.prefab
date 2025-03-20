@@ -450,7 +450,7 @@ GameObject:
   - component: {fileID: 588830065209283241}
   - component: {fileID: 8037203346361426064}
   m_Layer: 5
-  m_Name: TitleText
+  m_Name: QuestTitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -936,6 +936,7 @@ MonoBehaviour:
   _potionImage: {fileID: 8005663644062160458}
   _potionNameText: {fileID: 2498289147838701295}
   _questText: {fileID: 317060454097061578}
+  _questTitleText: {fileID: 8037203346361426064}
   _reqQualityValueText: {fileID: 1282843859134050742}
   _currentQuestIndex: 0
   _recipeNameText: {fileID: 2844189992398345291}
@@ -943,6 +944,10 @@ MonoBehaviour:
   - {fileID: 7897809678396756168}
   - {fileID: 6896896130605207406}
   - {fileID: 1716711509194935950}
+  _inputIngredientNameText:
+  - {fileID: 5637526033653522242}
+  - {fileID: 8676218325813144775}
+  - {fileID: 5450441154054447606}
 --- !u!1 &3120342671664970869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,7 +1195,7 @@ GameObject:
   - component: {fileID: 6125840210473395335}
   - component: {fileID: 8676218325813144775}
   m_Layer: 5
-  m_Name: Ratio1CategoryText
+  m_Name: Ratio2CategoryText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1348,7 +1353,7 @@ GameObject:
   - component: {fileID: 246334227397270382}
   - component: {fileID: 2844189992398345291}
   m_Layer: 5
-  m_Name: TitleText
+  m_Name: RecipeTitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1794,7 +1799,7 @@ GameObject:
   - component: {fileID: 8256091420283236466}
   - component: {fileID: 5450441154054447606}
   m_Layer: 5
-  m_Name: Ratio1CategoryText
+  m_Name: Ratio3CategoryText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

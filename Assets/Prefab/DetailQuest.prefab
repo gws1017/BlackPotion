@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 1958902376298058783}
   - component: {fileID: 6920683384095722381}
   m_Layer: 5
-  m_Name: Potion Quality Value
+  m_Name: Potion Capacity Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1064,13 +1064,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _questText: {fileID: 6988915238865507673}
-  _potionQualityValue: {fileID: 6920683384095722381}
+  _potionCapacityValue: {fileID: 6920683384095722381}
   _gradeColor: {fileID: 5314362751610805358}
   _potionImage: {fileID: 5720520434573895519}
+  _openDetailQuestButton: {fileID: 0}
   _questID: 0
-  _minPotionQuality: 0
-  _maxPotionQuality: 0
-  _reqPotionQuality: 0
+  _minPotionCapacity: 0
+  _maxPotionCapacity: 0
+  _reqPotionCapacity: 0
   _questGrade: 0
   _detailQuestPrefab: {fileID: 0}
   _potionName: {fileID: 7014979779916151695}
@@ -1365,7 +1366,7 @@ GameObject:
   - component: {fileID: 4014062964766247432}
   - component: {fileID: 8580823918827313180}
   m_Layer: 5
-  m_Name: Potion Quality Text
+  m_Name: Potion Capacity Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

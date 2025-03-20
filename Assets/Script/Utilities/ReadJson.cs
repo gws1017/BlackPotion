@@ -6,19 +6,13 @@ using UnityEngine;
 public struct QuestInfo
 {
     public int questId;
+    public string questName;
+    public int explainTextId;
     public int questGrade;
-    public string questText;
     public int potionId;
-    public int money;
-    public int recipeGrade;
-    public int minQuality;
-    public int maxQuality;
-}
-
-[System.Serializable]
-public struct QuestData
-{
-    public List<QuestInfo> root;
+    public int minCapacity;
+    public int maxCapacity;
+    public int[] reward;
 }
 
 [System.Serializable]
@@ -28,16 +22,10 @@ public struct PotionInfo
     public string potionName;
     public int potionGrade;
     public int ingredientCount;
-    public string[] ingredientName;
+    public int[] ingredientIdList;
     public int[] maxMount;
     public int recipeCost;
     public string potionImage;
-}
-
-[System.Serializable]
-public struct PotionData
-{
-    public List<PotionInfo> root;
 }
 
 [System.Serializable]
@@ -50,22 +38,10 @@ public struct MaterialInfo
 }
 
 [System.Serializable]
-public struct MaterialData
-{
-    public List<MaterialInfo> root;
-}
-
-[System.Serializable]
 public struct QuestTextInfo
 {
     public int questTextID;
     public string questContent;
-}
-
-[System.Serializable]
-public struct QuestTextData
-{
-    public List<QuestTextInfo> root;
 }
 
 [System.Serializable]
@@ -77,7 +53,35 @@ public struct BuffInfo
     public string buffImage;
     public int buffState;
     public string buffExplain;
+    public int buffType;
+    public int buffTarget;
 }
+
+[System.Serializable]
+public struct QuestData
+{
+    public List<QuestInfo> root;
+}
+
+[System.Serializable]
+public struct PotionData
+{
+    public List<PotionInfo> root;
+}
+
+[System.Serializable]
+public struct MaterialData
+{
+    public List<MaterialInfo> root;
+}
+
+[System.Serializable]
+public struct QuestTextData
+{
+    public List<QuestTextInfo> root;
+}
+
+
 [System.Serializable]
 public struct BuffData
 {

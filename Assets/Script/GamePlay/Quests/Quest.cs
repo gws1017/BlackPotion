@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 
 public class Quest : MonoBehaviour
@@ -10,18 +11,19 @@ public class Quest : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] protected Text _questText;
-    [SerializeField] protected Text _potionQualityValue;
+    [SerializeField] protected Text _potionCapacityValue;
     [SerializeField] protected Image _gradeColor;
     [SerializeField] protected Image _potionImage;
     [SerializeField] private Button _openDetailQuestButton;
 
     [Header("Quest Data")]
     [ReadOnly,SerializeField] protected int _questID;
-    [SerializeField] protected int _minPotionQuality;
-    [SerializeField] protected int _maxPotionQuality;
-    [ReadOnly,SerializeField] protected int _reqPotionQuality;
-    [SerializeField] protected int _questGrade;
+    [SerializeField] protected int _minPotionCapacity;
+    [SerializeField] protected int _maxPotionCapacity;
+    [ReadOnly,SerializeField] protected int _reqPotionCapacity;
+    [SerializeField] protected PlayInfo.QuestGrade _questGrade;
     protected QuestInfo _questInfo;
+    protected QuestTextInfo _questTextInfo;
     protected PotionInfo _potionInfo;
 
     private Vector3 _originPosition;
@@ -41,25 +43,26 @@ public class Quest : MonoBehaviour
     public Quaternion OriginRotation { get => _originRotation; set => _originRotation = value; }
     public bool IsDisable { get => _disableQuest; set => _disableQuest = value; }
     public int QuestID { get=> _questID; set => _questID = value; }
-    public int QuestGrade => _questGrade;
+    public PlayInfo.QuestGrade QuestGrade => _questGrade;
     //의뢰 보상
-    public int QuestRewardMoney => QInfo.money;
-    public int QuestRewardRecipeGrade => QInfo.recipeGrade;
+    public int QuestRewardMoney => QInfo.reward[0];
+    public int QuestRewardRecipeGrade => QInfo.reward[1];
 
-    public string QuestText { get => _questInfo.questText;  set => _questText.text = value; }
+    public string QuestName { get => QInfo.questName; }
+    public string QuestText { get => _questText.text;  set => _questText.text = value; }
 
-    public int RequirePotionQuality => _reqPotionQuality;
+    public int RequirePotionCapacity => _reqPotionCapacity;
     public string PotionName => _potionInfo.potionName;
 
-    public string PotionQualityValue
+    public string PotionCapacityValue
     {
         get
         {
-            if(_potionQualityValue == null)
+            if(_potionCapacityValue == null)
             {
-               return $"({_minPotionQuality} ~ {_maxPotionQuality} )";
+               return $"({_minPotionCapacity} ~ {_maxPotionCapacity} )";
             }
-            return _potionQualityValue.text;
+            return _potionCapacityValue.text;
         }
     }
 
@@ -147,6 +150,7 @@ public class Quest : MonoBehaviour
     protected void InitializeQuestInfo()
     {
         _questInfo = ReadJson._dictQuest[_questID];
+        _questTextInfo = ReadJson._dictQuestText[_questInfo.explainTextId];
     }
 
     protected void CopyQuestInfo(Quest quest)
@@ -157,15 +161,15 @@ public class Quest : MonoBehaviour
     virtual protected void InitializeData()
     {
         //데이터 초기화
-        _questGrade = _questInfo.questGrade;
-        _minPotionQuality = _questInfo.minQuality;
-        _maxPotionQuality = _questInfo.maxQuality;
-        _reqPotionQuality = Random.Range(_minPotionQuality, _maxPotionQuality);
+        _questGrade = (PlayInfo.QuestGrade)_questInfo.questGrade;
+        _minPotionCapacity = _questInfo.minCapacity;
+        _maxPotionCapacity = _questInfo.maxCapacity;
+        _reqPotionCapacity = Random.Range(_minPotionCapacity, _maxPotionCapacity);
         _potionInfo = ReadJson._dictPotion[_questInfo.potionId];
 
         //UI 업데이트
-        _questText.text = _questInfo.questText;
-        _potionQualityValue.text = $"( {_minPotionQuality} ~ {_maxPotionQuality}  )";
+        _questText.text = _questTextInfo.questContent;
+        _potionCapacityValue.text = $"( {_minPotionCapacity} ~ {_maxPotionCapacity}  )";
         CheckQuestGrade();
         _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);
     }
@@ -174,18 +178,16 @@ public class Quest : MonoBehaviour
     {
         switch (_questGrade)
         {
-            case 1:
+            case PlayInfo.QuestGrade.Small:
                 _gradeColor.color = Color.black;
                 break;
-            case 2:
+            case PlayInfo.QuestGrade.Middle:
                 _gradeColor.color = Color.magenta;
                 break;
-            case 3:
+            case PlayInfo.QuestGrade.Large:
                 _gradeColor.color = Color.yellow;
                 break;
-            case 4:
-                _gradeColor.color = Color.red;
-                break;
+
         }
     }
 

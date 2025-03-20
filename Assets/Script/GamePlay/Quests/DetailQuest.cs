@@ -38,8 +38,8 @@ public class DetailQuest : Quest
         base.InitializeData();
 
         //상세의뢰에만 있는 추가적인 데이터를 업데이트
-        _potionName.text = _potionInfo.potionName;
-        _rewardMoney.text = _questInfo.money.ToString();
+        _potionName.text = PotionName;
+        _rewardMoney.text = QuestRewardMoney.ToString();
 
         ShowRewardRecipeGrade();
         UpdateQuestGradeMark();
@@ -69,7 +69,7 @@ public class DetailQuest : Quest
     //레시피 보상 등급에 따라 색으로 표기
     private void ShowRewardRecipeGrade()
     {
-        switch (_questInfo.recipeGrade)
+        switch (QuestRewardRecipeGrade)
         {
             case 1:
                 _rewardRecipe.color = Color.black;
@@ -92,22 +92,17 @@ public class DetailQuest : Quest
     {
         switch (_questGrade)
         {
-            case 1:
+            case PlayInfo.QuestGrade.Small:
                 _gradeColor.color = Color.black;
                 _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkSmall");
                 break;
-            case 2:
+            case PlayInfo.QuestGrade.Middle:
                 _gradeColor.color = Color.magenta;
                 _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkMid");
                 break;
-            case 3:
+            case PlayInfo.QuestGrade.Large:
                 _gradeColor.color = Color.yellow;
                 _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkLarge");
-
-                break;
-            case 4:
-                _gradeColor.color = Color.red;
-                _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkXLarge");
                 break;
         }
     }

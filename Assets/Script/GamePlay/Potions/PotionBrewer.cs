@@ -27,6 +27,7 @@ public class PotionBrewer : MonoBehaviour
     [SerializeField] private Image _potionImage;
     [SerializeField] private Text _potionNameText;
     [SerializeField] private Text _questText;
+    [SerializeField] private Text _questTitleText;
     [SerializeField] private Text _reqQualityValueText;
     [SerializeField] private int _currentQuestIndex;
     private Quest _currentQuest;
@@ -34,6 +35,7 @@ public class PotionBrewer : MonoBehaviour
     [Header("Current Recipe Info")]
     [SerializeField] private Text _recipeNameText;
     [SerializeField] private Text[] _ingredientNameText = new Text[INGREDIENT_SLOT_COUNT];
+    [SerializeField] private Text[] _inputIngredientNameText = new Text[INGREDIENT_SLOT_COUNT];
 
     //내부 변수
     private int _ingredientCount;
@@ -80,7 +82,7 @@ public class PotionBrewer : MonoBehaviour
     {
         _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionQuality);
 
-        if (_currentQuest.RequirePotionQuality > _currentPotionQuality)
+        if (_currentQuest.RequirePotionCapacity > _currentPotionQuality)
             return false;
 
         foreach (var slot in _slots)
@@ -122,7 +124,7 @@ public class PotionBrewer : MonoBehaviour
 
         _craftResult.UpdateCraftResultUI();
         _craftResult.PotionQuality = _currentPotionQuality;
-        _reqQualityValueText.text = _currentQuest.RequirePotionQuality.ToString();
+        _reqQualityValueText.text = _currentQuest.RequirePotionCapacity.ToString();
     }
 
     private void ProcessCraftRetry()
@@ -190,13 +192,20 @@ public class PotionBrewer : MonoBehaviour
             _slots[i].gameObject.SetActive(true);
             _slots[i].InitializeSlot();
             _slots[i].EnableInputButton();
+            int ingredientId = potionInfo.ingredientIdList[i];
 
-            _ingredientNameText[i].text = (potionInfo.ingredientName[i] == "x")
-                ? string.Empty
-                : $"{uiIndex++}. {potionInfo.ingredientName[i]}";
+            if (ingredientId != 0)
+            {
+                _inputIngredientNameText[i].text = ReadJson._dictMaterial[ingredientId].materialName;
+                _ingredientNameText[i].text = $"{uiIndex++}. {_inputIngredientNameText[i].text}";
+
+            }
+            else
+                _ingredientNameText[i].text = string.Empty;
+
 
             _ingredientInputAmountText[i].color = Color.black;
-            _maxAmount[i] = potionInfo.maxMount[i] * _currentQuest.QuestGrade;
+            _maxAmount[i] = potionInfo.maxMount[i] * ((int)CurrentQuest.QuestGrade + 1);
             _ingredientInputAmountText[i].text = $"{_currentAmount[i]} / {_maxAmount[i]}";
         }
 
@@ -224,9 +233,10 @@ public class PotionBrewer : MonoBehaviour
     private void UpdateQuestUIInfo()
     {
         _questText.text = _currentQuest.QuestText;
+        _questTitleText.text = _currentQuest.QuestName;
         _potionImage.sprite = _currentQuest.PotionImage;
         _potionNameText.text = _currentQuest.PotionName;
-        _reqQualityValueText.text = _currentQuest.PotionQualityValue;
+        _reqQualityValueText.text = _currentQuest.PotionCapacityValue;
         _craftButton.enabled = true;
     }
 

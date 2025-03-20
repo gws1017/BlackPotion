@@ -1,41 +1,41 @@
 {
   "root": [
     {
-      "potionId": 1001,
+      "potionId": 2001,
       "potionName": "회복약",
       "potionGrade": 1,
       "ingredientCount": 1,
-      "ingredientName": ["x", "약초", "x"],
+      "ingredientIdList": [0,3002,0],
       "maxMount": [ 0, 21, 0 ],
       "recipeCost": 0,
       "potionImage": "Images/redpotion"
     },
     {
-      "potionId": 1002,
+      "potionId": 2002,
       "potionName": "해충제",
       "potionGrade": 1,
       "ingredientCount": 1,
-      "ingredientName": [ "x", "해충약", "x" ],
-      "maxMount": [ 0, 21, 0 ],
+      "ingredientIdList": [ 0, 3003, 0 ],
+      "maxMount": [ 0, 32, 0 ],
       "recipeCost": 45,
       "potionImage": "Images/redpotion"
     },
     {
-      "potionId": 1003,
+      "potionId": 2003,
       "potionName": "희귀 회복약",
       "potionGrade": 2,
       "ingredientCount": 2,
-      "ingredientName": [ "약초", "x", "허브" ],
+      "ingredientIdList": [ 3002, 0, 3001 ],
       "maxMount": [ 15, 0, 17 ],
       "recipeCost": 75,
       "potionImage": "Images/redpotion"
     },
     {
-      "potionId": 1004,
+      "potionId": 2004,
       "potionName": "환약",
       "potionGrade": 3,
       "ingredientCount": 3,
-      "ingredientName": [ "허브", "약초", "가루약" ],
+      "ingredientIdList": [ 3001, 3002,3004 ],
       "maxMount": [ 13, 16, 16 ],
       "recipeCost": 45,
       "potionImage": "Images/redpotion"

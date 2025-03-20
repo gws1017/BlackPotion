@@ -15,11 +15,11 @@ public class BuffObject
 
 public enum BuffType
 {
-    EvenNumber = 4001,
-    OddNumber = 4002,
-    PlusPowder = 4003,
-    UpgradeBrew = 4004,
-    StrangeBrew = 4005
+    EvenNumber = 5001,
+    OddNumber = 5002,
+    PlusPowder = 5003,
+    UpgradeBrew = 5004,
+    StrangeBrew = 5005
 }
 
 public class BuffManager : MonoBehaviour

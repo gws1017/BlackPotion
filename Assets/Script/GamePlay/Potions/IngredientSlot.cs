@@ -58,10 +58,12 @@ public class IngredientSlot : MonoBehaviour
             _ingredientImage.transform.position + offset, _ingredientImage.transform.rotation);
 
         Text uiText = _ingredientInfoUIInstance.GetComponentInChildren<Text>();
-        var names = _brewer?.CurrentQuest?.PInfo.ingredientName;
+        
 
-        if (uiText != null && names != null)
-            uiText.text = names[SlotId];
+        if (uiText != null && _ingredientId != 0)
+        {
+            uiText.text = ReadJson._dictMaterial[_ingredientId].materialName;
+        }
         else
             Debug.LogError("Null Error");
     }
@@ -74,18 +76,22 @@ public class IngredientSlot : MonoBehaviour
     public void InitializeSlot()
     {
         //투입량 수정 필요
-        IngredientAmount = SUM_NUMBER * _brewer.CurrentQuest.QuestGrade;
+        IngredientAmount = SUM_NUMBER * ((int)_brewer.CurrentQuest.QuestGrade + 1);
 
-        //DB추가전 임시 사용
-        _ingredientId = 4001;
-        _ingredientImage.sprite = Resources.Load<Sprite>(ReadJson._dictMaterial[_ingredientId].materialImage);
-
-        ParticleSystemRenderer renderer = _particle.GetComponent<ParticleSystemRenderer>();
-        Material particleMaterial = new Material(Shader.Find("Unlit/Transparent"))
+        int? ingredientId = _brewer?.CurrentQuest?.PInfo.ingredientIdList[SlotId];
+        if(ingredientId != null && ingredientId != 0)
         {
-            mainTexture = _ingredientImage.sprite.texture
-        };
-        renderer.material = particleMaterial;
+            _ingredientId = ingredientId.Value;
+            _ingredientImage.sprite = Resources.Load<Sprite>(ReadJson._dictMaterial[_ingredientId].materialImage);
+
+            ParticleSystemRenderer renderer = _particle.GetComponent<ParticleSystemRenderer>();
+            Material particleMaterial = new Material(Shader.Find("Unlit/Transparent"))
+            {
+                mainTexture = _ingredientImage.sprite.texture
+            };
+            renderer.material = particleMaterial;
+        }
+        
 
         _ingredientCountDict.Clear();
         for (int i = 1; i <= MAX_NUMBER; ++i)
@@ -109,7 +115,7 @@ public class IngredientSlot : MonoBehaviour
         _brewer.InsertIngredient(SlotId, amount);
         _ingredientCountDict[amount]++;
 
-        if (_ingredientCountDict[amount] >= _brewer.CurrentQuest.QuestGrade)
+        if (_ingredientCountDict[amount] >= ((int)_brewer.CurrentQuest.QuestGrade + 1))
         {
             _isIngredientFullList[amount] = true;
             _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
@@ -135,7 +141,7 @@ public class IngredientSlot : MonoBehaviour
         int amount = Random.Range(1, MAX_NUMBER);
 
         if (IsFullCount()) return 0;
-        while (_ingredientCountDict[amount] >= _brewer.CurrentQuest.QuestGrade)
+        while (_ingredientCountDict[amount] >= ((int)_brewer.CurrentQuest.QuestGrade + 1))
         {
             amount = Random.Range(1, MAX_NUMBER);
         }

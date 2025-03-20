@@ -18,6 +18,13 @@ public class PlayInfo : MonoBehaviour
     public const float QUEST_PENALTY_RATIO = 0.1f;
     public const float CRITICAL_SUCCESS = 1.5f; //´ë¼º°ø
 
+    public enum QuestGrade
+    {
+        Small,
+        Middle,
+        Large
+    }
+
     public struct PotionCraftGrade
     {
         public const string RANK_1 = "A";

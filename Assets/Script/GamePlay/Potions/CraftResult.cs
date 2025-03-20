@@ -186,14 +186,14 @@ public class CraftResult : MonoBehaviour
         _potionImage.sprite = questInfo.PotionImage;
         _potionName.text = questInfo.PotionName;
         _potionQuality.text = Brewer.CurrentPotionQuality.ToString();
-        _potionMinQuality.text = questInfo.QInfo.minQuality.ToString();
-        _potionMaxQuality.text = questInfo.QInfo.maxQuality.ToString();
+        _potionMinQuality.text = questInfo.QInfo.minCapacity.ToString();
+        _potionMaxQuality.text = questInfo.QInfo.maxCapacity.ToString();
 
         int currentQuality = Brewer.CurrentPotionQuality;
-        if (currentQuality < questInfo.QInfo.minQuality) 
+        if (currentQuality < questInfo.QInfo.minCapacity) 
             currentQuality = 0;
 
-        float qualityPercent = (float)(currentQuality) / (float)(questInfo.QInfo.maxQuality) * 100.0f;
+        float qualityPercent = (float)(currentQuality) / (float)(questInfo.QInfo.maxCapacity) * 100.0f;
         _potionCraftGrade = PlayInfo.CheckPotionCraftGrade(qualityPercent);
         _potionGrade.text = _potionCraftGrade;
         _potionQualityProgressBar.value = qualityPercent;
