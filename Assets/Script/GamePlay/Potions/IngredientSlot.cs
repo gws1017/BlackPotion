@@ -12,7 +12,7 @@ public class IngredientSlot : MonoBehaviour
 {
     public const int REFILL_GOLD = 10;
     public const int MAX_NUMBER = 10;
-    public const int SUM_NUMBER = ((MAX_NUMBER - 1) * MAX_NUMBER) / 2;
+    public const int SUM_NUMBER = ((MAX_NUMBER + 1) * MAX_NUMBER) / 2;
 
     [Header("Component")]
     [SerializeField] private Canvas _canvas;
@@ -33,9 +33,9 @@ public class IngredientSlot : MonoBehaviour
 
     private PotionBrewer _brewer;
     private int _slotId;
+    private int _questGrade;
     
-    private Dictionary<int,int> _ingredientCountDict = new Dictionary<int,int>(); //현재까지 투입된 수량
-    private List<bool> _isIngredientFullList = new List<bool>(14);//각 숫자가 최대 투입 가능 여부 (자연수)
+    private Dictionary<int,bool> _ingredientCountDict = new Dictionary<int, bool>(); //현재까지 투입된 수량
 
     //Getter Setter
     public int IngredientAmount { get=>_ingredientAmount; set => _ingredientAmount = value; }
@@ -76,7 +76,8 @@ public class IngredientSlot : MonoBehaviour
     public void InitializeSlot()
     {
         //투입량 수정 필요
-        IngredientAmount = SUM_NUMBER * ((int)_brewer.CurrentQuest.QuestGrade + 1);
+        _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
+        IngredientAmount = SUM_NUMBER;
 
         int? ingredientId = _brewer?.CurrentQuest?.PInfo.ingredientIdList[SlotId];
         if(ingredientId != null && ingredientId != 0)
@@ -91,15 +92,20 @@ public class IngredientSlot : MonoBehaviour
             };
             renderer.material = particleMaterial;
         }
-        
 
+        ResetIngredientUsage();
+
+    }
+
+    private void ResetIngredientUsage()
+    {
         _ingredientCountDict.Clear();
         for (int i = 1; i <= MAX_NUMBER; ++i)
         {
-            _ingredientCountDict[i] = 0;
+            _ingredientCountDict[i] = false;
             _inputInfoImages[i].color = Color.white;
         }
-        _isIngredientFullList = Enumerable.Repeat(false, MAX_NUMBER+1).ToList();
+        IngredientAmount = SUM_NUMBER;
     }
 
     private void InputIngredient()
@@ -108,25 +114,30 @@ public class IngredientSlot : MonoBehaviour
 
         if(amount == 0)
         {
-            Debug.LogWarning("투입 가능한 재료 수량이 없습니다.");
-            return;
+            if(_questGrade > 1)
+            {
+                _questGrade--;
+                ResetIngredientUsage();
+                amount = GetRandomAmount();
+            }
+            else
+            {
+                Debug.LogWarning("투입 가능한 재료 수량이 없습니다.");
+                return;
+            }
         }
-
+        Debug.Log(amount);
         _brewer.InsertIngredient(SlotId, amount);
-        _ingredientCountDict[amount]++;
+        _ingredientCountDict[amount] = true;
+        _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
 
-        if (_ingredientCountDict[amount] >= ((int)_brewer.CurrentQuest.QuestGrade + 1))
-        {
-            _isIngredientFullList[amount] = true;
-            _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
-        }
 
         //양조기강화 버프 체크
         GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
 
         IngredientAmount -= amount;
 
-        if (IngredientAmount <= 0)
+        if (IngredientAmount <= 0 && _questGrade <= 1)
         {
             _inputButtonText.text = "재료 수급";
             _inputButton.onClick.RemoveAllListeners();
@@ -135,15 +146,16 @@ public class IngredientSlot : MonoBehaviour
         
         _particle.Play();
     }
+    
 
     private int GetRandomAmount()
     {
-        int amount = Random.Range(1, MAX_NUMBER);
-
         if (IsFullCount()) return 0;
-        while (_ingredientCountDict[amount] >= ((int)_brewer.CurrentQuest.QuestGrade + 1))
+
+        int amount = Random.Range(1, MAX_NUMBER+1);
+        while (_ingredientCountDict[amount])
         {
-            amount = Random.Range(1, MAX_NUMBER);
+            amount = Random.Range(1, MAX_NUMBER+1);
         }
 
         //홀짝버프 확인
@@ -157,8 +169,11 @@ public class IngredientSlot : MonoBehaviour
     {
         bool ret = true;
 
-        for (int i = 1; i <= MAX_NUMBER; ++i)
-            if (!_isIngredientFullList[i]) ret = false;
+        foreach(bool used in _ingredientCountDict.Values)
+        {
+            if (!used)
+                return false;
+        }
 
         return ret;
     }
@@ -173,7 +188,6 @@ public class IngredientSlot : MonoBehaviour
         _inputButtonText.text = "투입";
 
         _ingredientCountDict.Clear();
-        _isIngredientFullList.Clear();
 
         _inputButton.onClick.RemoveAllListeners();
         _inputButton.onClick.AddListener(InputIngredient);
