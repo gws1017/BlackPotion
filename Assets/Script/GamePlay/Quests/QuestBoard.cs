@@ -184,6 +184,12 @@ public class QuestBoard : MonoBehaviour
 
     public void AcceptQuest(Quest quest)
     {
+
+        if (_acceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
+            CurrentQuestOutlineEffectOn();
+        else
+            CurrentQuestOutlineEffectOff();
+
         if (_acceptQuestList.Contains(quest))
         {
             Debug.Log("이미 수락한 퀘스트 입니다.");
@@ -198,11 +204,6 @@ public class QuestBoard : MonoBehaviour
         _acceptQuestList.Add(quest);
         if(!_questResultDict.ContainsKey(quest))
             _questResultDict.Add(quest, false);
-
-        if (_acceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
-            CurrentQuestOutlineEffectOn();
-        else
-            CurrentQuestOutlineEffectOff();
 
         if (_questList.TryGetValue(quest.QuestLayer, out List<GameObject> questLayerList))
         {

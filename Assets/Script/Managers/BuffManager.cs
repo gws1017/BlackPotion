@@ -28,10 +28,11 @@ public class BuffManager : MonoBehaviour
 
     [SerializeField] private GameObject _buffUIPrefab;
     [SerializeField] private Button _buffListButton;
-    [SerializeField] private GameObject _buffListUI;
+    [SerializeField] private GameObject _buffInventoryObject;
 
-    [SerializeField] private Vector2 uiStartPosition = new Vector2(-40, -10);
-    [SerializeField] private int uiSpacing = 40;
+    [SerializeField] private Vector2 _uiStartPosition = new Vector2(-40, -10);
+    [SerializeField] private float _uiSpacing = 0.015f;
+    [SerializeField] private int _buffInventoryToggleDistance = -55;
 
     //Getter
     public int GetStateFromBuffId(int id) =>ReadJson._dictBuff[id].buffState;
@@ -50,12 +51,21 @@ public class BuffManager : MonoBehaviour
     {
         _buffDictionary = new Dictionary<int, List<BuffObject>>();
         _buffListButton.onClick.RemoveAllListeners();
-        _buffListButton.onClick.AddListener(ToggleBuffListUI);
+        _buffListButton.onClick.AddListener(ToggleBuffInventory);
     }
 
-    public void ToggleBuffListUI()
+    public void ToggleBuffInventory()
     {
-        _buffListUI.SetActive(!_buffListUI.activeSelf);
+        Vector3 position = _buffInventoryObject.transform.localPosition;
+        if(position.y == _buffInventoryToggleDistance)
+        {
+            position.y = 0;
+        }
+        else
+        {
+            position.y = _buffInventoryToggleDistance;
+        }
+        _buffInventoryObject.transform.localPosition = position;
         UpdateBuffUIPositions();
     }
 
@@ -70,10 +80,10 @@ public class BuffManager : MonoBehaviour
         {
             foreach (var buffObject in buffList)
             {
-                RectTransform anchor = buffObject.BuffUI.GetComponent<RectTransform>();
-                int offsetX = uiSpacing * (index++);
-                anchor.anchoredPosition = new Vector2(uiStartPosition.x + offsetX
-                    , uiStartPosition.y);
+                Transform anchor = buffObject.BuffUI.transform;
+                
+                float offsetX = _uiSpacing * (index++);
+                anchor.localPosition = new Vector3(_uiStartPosition.x + offsetX,0,_uiStartPosition.y);
             }
         }
     }
@@ -170,7 +180,7 @@ public class BuffManager : MonoBehaviour
         };
 
         //버프 UI 설정
-        buffObject.BuffUI.transform.SetParent(_buffListUI.transform, false);
+        buffObject.BuffUI.transform.SetParent(_buffInventoryObject.transform, false);
         var image = buffObject.BuffUI.GetComponentInChildren<Image>();
         image.sprite = Resources.Load<Sprite>(ReadJson._dictBuff[id].buffImage);
         var button = buffObject.BuffUI.GetComponentInChildren<Button>();
