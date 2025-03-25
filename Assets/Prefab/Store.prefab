@@ -263,6 +263,41 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "\uB2E4\uC74C \uC758\uB8B0"
+--- !u!1 &1584347909804103850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4255141983208827791}
+  m_Layer: 0
+  m_Name: Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4255141983208827791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584347909804103850}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7651851478087800870}
+  - {fileID: 6503857347743859278}
+  - {fileID: 2242140658847054112}
+  - {fileID: 7658336844670704326}
+  m_Father: {fileID: 7318968856898648153}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3030344572759287661
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,10 +407,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7651851478087800870}
-  - {fileID: 6503857347743859278}
-  - {fileID: 2242140658847054112}
-  - {fileID: 7658336844670704326}
+  - {fileID: 4255141983208827791}
   - {fileID: 5680823489765208835}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -404,6 +436,9 @@ MonoBehaviour:
     type: 3}
   _itemIdList: 
   _storeType: 0
+  _slotStartPosition: {x: -13, y: 3, z: 0}
+  _boxCountPerLine: 3
+  _boxOffset: {x: 13, y: -6}
 --- !u!1 &3987370387404442518
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +464,7 @@ RectTransform:
   m_GameObject: {fileID: 3987370387404442518}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.02, y: 0.02, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5680823489765208835}
@@ -584,7 +619,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5341640848895176128}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 0.02, y: 0.02, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1233,6 +1268,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1326,6 +1366,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: woodbox (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1421,6 +1466,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1515,6 +1565,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1532,7 +1587,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7318968856898648153}
+    m_TransformParent: {fileID: 4255141983208827791}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cd86da04ed1cdd841964066ddea68bbd,
         type: 3}
@@ -1608,6 +1663,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: rack (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd86da04ed1cdd841964066ddea68bbd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1715,6 +1775,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1808,6 +1873,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: woodbox (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1903,6 +1973,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1996,6 +2071,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: woodbox (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2091,6 +2171,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2185,6 +2270,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2202,7 +2292,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7318968856898648153}
+    m_TransformParent: {fileID: 4255141983208827791}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cd86da04ed1cdd841964066ddea68bbd,
         type: 3}
@@ -2278,6 +2368,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: rack (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd86da04ed1cdd841964066ddea68bbd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2385,6 +2480,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2479,6 +2579,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodbox (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0cf6e5ae6b7d314a98b51ffebf8e5c4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2496,7 +2601,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7318968856898648153}
+    m_TransformParent: {fileID: 4255141983208827791}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cd86da04ed1cdd841964066ddea68bbd,
         type: 3}
@@ -2573,6 +2678,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: rack
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd86da04ed1cdd841964066ddea68bbd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2602,7 +2712,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7318968856898648153}
+    m_TransformParent: {fileID: 4255141983208827791}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cd86da04ed1cdd841964066ddea68bbd,
         type: 3}
@@ -2678,6 +2788,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: rack (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd86da04ed1cdd841964066ddea68bbd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

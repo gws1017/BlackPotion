@@ -35,6 +35,9 @@ public class Store : MonoBehaviour
     private List<GameObject> _itemSlotsList;
     [SerializeField] List<int> _itemIdList;
     [SerializeField] private StoreType _storeType;
+    [SerializeField] private Vector3 _slotStartPosition = new Vector3(-600, 145, 0);
+    [SerializeField] private int _boxCountPerLine = 3;
+    [SerializeField] private Vector2 _boxOffset = new Vector2(400,-445);
 
     public StoreType SType => _storeType;
     void Start()
@@ -103,12 +106,11 @@ public class Store : MonoBehaviour
 
     private void InitializeItemSlot(int index)
     {
-        Vector3 startPos = new Vector3(-600, 145, 0);
-        Vector3 position = startPos + new Vector3((index % 3) * 400,index / 3 * -445, 0);
+        Vector3 position = _slotStartPosition + new Vector3((index % _boxCountPerLine) * _boxOffset.x, index / _boxCountPerLine * _boxOffset.y, 0);
 
         var slotInstance = Instantiate(_itemSlotPrefab, _itemListObject.transform);
         slotInstance.transform.SetLocalPositionAndRotation(position, Quaternion.identity);
-        slotInstance.transform.localScale = Vector3.one;
+
         _itemSlotsList.Add(slotInstance);
 
         ItemSlot itemSlotClass = slotInstance.GetComponent<ItemSlot>();

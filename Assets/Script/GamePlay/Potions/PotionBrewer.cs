@@ -122,6 +122,9 @@ public class PotionBrewer : MonoBehaviour
         _craftResult.IsPotionCraftSuccessful = isSuccess;
         Board.SetQuestResult(_currentQuest, isSuccess);
 
+        _craftButton.gameObject.SetActive(false);
+
+
         _craftResult.UpdateCraftResultUI();
         _craftResult.PotionQuality = _currentPotionQuality;
         _reqQualityValueText.text = _currentQuest.RequirePotionCapacity.ToString();
@@ -149,6 +152,8 @@ public class PotionBrewer : MonoBehaviour
             _gameManager.Receipt.UpdateReceipt();
             _gameManager.ShowCraftReceipt();
         }
+        _craftButton.gameObject.SetActive(true);
+
     }
 
     public void InsertIngredient(int slotId, int amount)
