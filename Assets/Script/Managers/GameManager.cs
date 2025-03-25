@@ -167,6 +167,7 @@ public class GameManager : MonoBehaviour
         if (Board.CurrentAcceptQuestCount > 0)
         {
             Board.CloseCurrentQuestUI();
+            Board.CurrentQuestOutlineEffectOff();
             RotateCamera(new Vector3(0, 90, 0));
             Brewer.UpdateQuestInfo();
             SM.SaveQuest();
