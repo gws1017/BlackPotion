@@ -75,8 +75,8 @@ public class IngredientSlot : MonoBehaviour
 
     public void InitializeSlot()
     {
-        //투입량 수정 필요
-        _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
+       //투입량 수정 필요
+       _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
         IngredientAmount = SUM_NUMBER;
 
         int? ingredientId = _brewer?.CurrentQuest?.PInfo.ingredientIdList[SlotId];
@@ -85,12 +85,24 @@ public class IngredientSlot : MonoBehaviour
             _ingredientId = ingredientId.Value;
             _ingredientImage.sprite = Resources.Load<Sprite>(ReadJson._dictMaterial[_ingredientId].materialImage);
 
+
             ParticleSystemRenderer renderer = _particle.GetComponent<ParticleSystemRenderer>();
-            Material particleMaterial = new Material(Shader.Find("Unlit/Transparent"))
+            var shader = Shader.Find("UI/Unlit/Transparent");
+            if (shader != null)
             {
-                mainTexture = _ingredientImage.sprite.texture
-            };
-            renderer.material = particleMaterial;
+                renderer.material = new Material(shader);
+                renderer.material.mainTexture = _ingredientImage.sprite.texture;
+
+                Debug.Log(renderer.material.mainTexture);
+                Debug.Log(_ingredientImage.sprite.texture);
+
+            }
+            else
+            {
+                Debug.Log("Shader Not FOUND!!!");
+            }
+
+
         }
 
         ResetIngredientUsage();
