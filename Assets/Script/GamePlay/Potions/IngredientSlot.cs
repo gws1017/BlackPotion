@@ -7,8 +7,8 @@ using UnityEngine.UI;
 using static UnityEngine.ParticleSystem;
 
 public class IngredientSlot : MonoBehaviour
-    ,IPointerEnterHandler
-    ,IPointerExitHandler
+    , IPointerEnterHandler
+    , IPointerExitHandler
 {
     public const int REFILL_GOLD = 10;
     public const int MAX_NUMBER = 10;
@@ -34,13 +34,13 @@ public class IngredientSlot : MonoBehaviour
     private PotionBrewer _brewer;
     private int _slotId;
     private int _questGrade;
-    
-    private Dictionary<int,bool> _ingredientCountDict = new Dictionary<int, bool>(); //현재까지 투입된 수량
+
+    private Dictionary<int, bool> _ingredientCountDict = new Dictionary<int, bool>(); //현재까지 투입된 수량
 
     //Getter Setter
-    public int IngredientAmount { get=>_ingredientAmount; set => _ingredientAmount = value; }
+    public int IngredientAmount { get => _ingredientAmount; set => _ingredientAmount = value; }
     public int SlotId { get => _slotId; set => _slotId = value; }
-    
+
     void Start()
     {
         _canvas = GetComponentInChildren<Canvas>();
@@ -53,12 +53,12 @@ public class IngredientSlot : MonoBehaviour
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 offset = new Vector3(-2,1, -1);
+        Vector3 offset = new Vector3(-2, 1, -1);
         _ingredientInfoUIInstance = Instantiate<GameObject>(_ingredientInfoUIPrefab,
             _ingredientImage.transform.position + offset, _ingredientImage.transform.rotation);
 
         Text uiText = _ingredientInfoUIInstance.GetComponentInChildren<Text>();
-        
+
 
         if (uiText != null && _ingredientId != 0)
         {
@@ -69,38 +69,28 @@ public class IngredientSlot : MonoBehaviour
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if(_ingredientInfoUIInstance != null)
+        if (_ingredientInfoUIInstance != null)
             Destroy(_ingredientInfoUIInstance);
     }
 
     public void InitializeSlot()
     {
-       //투입량 수정 필요
-       _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
+        //투입량 수정 필요
+        _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
         IngredientAmount = SUM_NUMBER;
 
         int? ingredientId = _brewer?.CurrentQuest?.PInfo.ingredientIdList[SlotId];
-        if(ingredientId != null && ingredientId != 0)
+        if (ingredientId != null && ingredientId != 0)
         {
             _ingredientId = ingredientId.Value;
             _ingredientImage.sprite = Resources.Load<Sprite>(ReadJson._dictMaterial[_ingredientId].materialImage);
 
 
             ParticleSystemRenderer renderer = _particle.GetComponent<ParticleSystemRenderer>();
-            var shader = Shader.Find("UI/Unlit/Transparent");
-            if (shader != null)
-            {
-                renderer.material = new Material(shader);
+            if (renderer.material != null)
                 renderer.material.mainTexture = _ingredientImage.sprite.texture;
-
-                Debug.Log(renderer.material.mainTexture);
-                Debug.Log(_ingredientImage.sprite.texture);
-
-            }
             else
-            {
                 Debug.Log("Shader Not FOUND!!!");
-            }
 
 
         }
@@ -124,9 +114,9 @@ public class IngredientSlot : MonoBehaviour
     {
         int amount = GetRandomAmount();
 
-        if(amount == 0)
+        if (amount == 0)
         {
-            if(_questGrade > 1)
+            if (_questGrade > 1)
             {
                 _questGrade--;
                 ResetIngredientUsage();
@@ -155,24 +145,24 @@ public class IngredientSlot : MonoBehaviour
             _inputButton.onClick.RemoveAllListeners();
             _inputButton.onClick.AddListener(IngredientSupply);
         }
-        
+
         _particle.Play();
     }
-    
+
 
     private int GetRandomAmount()
     {
         if (IsFullCount()) return 0;
 
-        int amount = Random.Range(1, MAX_NUMBER+1);
+        int amount = Random.Range(1, MAX_NUMBER + 1);
         while (_ingredientCountDict[amount])
         {
-            amount = Random.Range(1, MAX_NUMBER+1);
+            amount = Random.Range(1, MAX_NUMBER + 1);
         }
 
         //홀짝버프 확인
-        GameManager.GM.BM.CheckBuff(BuffType.EvenNumber,ref amount);
-        GameManager.GM.BM.CheckBuff(BuffType.OddNumber,ref amount);
+        GameManager.GM.BM.CheckBuff(BuffType.EvenNumber, ref amount);
+        GameManager.GM.BM.CheckBuff(BuffType.OddNumber, ref amount);
 
         return amount;
     }
@@ -181,7 +171,7 @@ public class IngredientSlot : MonoBehaviour
     {
         bool ret = true;
 
-        foreach(bool used in _ingredientCountDict.Values)
+        foreach (bool used in _ingredientCountDict.Values)
         {
             if (!used)
                 return false;
@@ -207,8 +197,8 @@ public class IngredientSlot : MonoBehaviour
 
     private void ToggleInputInfoUI()
     {
-        if(_inputInfoUIInstance != null)
-        _inputInfoUIInstance.SetActive(!_inputInfoUIInstance.activeSelf);
+        if (_inputInfoUIInstance != null)
+            _inputInfoUIInstance.SetActive(!_inputInfoUIInstance.activeSelf);
     }
     public void DisableInputButton() => _inputButton.enabled = false;
     public void EnableInputButton() => _inputButton.enabled = true;
