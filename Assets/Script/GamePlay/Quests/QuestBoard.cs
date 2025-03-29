@@ -109,6 +109,8 @@ public class QuestBoard : MonoBehaviour
         _questNextButton.onClick.AddListener(NextCurrentQuest);
         _questCanelButton.onClick.AddListener(QuestCancel);
         _questBoardButton.onClick.AddListener(CloseCurrentQuestUI);
+
+        QuestDisableEffectOff(); //커튼 패널 초기위치 조정
     }
 
     public void CreateQuestObject()
