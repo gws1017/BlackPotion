@@ -13,9 +13,12 @@ public class ItemSlot : MonoBehaviour
     public Text ItemCostText;
     public Button ItemSlotButton;
 
+    public float _startY;
     public Store ParentStore;
     private PlayInfo _playInfo;
     [SerializeField] private Image _soldOutImage;
+    [SerializeField] private float _floatSpeed = 1.0f;
+    [SerializeField] private float _floatDistance = 0.5f;
 
     void Start()
     {
@@ -44,6 +47,7 @@ public class ItemSlot : MonoBehaviour
         ParentStore.PurchaseCancelButton.onClick.RemoveAllListeners();
         ParentStore.PurchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
         _soldOutImage.gameObject.SetActive(false);
+        StartBoxFloat();
     }
 
     public void ShowPurchaseUI()
@@ -78,6 +82,7 @@ public class ItemSlot : MonoBehaviour
                 }
                 GameManager.GM.BM.AddBuff(ItemId);
             }
+            StopBoxFloat();
             _playInfo.ConsumeGold(ItemCost);
             _soldOutImage.gameObject.SetActive(true);
             ItemSlotButton.interactable = false;
@@ -89,5 +94,37 @@ public class ItemSlot : MonoBehaviour
             Debug.Log("골드가 부족합니다.");
         }
         ParentStore.PurchaseUI.SetActive(false);
+    }
+
+    public void StartBoxFloat()
+    {
+        StartCoroutine(FloatingBox());
+    }
+
+    public void StopBoxFloat()
+    {
+        StopCoroutine(FloatingBox());
+    }
+    private IEnumerator FloatingBox()
+    {
+        while(true)
+        {
+            float delta = 0;
+            float direction = 1;
+            while(true)
+            {
+                delta += direction * _floatSpeed * Time.deltaTime;
+                delta = Mathf.Clamp(delta, -_floatDistance, _floatDistance);
+
+                Vector3 boxPosition = gameObject.transform.position;
+                boxPosition.y += delta;
+                gameObject.transform.position = boxPosition;
+
+                if (boxPosition.y >= _startY+_floatDistance) direction = -1;
+                else if(boxPosition.y <= _startY) direction = 1;
+
+                yield return null;
+            }
+        }
     }
 }

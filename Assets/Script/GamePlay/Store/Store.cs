@@ -31,13 +31,15 @@ public class Store : MonoBehaviour
 
     [Header("Store")]
     [SerializeField] private GameObject _itemListObject;
+    [SerializeField] private GameObject[] _rackObjects;
     [SerializeField] private GameObject _itemSlotPrefab;
     private List<GameObject> _itemSlotsList;
     [SerializeField] List<int> _itemIdList;
     [SerializeField] private StoreType _storeType;
     [SerializeField] private Vector3 _slotStartPosition = new Vector3(-600, 145, 0);
-    [SerializeField] private int _boxCountPerLine = 3;
     [SerializeField] private Vector2 _boxOffset = new Vector2(400,-445);
+    [SerializeField] private int _boxCountPerLine = 3;
+    [SerializeField] private float _itemBoxYOffset = 0.0f;
 
     public StoreType SType => _storeType;
     void Start()
@@ -55,6 +57,7 @@ public class Store : MonoBehaviour
     {
         foreach (var itemSlot in _itemSlotsList)
         {
+            itemSlot.GetComponent<ItemSlot>().StopBoxFloat();
             Destroy(itemSlot);
         }
         gameObject.SetActive(false);
@@ -108,6 +111,7 @@ public class Store : MonoBehaviour
     {
         Vector3 position = _slotStartPosition + new Vector3((index % _boxCountPerLine) * _boxOffset.x, index / _boxCountPerLine * _boxOffset.y, 0);
 
+
         var slotInstance = Instantiate(_itemSlotPrefab, _itemListObject.transform);
         slotInstance.transform.SetLocalPositionAndRotation(position, Quaternion.identity);
 
@@ -115,6 +119,14 @@ public class Store : MonoBehaviour
 
         ItemSlot itemSlotClass = slotInstance.GetComponent<ItemSlot>();
         itemSlotClass.ParentStore = this;
+
+        Vector3 slotPosition = slotInstance.transform.position;
+
+        int rackID = (index / _boxCountPerLine);
+        itemSlotClass._startY = _rackObjects[rackID].transform.position.y + _itemBoxYOffset;
+        slotPosition.y = itemSlotClass._startY;
+        slotInstance.transform.position = slotPosition;
+
         switch (_storeType)
         {
             case StoreType.Buff:
