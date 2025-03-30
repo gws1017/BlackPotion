@@ -7,7 +7,7 @@
       "ingredientIdList": [ 3001, 0, 3002 ],
       "materialRatioList": [ 2, 0, 1 ],
       "recipeCost": 0,
-      "potionImage": "Images/redpotion"
+      "potionImage": "Images/potiongreen"
     },
     {
       "potionId": 2002,
@@ -16,7 +16,7 @@
       "ingredientIdList": [ 3001, 0, 3003 ],
       "materialRatioList": [ 3, 0, 1 ],
       "recipeCost": 0,
-      "potionImage": "Images/redpotion"
+      "potionImage": "Images/potionblue"
     },
     {
       "potionId": 2003,
@@ -25,7 +25,7 @@
       "ingredientIdList": [ 3001, 0, 3004 ],
       "materialRatioList": [ 4, 0, 1 ],
       "recipeCost": 0,
-      "potionImage": "Images/redpotion"
+      "potionImage": "Images/potionblue"
     },
     {
       "potionId": 2004,
