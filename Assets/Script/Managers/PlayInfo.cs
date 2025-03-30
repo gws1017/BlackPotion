@@ -25,6 +25,33 @@ public class PlayInfo : MonoBehaviour
         Large
     }
 
+    public enum RecipeGrade
+    {
+        Normal,
+        Common,
+        Rare,
+        Uncommon,
+        Legendary
+    }
+
+    public static string RecipeGradeToString(RecipeGrade grade)
+    {
+        switch(grade)
+        {
+            case RecipeGrade.Normal:
+                return "Normal";
+            case RecipeGrade.Common:
+                return "Common";
+            case RecipeGrade.Rare:
+                return "Rare";
+            case RecipeGrade.Uncommon:
+                return "NoUncommonrmal";
+            case RecipeGrade.Legendary:
+                return "Legendary";
+        }
+        return "";
+    }
+
     public struct PotionCraftGrade
     {
         public const string RANK_1 = "A";

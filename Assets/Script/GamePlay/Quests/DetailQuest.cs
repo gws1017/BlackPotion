@@ -12,6 +12,7 @@ public class DetailQuest : Quest
     [SerializeField] private Text _currentAcceptQuest;
     [SerializeField] private Image _questGradeMark;
     [SerializeField] private Image _rewardRecipe;
+    [SerializeField] private Text _rewardRecipeText;
     [SerializeField] private Button _quitButton;
     [SerializeField] private Button _acceptButton;
 
@@ -69,21 +70,26 @@ public class DetailQuest : Quest
     //레시피 보상 등급에 따라 색으로 표기
     private void ShowRewardRecipeGrade()
     {
-        switch (QuestRewardRecipeGrade)
+        PlayInfo.RecipeGrade grade = (PlayInfo.RecipeGrade)QuestRewardRecipeGrade;
+        switch (grade)
         {
-            case 1:
-                _rewardRecipe.color = Color.black;
+            case PlayInfo.RecipeGrade.Normal:
+                _rewardRecipeText.color = Color.gray;
                 break;
-            case 2:
-                _rewardRecipe.color = Color.magenta;
+            case PlayInfo.RecipeGrade.Common:
+                _rewardRecipeText.color = Color.white;
                 break;
-            case 3:
-                _rewardRecipe.color = Color.yellow;
+            case PlayInfo.RecipeGrade.Rare:
+                _rewardRecipeText.color = Color.blue;
                 break;
-            case 4:
-                _rewardRecipe.color = Color.red;
+            case PlayInfo.RecipeGrade.Uncommon:
+                _rewardRecipeText.color = Color.green;
+                break;
+            case PlayInfo.RecipeGrade.Legendary:
+                _rewardRecipeText.color = Color.yellow;
                 break;
         }
+        _rewardRecipeText.text = PlayInfo.RecipeGradeToString((PlayInfo.RecipeGrade)QuestRewardRecipeGrade);
 
     }
 

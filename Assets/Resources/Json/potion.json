@@ -2,40 +2,54 @@
   "root": [
     {
       "potionId": 2001,
-      "potionName": "회복약",
-      "potionGrade": 1,
-      "ingredientCount": 1,
-      "ingredientIdList": [0,3002,0],
-      "maxMount": [ 0, 21, 0 ],
+      "potionName": "하급 상처약",
+      "potionGrade": 0,
+      "ingredientIdList": [ 3001, 0, 3002 ],
+      "materialRatioList": [ 2, 0, 1 ],
       "recipeCost": 0,
       "potionImage": "Images/redpotion"
     },
     {
       "potionId": 2002,
-      "potionName": "해충제",
-      "potionGrade": 1,
-      "ingredientCount": 1,
-      "ingredientIdList": [ 0, 3003, 0 ],
-      "maxMount": [ 0, 32, 0 ],
-      "recipeCost": 45,
+      "potionName": "하급 마나회복약",
+      "potionGrade": 0,
+      "ingredientIdList": [ 3001, 0, 3003 ],
+      "materialRatioList": [ 3, 0, 1 ],
+      "recipeCost": 0,
       "potionImage": "Images/redpotion"
     },
     {
       "potionId": 2003,
+      "potionName": "하급 몬스터 기피약",
+      "potionGrade": 0,
+      "ingredientIdList": [ 3001, 0, 3004 ],
+      "materialRatioList": [ 4, 0, 1 ],
+      "recipeCost": 0,
+      "potionImage": "Images/redpotion"
+    },
+    {
+      "potionId": 2004,
+      "potionName": "해충제",
+      "potionGrade": 1,
+      "ingredientIdList": [ 0, 3003, 0 ],
+      "maxMount": [ 0, 1, 0 ],
+      "recipeCost": 45,
+      "potionImage": "Images/redpotion"
+    },
+    {
+      "potionId": 2005,
       "potionName": "희귀 회복약",
       "potionGrade": 2,
-      "ingredientCount": 2,
       "ingredientIdList": [ 3002, 0, 3001 ],
       "maxMount": [ 15, 0, 17 ],
       "recipeCost": 75,
       "potionImage": "Images/redpotion"
     },
     {
-      "potionId": 2004,
+      "potionId": 2006,
       "potionName": "환약",
       "potionGrade": 3,
-      "ingredientCount": 3,
-      "ingredientIdList": [ 3001, 3002,3004 ],
+      "ingredientIdList": [ 3001, 3002, 3004 ],
       "maxMount": [ 13, 16, 16 ],
       "recipeCost": 45,
       "potionImage": "Images/redpotion"

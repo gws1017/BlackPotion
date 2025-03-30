@@ -75,7 +75,6 @@ public class IngredientSlot : MonoBehaviour
 
     public void InitializeSlot()
     {
-        //투입량 수정 필요
         _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
         IngredientAmount = SUM_NUMBER;
 
@@ -193,6 +192,7 @@ public class IngredientSlot : MonoBehaviour
 
         _inputButton.onClick.RemoveAllListeners();
         _inputButton.onClick.AddListener(InputIngredient);
+        ResetIngredientUsage();
     }
 
     private void ToggleInputInfoUI()

@@ -1,45 +1,75 @@
 {
   "root": [
     {
-      "questId": 3001,
-      "questName": "의뢰제목",
+      "questId": 1001,
+      "questName": "소형파티 상처약 의뢰",
       "explainTextId": 4001,
       "questGrade": 0,
       "potionId": 2001,
-      "minCapacity": 15,
-      "maxCapacity": 21,
-      "reward": [ 50, 1, 10 ]
+      "minCapacity": 30,
+      "maxCapacity": 60,
+      "reward": [ 50, 1 ]
     },
     {
-      "questId": 3002,
-      "questName": "의뢰제목",
-      "explainTextId": 4002,
-      "questGrade": 0,
+      "questId": 1002,
+      "questName": "병원 하급 상처약 의뢰",
+      "explainTextId": 4101,
+      "questGrade": 1,
       "potionId": 2001,
-      "minCapacity": 14,
-      "maxCapacity": 21,
-      "reward": [55,1,10]
+      "minCapacity": 90,
+      "maxCapacity": 180,
+      "reward": [100,1]
 
     },
     {
-      "questId": 3003,
-      "questName": "의뢰제목",
-      "explainTextId": 4003,
-      "questGrade": 1,
-      "potionId": 2002,
-      "minCapacity": 21,
-      "maxCapacity": 32,
-      "reward": [ 55, 2, 10 ]
-    },
-    {
-      "questId": 3004,
-      "questName": "의뢰제목",
-      "explainTextId": 4004,
+      "questId": 1003,
+      "questName": "대형 파티 상처약 의뢰",
+      "explainTextId": 4102,
       "questGrade": 2,
       "potionId": 2001,
-      "minCapacity": 30,
-      "maxCapacity": 43,
-      "reward": [ 100, 3, 10 ]
+      "minCapacity": 150,
+      "maxCapacity": 300,
+      "reward": [ 200, 2 ]
+    },
+    {
+      "questId": 1004,
+      "questName": "소형 파티 마나 포션 의뢰",
+      "explainTextId": 4002,
+      "questGrade": 0,
+      "potionId": 2002,
+      "minCapacity": 40,
+      "maxCapacity": 80,
+      "reward": [ 60, 1 ]
+    },
+    {
+      "questId": 1005,
+      "questName": "마탑의 마나 회복약 의뢰",
+      "explainTextId": 4102,
+      "questGrade": 1,
+      "potionId": 2002,
+      "minCapacity": 120,
+      "maxCapacity": 240,
+      "reward": [ 110, 1 ]
+    },
+    {
+      "questId": 1006,
+      "questName": "대형 파티 마나 포션 의뢰",
+      "explainTextId": 4202,
+      "questGrade": 2,
+      "potionId": 2002,
+      "minCapacity": 200,
+      "maxCapacity": 400,
+      "reward": [ 250, 1 ]
+    },
+    {
+      "questId": 1007,
+      "questName": "소형 해충약 의뢰",
+      "explainTextId": 4004,
+      "questGrade": 0,
+      "potionId": 2004,
+      "minCapacity": 20,
+      "maxCapacity": 45,
+      "reward": [ 55, 1 ]
     }
   ]
   

@@ -2,25 +2,25 @@
   "root": [
     {
       "materialId": 3001,
-      "materialName": "허브",
+      "materialName": "물",
       "materialGrade": 1,
       "materialImage": "Images/redpotion"
     },
     {
       "materialId": 3002,
-      "materialName": "약초",
+      "materialName": "허브",
       "materialGrade": 1,
       "materialImage": "Images/redpotion"
     },
     {
       "materialId": 3003,
-      "materialName": "해충약",
+      "materialName": "마나석",
       "materialGrade": 1,
       "materialImage": "Images/redpotion"
     },
     {
       "materialId": 3004,
-      "materialName": "가루약",
+      "materialName": "퇴치가루",
       "materialGrade": 1,
       "materialImage": "Images/redpotion"
     }

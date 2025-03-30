@@ -21,9 +21,8 @@ public struct PotionInfo
     public int potionId;
     public string potionName;
     public int potionGrade;
-    public int ingredientCount;
     public int[] ingredientIdList;
-    public int[] maxMount;
+    public int[] materialRatioList;
     public int recipeCost;
     public string potionImage;
 }

@@ -182,15 +182,21 @@ public class PotionBrewer : MonoBehaviour
         _currentQuestIndex = questIndex;
         _currentQuest = Board.GetCurrentQuest(_currentQuestIndex);
 
+        var potionInfo = _currentQuest.PInfo;
+
+        int amountMultiply = 0;
+        foreach (var ratio in potionInfo.materialRatioList)
+            amountMultiply += ratio;
+        amountMultiply = _currentQuest.QInfo.maxCapacity / amountMultiply;
+
         _currentAmount = new int[INGREDIENT_SLOT_COUNT];
         _maxAmount = new int[INGREDIENT_SLOT_COUNT];
         _currentPotionQuality = 0;
-
-        var potionInfo = _currentQuest.PInfo;
-        _ingredientCount = potionInfo.ingredientCount;
+        
         _recipeNameText.text = potionInfo.potionName;
 
         int uiIndex = 1;
+        int ingridientCount = 0;
         for (int i = 0; i < INGREDIENT_SLOT_COUNT; ++i)
         {
             _capacityObjects[i].SetActive(true);
@@ -203,17 +209,17 @@ public class PotionBrewer : MonoBehaviour
             {
                 _inputIngredientNameText[i].text = ReadJson._dictMaterial[ingredientId].materialName;
                 _ingredientNameText[i].text = $"{uiIndex++}. {_inputIngredientNameText[i].text}";
-
+                ingridientCount++;
             }
             else
                 _ingredientNameText[i].text = string.Empty;
 
 
             _ingredientInputAmountText[i].color = Color.black;
-            _maxAmount[i] = potionInfo.maxMount[i] * ((int)CurrentQuest.QuestGrade + 1);
+            _maxAmount[i] = (potionInfo.materialRatioList[i] * amountMultiply) ;
             _ingredientInputAmountText[i].text = $"{_currentAmount[i]} / {_maxAmount[i]}";
         }
-
+        _ingredientCount = ingridientCount;
         // 재료 투입 슬롯 조정
         if (_ingredientCount == 1)
         {

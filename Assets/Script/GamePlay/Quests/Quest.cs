@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class Quest : MonoBehaviour
 {
+    private const int DEFAULT_QUEST_ID = 1001;
     //ÄÄÆ÷³ÍÆ®
     private Canvas _canvas;
     protected QuestBoard _board;
@@ -149,7 +150,10 @@ public class Quest : MonoBehaviour
 
     protected void InitializeQuestInfo()
     {
-        _questInfo = ReadJson._dictQuest[_questID];
+        if (ReadJson._dictQuest.ContainsKey(_questID))
+            _questInfo = _questInfo = ReadJson._dictQuest[_questID];
+        else
+            _questInfo = ReadJson._dictQuest[DEFAULT_QUEST_ID];
         _questTextInfo = ReadJson._dictQuestText[_questInfo.explainTextId];
     }
 
