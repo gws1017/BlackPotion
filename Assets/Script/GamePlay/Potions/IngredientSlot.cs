@@ -145,7 +145,7 @@ public class IngredientSlot : MonoBehaviour
             _inputButton.onClick.AddListener(IngredientSupply);
         }
 
-        _particle.Play();
+        _particle.Emit(amount);
     }
 
 
