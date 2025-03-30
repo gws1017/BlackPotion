@@ -7,8 +7,6 @@ using UnityEngine.UI;
 using static UnityEngine.ParticleSystem;
 
 public class IngredientSlot : MonoBehaviour
-    , IPointerEnterHandler
-    , IPointerExitHandler
 {
     public const int REFILL_GOLD = 10;
     public const int MAX_NUMBER = 10;
@@ -48,10 +46,9 @@ public class IngredientSlot : MonoBehaviour
         _brewer = GameManager.GM.Brewer;
 
         _inputButton.onClick.AddListener(InputIngredient);
-        _inputInfoButton.onClick.AddListener(ToggleInputInfoUI);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void ShowIngredientImage()
     {
         Vector3 offset = new Vector3(-2, 1, -1);
         _ingredientInfoUIInstance = Instantiate<GameObject>(_ingredientInfoUIPrefab,
@@ -67,7 +64,7 @@ public class IngredientSlot : MonoBehaviour
         else
             Debug.LogError("Null Error");
     }
-    public void OnPointerExit(PointerEventData eventData)
+    public void HideIngredientImage()
     {
         if (_ingredientInfoUIInstance != null)
             Destroy(_ingredientInfoUIInstance);
@@ -195,7 +192,7 @@ public class IngredientSlot : MonoBehaviour
         ResetIngredientUsage();
     }
 
-    private void ToggleInputInfoUI()
+    public void ToggleInputInfoUI()
     {
         if (_inputInfoUIInstance != null)
             _inputInfoUIInstance.SetActive(!_inputInfoUIInstance.activeSelf);
