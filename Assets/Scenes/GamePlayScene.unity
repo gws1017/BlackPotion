@@ -548,7 +548,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 319946039}
-  - component: {fileID: 319946040}
+  - component: {fileID: 319946042}
   - component: {fileID: 319946041}
   m_Layer: 5
   m_Name: HUD
@@ -577,24 +577,6 @@ RectTransform:
   m_AnchoredPosition: {x: 1.01, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &319946040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 319946038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25d9b870fd91d3b4c9cc41100d2ea010, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currentGoldUIText: {fileID: 664173172}
-  _menuButton: {fileID: 314784092}
-  _settingButton: {fileID: 378911332}
-  _backMenuButton: {fileID: 2052042652}
-  _pauseMenuObject: {fileID: 1147369482}
-  _settingMenuObject: {fileID: 377519150}
 --- !u!61 &319946041
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -641,6 +623,24 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 45.5, y: 12.5}
   m_EdgeRadius: 0
+--- !u!114 &319946042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319946038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7736864ed163d2a4aabf3166649e33bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _settingButton: {fileID: 378911332}
+  _backMenuButton: {fileID: 2052042652}
+  _settingMenuObject: {fileID: 377519150}
+  _currentGoldUIText: {fileID: 664173172}
+  _menuButton: {fileID: 314784092}
+  _pauseMenuObject: {fileID: 1147369482}
 --- !u!1 &326989773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2771,7 +2771,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 945299641}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 319946042}
+        m_TargetAssemblyTypeName: GamePlayHUD, Assembly-CSharp
+        m_MethodName: ReturnToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &945299641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3427,7 +3439,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.5, y: 14.5}
+  m_AnchoredPosition: {x: 22.57, y: 14.5}
   m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1360930466
@@ -4684,7 +4696,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1765044526}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 319946042}
+        m_TargetAssemblyTypeName: GamePlayHUD, Assembly-CSharp
+        m_MethodName: ReturnToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1765044526
 MonoBehaviour:
   m_ObjectHideFlags: 0

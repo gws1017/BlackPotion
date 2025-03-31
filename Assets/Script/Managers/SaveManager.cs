@@ -27,7 +27,8 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-        GameLoad();
+        if(SceneSharedData.loadSaveData)
+            GameLoad();
     }
 
     private void OnDestroy()
