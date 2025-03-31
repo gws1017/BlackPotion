@@ -27,8 +27,10 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-        if(SceneSharedData.loadSaveData)
+        if (SceneSharedData.loadSaveData)
             GameLoad();
+        else
+            GameManager.GM.PlayInformation.ResetInfo(false);
     }
 
     private void OnDestroy()

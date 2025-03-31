@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> destroyObjects;
     [SerializeField] private Button _questStartButton;
 
+    [SerializeField] private Text _debugText;
     //Getter Setter
 
     public static GameManager GM
@@ -174,6 +175,10 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+#if UNITY_EDITOR
+#else
+            //_debugText.text = "의뢰를 1개이상 수주하셔야합니다.";
+#endif
             Debug.Log("의뢰를 1개이상 수주하셔야합니다.");
         }
     }

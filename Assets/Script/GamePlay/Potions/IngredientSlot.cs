@@ -97,6 +97,7 @@ public class IngredientSlot : MonoBehaviour
 
     private void ResetIngredientUsage()
     {
+        _inputButtonText.text = "≈ı¿‘";
         _ingredientCountDict.Clear();
         for (int i = 1; i <= MAX_NUMBER; ++i)
         {

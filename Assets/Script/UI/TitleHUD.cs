@@ -32,6 +32,11 @@ public class TitleHUD : HUD
         int buttonCount = (int)MainMenuButton.DefaultMax;
         _readyActions = new Action[buttonCount];
 
+        if(PlayerPrefs.HasKey("Save") == false)
+        {
+            _continueButton.interactable = false;
+        }
+
         _gameStartButton.onClick.AddListener(()=>TriggerAction(MainMenuButton.GameStart));
         _continueButton.onClick.AddListener(() => TriggerAction(MainMenuButton.Continue));
         _settingButton.onClick.AddListener(()=>TriggerAction(MainMenuButton.Setting));

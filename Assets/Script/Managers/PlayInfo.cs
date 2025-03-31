@@ -174,12 +174,13 @@ public class PlayInfo : MonoBehaviour
     }
 
     //0일차 초기화시 사용됨
-    public void ResetInfo()
+    public void ResetInfo(bool isSave = true)
     {
         _currentCraftDay = 0;
         _currentGold = 0;
         GameManager.GM.BM.ClearBuffList();
-        GameManager.GM.SM.SavePlayInfo();
+        if(isSave)
+            GameManager.GM.SM.SavePlayInfo();
         IntializeRecipeDict();
     }
     public static string CheckPotionCraftGrade(float qualityPercent)
