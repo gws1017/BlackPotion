@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using KoreanTyper;
 public class CraftReceipt : MonoBehaviour
 {
     //Component
@@ -22,6 +22,7 @@ public class CraftReceipt : MonoBehaviour
 
     [Header("Setting Variable")]
     [SerializeField] private int[] _targetMoney;
+    [SerializeField] private float _typingSpeed = 0.05f;
     private bool _isTargetAchieved;
     private Sprite _targetSuccessSprite;
     private Sprite _targetFailSprite;
@@ -39,8 +40,13 @@ public class CraftReceipt : MonoBehaviour
         _nextButton.onClick.AddListener(ShowRecipeStore);
     }
 
-    public void UpdateReceipt()
+    public IEnumerator UpdateReceiptCorutine()
     {
+        ResetUIText();
+
+        _resultImage.enabled = false;
+        _nextButton.interactable = false;
+
         List<Quest> questList = _board.AcceptQuestList;
         Dictionary<Quest, bool> questResult = _board._questResultDict;
         int totalGold = 0;
@@ -51,7 +57,6 @@ public class CraftReceipt : MonoBehaviour
                 int gold = 0;
             if(i <uiCount)
             {
-                _potionNameText[i].text = $"{questList[i].PotionName} 제조";
                 Quest quest = questList[i];
 
                 if (questResult.ContainsKey(quest) && questResult[quest])
@@ -66,20 +71,27 @@ public class CraftReceipt : MonoBehaviour
                     _moneyText[i].color = Color.red;
                     gold -= (int)(questList[i].QuestRewardMoney * PlayInfo.QUEST_PENALTY_RATIO);
                 }
+                yield return StartCoroutine(TypingCorutine($"{questList[i].PotionName} 제조", _potionNameText[i]));
+
                 _potionNameText[i].enabled = true;
                 _moneyText[i].enabled = true;
+                totalGold += gold;
+                yield return StartCoroutine(TypingCorutine($"{gold} G", _moneyText[i]));
             }
             else
             {
                 _potionNameText[i].enabled = false;
                 _moneyText[i].enabled = false;
             }
-            totalGold += gold;
-            _moneyText[i].text = $"{gold} G";
+            
+
 
         }
 
         int currentTarget = _targetMoney[_playInfo.CurrentDay];
+        yield return StartCoroutine(TypingCorutine($"{totalGold} / {_targetMoney[_playInfo.CurrentDay]}", _targetMoneyText));
+        _resultImage.enabled = true;
+
         if (totalGold >= currentTarget)
         {
             _resultImage.sprite = _targetSuccessSprite;
@@ -90,11 +102,36 @@ public class CraftReceipt : MonoBehaviour
             _resultImage.sprite = _targetFailSprite;
             _isTargetAchieved = false;
         }
-        _targetMoneyText.text = $"{totalGold} / {_targetMoney[_playInfo.CurrentDay]}";
+        _nextButton.interactable = true;
     }
 
+    public IEnumerator TypingCorutine(string str,Text text)
+    {
+        text.text = "";
+        yield return new WaitForSeconds(1f);
+
+        int typingLength = str.GetTypingLength();
+        for (int i = 0; i <= typingLength; i++)
+        {
+            text.text = str.Typing(i);
+            yield return new WaitForSeconds(_typingSpeed);
+        }
+
+    }
     public void ShowRecipeStore()
     {
         _storeUI.OpenStoreUI(Store.StoreType.Recipe);
+    }
+
+    private void ResetUIText()
+    {
+        int uiCount = Mathf.Min(_board.AcceptQuestList.Count, _potionNameText.Length);
+
+        for (int i = 0; i < _potionNameText.Length; i++)
+        {
+            _potionNameText[i].text = "";
+            _moneyText[i].text = "";
+            _targetMoneyText.text = "";
+        }
     }
 }

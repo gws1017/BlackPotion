@@ -136,8 +136,13 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        InitializeManagerComponent();
+        InitializeGameManager();
 
+    }
+
+    public void InitializeGameManager()
+    {
+        InitializeManagerComponent();
         if (_questStartButton != null)
             _questStartButton.onClick.AddListener(QuestStart);
     }

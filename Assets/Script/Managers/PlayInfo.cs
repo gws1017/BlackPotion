@@ -179,7 +179,8 @@ public class PlayInfo : MonoBehaviour
         _currentCraftDay = 0;
         _currentGold = 0;
         GameManager.GM.BM.ClearBuffList();
-        if(isSave)
+        GameManager.GM.InitializeGameManager();
+        if (isSave)
             GameManager.GM.SM.SavePlayInfo();
         IntializeRecipeDict();
     }
