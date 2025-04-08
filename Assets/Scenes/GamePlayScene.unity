@@ -639,9 +639,9 @@ MonoBehaviour:
   _backMenuButton: {fileID: 2052042652}
   _hudObject: {fileID: 319946038}
   _settingMenuObject: {fileID: 377519150}
+  _pauseMenuObject: {fileID: 1147369482}
   _currentGoldUIText: {fileID: 664173172}
   _menuButton: {fileID: 314784092}
-  _pauseMenuObject: {fileID: 1147369482}
 --- !u!1 &326989773
 GameObject:
   m_ObjectHideFlags: 0
@@ -1952,9 +1952,9 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1968,7 +1968,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 474775338}
   m_OnClick:
     m_PersistentCalls:
@@ -2966,7 +2966,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2980,7 +2980,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1062126855}
   m_OnClick:
     m_PersistentCalls:
@@ -5378,6 +5378,7 @@ MonoBehaviour:
   _acceptQuestList: []
   _questPrefab: {fileID: 7024418843332693245, guid: 2af10ea4938d1ca448c2dc7736fc6607,
     type: 3}
+  _questScale: {x: 7.5, y: 7.5, z: 2.5}
   _questBoardButton: {fileID: 412372150}
   _questCanelButton: {fileID: 326989775}
   _questNextButton: {fileID: 2021243266}
@@ -5387,6 +5388,7 @@ MonoBehaviour:
   _oulineEffectSpeed: 1
   _currentQuestPositionX: 1.5
   _currentQuestRotation: {x: 0, y: 0, z: -0.08715574, w: 0.9961947}
+  _currentQuestScale: {x: 10, y: 10, z: 7.5}
   _maxLoopCount: 100
   _zRotRandRange: 30
   _maxQuestCnt: 15

@@ -15,6 +15,7 @@ public class HUD : MonoBehaviour
     [SerializeField] protected GameObject _hudObject;
 
     [SerializeField] protected GameObject _settingMenuObject;
+    [SerializeField] protected GameObject _pauseMenuObject;
 
     protected GameManager _gm;
 
@@ -22,7 +23,7 @@ public class HUD : MonoBehaviour
     {
         _gm = GameManager.GM;
         _settingButton.onClick.AddListener(ShowSettingMenu);
-        _backMenuButton.onClick.AddListener(HideSettingMenu);
+        _backMenuButton.onClick.AddListener(HideMenu);
         _gm.ResizeObjectAtResoulution(gameObject);
     }
 
@@ -30,9 +31,9 @@ public class HUD : MonoBehaviour
     {
         _settingMenuObject.SetActive(true);
     }
-    public void HideSettingMenu()
+    public void HideMenu()
     {
-        _settingMenuObject.SetActive(false);
+        _pauseMenuObject.SetActive(false);
     }
     
 }

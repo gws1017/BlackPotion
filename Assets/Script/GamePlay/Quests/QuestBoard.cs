@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-//using UnityEngine.UIElements;
 
 public class QuestBoard : MonoBehaviour
 {
@@ -27,6 +26,7 @@ public class QuestBoard : MonoBehaviour
     [ReadOnly, SerializeField] private Dictionary<ZLayer, List<GameObject>> _questList;
     [SerializeField] private List<Quest> _acceptQuestList;
     [SerializeField] private GameObject _questPrefab;
+    [SerializeField] private Vector3 _questScale = new Vector3(7.5f, 7.5f, 2.5f);
     public Dictionary<Quest, bool> _questResultDict;
     private List<int> _acceptableQuestList; //보유 레시피
     private List<int> _unAcceptableQuestList; //미보유 레시피
@@ -41,6 +41,7 @@ public class QuestBoard : MonoBehaviour
     [SerializeField] private float _oulineEffectSpeed = 1;
     [SerializeField] private float _currentQuestPositionX = 1.5f;
     [SerializeField] private Quaternion _currentQuestRotation = Quaternion.Euler(0, 0, -10);
+    [SerializeField] private Vector3 _currentQuestScale = new Vector3(10f, 10f, 2.5f);
 
     [Header("Quest Create Setting")]
     [SerializeField] private int _maxLoopCount;//충돌 검사 횟수
@@ -225,6 +226,7 @@ public class QuestBoard : MonoBehaviour
         }
         quest.gameObject.transform.SetParent(_currentQuestUIObject.transform);
         quest.transform.SetPositionAndRotation(position, rotation);
+        quest.gameObject.transform.localScale = _currentQuestScale;
 
     }
 
@@ -267,6 +269,7 @@ public class QuestBoard : MonoBehaviour
 
         questObject.transform.SetParent(null);
         questObject.transform.SetLocalPositionAndRotation(quest.OriginPosition, quest.OriginRotation);
+        questObject.transform.localScale = _questScale;
         questObject.SetActive(false);
 
         quest.EnableOpenButton();
