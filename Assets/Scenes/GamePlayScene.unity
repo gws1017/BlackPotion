@@ -621,7 +621,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 45.5, y: 12.5}
+  m_Size: {x: 50, y: 15}
   m_EdgeRadius: 0
 --- !u!114 &319946042
 MonoBehaviour:
@@ -3874,7 +3874,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.25
+  orthographic size: 22.5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -5372,7 +5372,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _curtainPanel: {fileID: 506032754}
-  _uiCanvas: {fileID: 1798112863}
   _layerOffset: 0
   _CanActiveSelectEffect: 1
   _acceptQuestList: []

@@ -127,6 +127,9 @@ public class Quest : MonoBehaviour
 
         InitializeQuestInfo();
         InitializeData();
+
+        GameManager.GM.ResizeObjectAtResoulution(gameObject);
+
     }
 
     private void OnMouseEnter()

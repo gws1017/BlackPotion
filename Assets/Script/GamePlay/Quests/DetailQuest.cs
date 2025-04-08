@@ -30,6 +30,8 @@ public class DetailQuest : Quest
         _acceptButton.onClick.RemoveAllListeners();
         _quitButton.onClick.AddListener(CloseDetailQuest);
         _acceptButton.onClick.AddListener(AcceptQuest);
+
+        GameManager.GM.ResizeObjectAtResoulution(gameObject);
     }
 
     protected override void InitializeData()
