@@ -45,6 +45,7 @@ public class Store : MonoBehaviour
     void Start()
     {
         _canvas.worldCamera = GameManager.GM.MainCamera;
+        GameManager.GM.ResizeObjectAtResoulution(gameObject,true);
     }
 
     public void OpenStoreUI(StoreType type)

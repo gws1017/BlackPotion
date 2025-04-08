@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public const float REF_WIDTH = 1920f;
+    public const float REF_HEIGHT = 1080f;
     //GameManager 인스턴스 GM으로 접근
     private static GameManager _instance;
 
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button _questStartButton;
 
     [SerializeField] private Text _debugText;
+    private Vector2 _scaleFactor;
     //Getter Setter
 
     public static GameManager GM
@@ -122,6 +125,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Vector2 ScaleFactor 
+    { 
+        get
+        {
+            _scaleFactor = new Vector2(Screen.width / REF_WIDTH,Screen.height / REF_HEIGHT);
+            return _scaleFactor;
+        }
+    }
+
     private void Awake()
     {
         if (_instance == null)
@@ -138,6 +150,19 @@ public class GameManager : MonoBehaviour
     {
         InitializeGameManager();
 
+        ResizeObjectAtResoulution(Board.gameObject,true);
+        ResizeObjectAtResoulution(Brewer.gameObject, true);
+        ResizeObjectAtResoulution(Receipt.gameObject);
+    }
+
+    public void ResizeObjectAtResoulution(GameObject obj,bool is3D = false)
+    {
+        Vector3 newScale = obj.transform.localScale;
+        newScale.x *= ScaleFactor.x;
+        newScale.y *= ScaleFactor.y;
+        if(is3D)
+            newScale.z *= ScaleFactor.x;
+        obj.transform.localScale = newScale;
     }
 
     public void InitializeGameManager()

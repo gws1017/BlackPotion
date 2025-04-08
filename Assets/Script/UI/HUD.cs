@@ -9,8 +9,10 @@ public class HUD : MonoBehaviour
     public const string GAME_PLAY_SCENE = "GamePlayScene";
     public const string MAIN_MENU_SCENE = "MainMenuScene";
 
+
     [SerializeField] protected Button _settingButton;
     [SerializeField] private Button _backMenuButton;
+    [SerializeField] protected GameObject _hudObject;
 
     [SerializeField] protected GameObject _settingMenuObject;
 
@@ -21,6 +23,7 @@ public class HUD : MonoBehaviour
         _gm = GameManager.GM;
         _settingButton.onClick.AddListener(ShowSettingMenu);
         _backMenuButton.onClick.AddListener(HideSettingMenu);
+        _gm.ResizeObjectAtResoulution(gameObject);
     }
 
     public void ShowSettingMenu()
