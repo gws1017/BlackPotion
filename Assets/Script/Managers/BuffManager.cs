@@ -35,7 +35,7 @@ public class BuffManager : MonoBehaviour
     [SerializeField] private int _buffInventoryToggleDistance = -55;
 
     //Getter
-    public int GetStateFromBuffId(int id) =>ReadJson._dictBuff[id].buffState;
+    public int GetStateFromBuffId(int id) => ReadJson._dictBuff[id].buffState;
     public string GetNameFromBuffId(int id) => ReadJson._dictBuff[id].buffName;
     public string GetExplainFromBuffId(int id) => ReadJson._dictBuff[id].buffExplain;
     public List<int> GetCurrentBuffList() => _buffDictionary.Keys.ToList();
@@ -57,7 +57,7 @@ public class BuffManager : MonoBehaviour
     public void ToggleBuffInventory()
     {
         Vector3 position = _buffInventoryObject.transform.localPosition;
-        if(position.y == _buffInventoryToggleDistance)
+        if (position.y == _buffInventoryToggleDistance)
         {
             position.y = 0;
         }
@@ -81,9 +81,9 @@ public class BuffManager : MonoBehaviour
             foreach (var buffObject in buffList)
             {
                 Transform anchor = buffObject.BuffUI.transform;
-                
+
                 float offsetX = _uiSpacing * (index++);
-                anchor.localPosition = new Vector3(_uiStartPosition.x + offsetX,0,_uiStartPosition.y);
+                anchor.localPosition = new Vector3(_uiStartPosition.x + offsetX, 0, _uiStartPosition.y);
             }
         }
     }
@@ -117,7 +117,7 @@ public class BuffManager : MonoBehaviour
                 else return;
                 break;
             case BuffType.OddNumber:
-                
+
                 //홀수 버프
                 if (IsActiveBuff(BuffID))
                 {
@@ -219,7 +219,7 @@ public class BuffManager : MonoBehaviour
         }
         else
         {
-            if(_buffDictionary.ContainsKey(buffID))
+            if (_buffDictionary.ContainsKey(buffID))
             {
                 return _buffDictionary[buffID].Any(buff => buff.IsActive);
             }
@@ -231,7 +231,11 @@ public class BuffManager : MonoBehaviour
     {
         //버프는 한번에 한개만 활성화 가능
         if (IsActiveBuff() == true) return false;
-
+        if(buffObject.Id == (int)BuffType.PlusPowder)
+        {
+           GameManager.GM.Brewer._activePlusPowder = true;
+        }
+     
         buffObject.IsActive = true;
         buffObject.BuffUI.GetComponentInChildren<Button>().interactable = false;
         return true;

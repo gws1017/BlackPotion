@@ -336,6 +336,12 @@ public class QuestBoard : MonoBehaviour
         curtainPos.z = (float)ZLayer.QuestFloor1 * _layerOffset * LAYER_OFFSET_MULTIPLIER;
         _curtainPanel.transform.position = curtainPos;
 
+        if(_questList == null)
+        {
+            Debug.LogError("Quest List is null");
+            return;
+        }
+
         foreach (var quests in _questList.Values)
         {
             foreach (GameObject questObj in quests)

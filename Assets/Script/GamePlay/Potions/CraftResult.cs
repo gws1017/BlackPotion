@@ -105,6 +105,8 @@ public class CraftResult : MonoBehaviour
         _animatorLeft.SetTrigger("PlayOnce");
         _animatorRight.SetTrigger("PlayOnce");
 
+        
+
         if (IsPotionCraftSuccessful)
         {
             ProcessSuccessResult();
@@ -189,6 +191,13 @@ public class CraftResult : MonoBehaviour
         _potionMinQuality.text = questInfo.QInfo.minCapacity.ToString();
         _potionMaxQuality.text = questInfo.QInfo.maxCapacity.ToString();
 
+        if (Brewer._activePlusPowder)
+        {
+            string plusValue = $" + <color=red>{ReadJson._dictBuff[(int)BuffType.PlusPowder].buffState}</color>";
+            
+            _potionQuality.text += plusValue;
+            _potionQualityValueText.text = _potionQuality.text;
+        }
         int currentQuality = Brewer.CurrentPotionQuality;
         if (currentQuality < questInfo.QInfo.minCapacity) 
             currentQuality = 0;
@@ -240,6 +249,7 @@ public class CraftResult : MonoBehaviour
         }
 
         //버프 상점 오픈
+        Brewer._activePlusPowder = false;
         Brewer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
         _questResultText.text = "의뢰 결과";
         _resultText.text = "결과";

@@ -15,6 +15,8 @@ public class DetailQuest : Quest
     [SerializeField] private Text _rewardRecipeText;
     [SerializeField] private Button _quitButton;
     [SerializeField] private Button _acceptButton;
+    
+    private bool _hasRecipe;
 
     //부모 퀘스트
     private Quest _parentQuest;
@@ -23,7 +25,6 @@ public class DetailQuest : Quest
     void Start()
     {
         CanvasRef.worldCamera = GameManager.GM.MainCamera;
-        SetAcceptQuestText(Board.CurrentAcceptQuestCount);
 
         //버튼 초기화
         _quitButton.onClick.RemoveAllListeners();
@@ -46,7 +47,18 @@ public class DetailQuest : Quest
         UpdateQuestGradeMark();
 
         //미보유 레시피 비활성화
-        _acceptButton.interactable = GameManager.GM.PlayInformation.HasRecipe(PInfo.potionId);
+        _hasRecipe = GameManager.GM.PlayInformation.HasRecipe(PInfo.potionId);
+        if(_hasRecipe == false)
+        {
+            _acceptButton.interactable = false;
+            Text[] textComponents = _acceptButton.GetComponentsInChildren<Text>(); 
+            textComponents[0].text = "수락 불가";
+            textComponents[1].text = "(보유하지 않은 레시피)";
+        }
+        else
+        {
+            SetAcceptQuestText(Board.CurrentAcceptQuestCount);
+        }
     }
 
     public void CloseDetailQuest()

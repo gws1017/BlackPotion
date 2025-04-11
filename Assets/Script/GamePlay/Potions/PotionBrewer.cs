@@ -42,6 +42,7 @@ public class PotionBrewer : MonoBehaviour
     private int[] _currentAmount;
     private int[] _maxAmount;
     private int _currentPotionQuality;
+    public bool _activePlusPowder;
 
     public enum CraftState
     {
@@ -126,7 +127,6 @@ public class PotionBrewer : MonoBehaviour
 
 
         _craftResult.UpdateCraftResultUI();
-        _craftResult.PotionQuality = _currentPotionQuality;
         _reqQualityValueText.text = _currentQuest.RequirePotionCapacity.ToString();
     }
 
