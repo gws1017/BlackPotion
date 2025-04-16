@@ -112,15 +112,15 @@ public class DetailQuest : Quest
         {
             case PlayInfo.QuestGrade.Small:
                 _gradeColor.color = Color.black;
-                _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkSmall");
+                _questGradeMark.sprite = Resources.Load<Sprite>("Images/stamp_small");
                 break;
             case PlayInfo.QuestGrade.Middle:
                 _gradeColor.color = Color.magenta;
-                _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkMid");
+                _questGradeMark.sprite = Resources.Load<Sprite>("Images/stamp_medium");
                 break;
             case PlayInfo.QuestGrade.Large:
                 _gradeColor.color = Color.yellow;
-                _questGradeMark.sprite = Resources.Load<Sprite>("Images/MarkLarge");
+                _questGradeMark.sprite = Resources.Load<Sprite>("Images/stamp_large");
                 break;
         }
     }

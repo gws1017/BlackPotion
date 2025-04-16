@@ -13,7 +13,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Button _backMenuButton;
 
     [SerializeField] protected GameObject _settingMenuObject;
-    [SerializeField] protected GameObject _pauseMenuObject;
+    //[SerializeField] protected GameObject _pauseMenuObject;
 
     protected GameManager _gm;
 
@@ -30,7 +30,7 @@ public class HUD : MonoBehaviour
     }
     public void HideMenu()
     {
-        _pauseMenuObject.SetActive(false);
+        _settingMenuObject.SetActive(false);
     }
     
 }

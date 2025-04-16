@@ -22,9 +22,9 @@ public class GamePlayHUD : HUD
 
     public void TogglePauseMenu()
     {
-        _pauseMenuObject.SetActive(!_pauseMenuObject.activeSelf);
-        _settingMenuObject.SetActive(false);
-        _gm.Board._CanActiveSelectEffect = !_pauseMenuObject.activeSelf;
+        _settingMenuObject.SetActive(!_settingMenuObject.activeSelf);
+        //_settingMenuObject.SetActive(false);
+        _gm.Board._CanActiveSelectEffect = !_settingMenuObject.activeSelf;
     }
     public void ReturnToMainMenu()
     {
