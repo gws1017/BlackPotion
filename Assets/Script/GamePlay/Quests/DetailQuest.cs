@@ -76,32 +76,32 @@ public class DetailQuest : Quest
 
     private void SetAcceptQuestText(int count)
     {
-        _currentAcceptQuest.text = $"( {count} / {PlayInfo.MAX_ACCEPT_QUEST_COUNT} )";
+        _currentAcceptQuest.text = $"( {count} / {Constants.MAX_ACCEPT_QUEST_COUNT} )";
     }
 
     //레시피 보상 등급에 따라 색으로 표기
     private void ShowRewardRecipeGrade()
     {
-        PlayInfo.RecipeGrade grade = (PlayInfo.RecipeGrade)QuestRewardRecipeGrade;
+        Constants.RecipeGrade grade = (Constants.RecipeGrade)QuestRewardRecipeGrade;
         switch (grade)
         {
-            case PlayInfo.RecipeGrade.Normal:
+            case Constants.RecipeGrade.Normal:
                 _rewardRecipeText.color = Color.gray;
                 break;
-            case PlayInfo.RecipeGrade.Common:
+            case Constants.RecipeGrade.Common:
                 _rewardRecipeText.color = Color.white;
                 break;
-            case PlayInfo.RecipeGrade.Rare:
+            case Constants.RecipeGrade.Rare:
                 _rewardRecipeText.color = Color.blue;
                 break;
-            case PlayInfo.RecipeGrade.Uncommon:
+            case Constants.RecipeGrade.Uncommon:
                 _rewardRecipeText.color = Color.green;
                 break;
-            case PlayInfo.RecipeGrade.Legendary:
+            case Constants.RecipeGrade.Legendary:
                 _rewardRecipeText.color = Color.yellow;
                 break;
         }
-        _rewardRecipeText.text = PlayInfo.RecipeGradeToString((PlayInfo.RecipeGrade)QuestRewardRecipeGrade);
+        _rewardRecipeText.text = Constants.RecipeGradeToString((Constants.RecipeGrade)QuestRewardRecipeGrade);
 
     }
 
@@ -110,17 +110,17 @@ public class DetailQuest : Quest
     {
         switch (_questGrade)
         {
-            case PlayInfo.QuestGrade.Small:
+            case Constants.QuestGrade.Small:
                 _gradeColor.color = Color.black;
-                _questGradeMark.sprite = Resources.Load<Sprite>("Images/stamp_small");
+                _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_SMALL);
                 break;
-            case PlayInfo.QuestGrade.Middle:
+            case Constants.QuestGrade.Middle:
                 _gradeColor.color = Color.magenta;
-                _questGradeMark.sprite = Resources.Load<Sprite>("Images/stamp_medium");
+                _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_MEDIUM);
                 break;
-            case PlayInfo.QuestGrade.Large:
+            case Constants.QuestGrade.Large:
                 _gradeColor.color = Color.yellow;
-                _questGradeMark.sprite = Resources.Load<Sprite>("Images/stamp_large");
+                _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_LARGE);
                 break;
         }
     }

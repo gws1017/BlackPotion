@@ -126,10 +126,10 @@ public class CraftResult : MonoBehaviour
 
         int rewardRecipeGrade = quest.QuestRewardRecipeGrade;
 
-        if (_potionCraftGrade == PlayInfo.PotionCraftGrade.RANK_1)
+        if (_potionCraftGrade == Constants.PotionCraftGrade.RANK_1)
         {
-            _rewardMultiplier = PlayInfo.CRITICAL_SUCCESS;
-            if (PlayInfo.MAX_RECIPE_GRADE > rewardRecipeGrade)
+            _rewardMultiplier = Constants.CRITICAL_SUCCESS;
+            if (Constants.MAX_RECIPE_GRADE > rewardRecipeGrade)
                 rewardRecipeGrade++;
         }
         else _rewardMultiplier = 1;
@@ -172,7 +172,7 @@ public class CraftResult : MonoBehaviour
         _rewardButtons.SetActive(false);
         _selectText.text = "다음";
 
-        playInfo.ConsumeGold((int)(quest.QuestRewardMoney * PlayInfo.QUEST_PENALTY_RATIO));
+        playInfo.ConsumeGold((int)(quest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO));
     }
 
     public void ShowResultCheckUI()
@@ -216,7 +216,7 @@ public class CraftResult : MonoBehaviour
 
         if (IsPotionCraftSuccessful)
         {
-            _questResultText.text = (_potionCraftGrade == PlayInfo.PotionCraftGrade.RANK_1) ?
+            _questResultText.text = (_potionCraftGrade == Constants.PotionCraftGrade.RANK_1) ?
             "의뢰 대성공" :"의뢰 성공";
             _resultText.text = "성공";
         }

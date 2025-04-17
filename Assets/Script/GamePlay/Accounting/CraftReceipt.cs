@@ -34,8 +34,8 @@ public class CraftReceipt : MonoBehaviour
         _board = GameManager.GM.Board;
         _playInfo = GameManager.GM.PlayInformation;
 
-        _targetSuccessSprite = Resources.Load<Sprite>(PlayInfo.TARGET_SUCCESS_IMAGE);
-        _targetFailSprite = Resources.Load<Sprite>(PlayInfo.TARGET_FAIL_IMAGE);
+        _targetSuccessSprite = Resources.Load<Sprite>(PathHelper.TARGET_SUCCESS_IMAGE);
+        _targetFailSprite = Resources.Load<Sprite>(PathHelper.TARGET_FAIL_IMAGE);
 
         _nextButton.onClick.AddListener(ShowRecipeStore);
     }
@@ -69,7 +69,7 @@ public class CraftReceipt : MonoBehaviour
                 {
                     _potionNameText[i].color = Color.red;
                     _moneyText[i].color = Color.red;
-                    gold -= (int)(questList[i].QuestRewardMoney * PlayInfo.QUEST_PENALTY_RATIO);
+                    gold -= (int)(questList[i].QuestRewardMoney * Constants.QUEST_PENALTY_RATIO);
                 }
                 yield return StartCoroutine(TypingCorutine($"{questList[i].PotionName} Á¦Á¶", _potionNameText[i]));
 

@@ -22,7 +22,7 @@ public class Quest : MonoBehaviour
     [SerializeField] protected int _minPotionCapacity;
     [SerializeField] protected int _maxPotionCapacity;
     [ReadOnly,SerializeField] protected int _reqPotionCapacity;
-    [SerializeField] protected PlayInfo.QuestGrade _questGrade;
+    [SerializeField] protected Constants.QuestGrade _questGrade;
     protected QuestInfo _questInfo;
     protected QuestTextInfo _questTextInfo;
     protected PotionInfo _potionInfo;
@@ -44,7 +44,7 @@ public class Quest : MonoBehaviour
     public Quaternion OriginRotation { get => _originRotation; set => _originRotation = value; }
     public bool IsDisable { get => _disableQuest; set => _disableQuest = value; }
     public int QuestID { get=> _questID; set => _questID = value; }
-    public PlayInfo.QuestGrade QuestGrade => _questGrade;
+    public Constants.QuestGrade QuestGrade => _questGrade;
     //의뢰 보상
     public int QuestRewardMoney => QInfo.reward[0];
     public int QuestRewardRecipeGrade => QInfo.reward[1];
@@ -165,7 +165,7 @@ public class Quest : MonoBehaviour
     virtual protected void InitializeData()
     {
         //데이터 초기화
-        _questGrade = (PlayInfo.QuestGrade)_questInfo.questGrade;
+        _questGrade = (Constants.QuestGrade)_questInfo.questGrade;
         _minPotionCapacity = _questInfo.minCapacity;
         _maxPotionCapacity = _questInfo.maxCapacity;
         _reqPotionCapacity = Random.Range(_minPotionCapacity, _maxPotionCapacity);
@@ -182,13 +182,13 @@ public class Quest : MonoBehaviour
     {
         switch (_questGrade)
         {
-            case PlayInfo.QuestGrade.Small:
+            case Constants.QuestGrade.Small:
                 _gradeColor.color = Color.black;
                 break;
-            case PlayInfo.QuestGrade.Middle:
+            case Constants.QuestGrade.Middle:
                 _gradeColor.color = Color.magenta;
                 break;
-            case PlayInfo.QuestGrade.Large:
+            case Constants.QuestGrade.Large:
                 _gradeColor.color = Color.yellow;
                 break;
 

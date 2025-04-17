@@ -139,7 +139,7 @@ public class SaveManager : MonoBehaviour
         {
             board.InitializeQuestBoard();
             //_isSaveData = true;
-            int idCnt = Mathf.Min(PlayInfo.MAX_ACCEPT_QUEST_COUNT, _saveData.acceptQuestIds.Count);
+            int idCnt = Mathf.Min(Constants.MAX_ACCEPT_QUEST_COUNT, _saveData.acceptQuestIds.Count);
 
             for (int i = 0; i < idCnt; ++i)
             {

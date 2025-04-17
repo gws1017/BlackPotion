@@ -28,6 +28,6 @@ public class GamePlayHUD : HUD
     }
     public void ReturnToMainMenu()
     {
-        SceneManager.LoadScene(MAIN_MENU_SCENE);
+        SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
     }
 }

@@ -8,9 +8,7 @@ using static UnityEngine.ParticleSystem;
 
 public class IngredientSlot : MonoBehaviour
 {
-    public const int REFILL_GOLD = 10;
-    public const int MAX_NUMBER = 10;
-    public const int SUM_NUMBER = ((MAX_NUMBER + 1) * MAX_NUMBER) / 2;
+
 
     [Header("Component")]
     [SerializeField] private Canvas _canvas;
@@ -73,7 +71,7 @@ public class IngredientSlot : MonoBehaviour
     public void InitializeSlot()
     {
         _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
-        IngredientAmount = SUM_NUMBER;
+        IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
 
         int? ingredientId = _brewer?.CurrentQuest?.PInfo.ingredientIdList[SlotId];
         if (ingredientId != null && ingredientId != 0)
@@ -99,12 +97,12 @@ public class IngredientSlot : MonoBehaviour
     {
         _inputButtonText.text = "투입";
         _ingredientCountDict.Clear();
-        for (int i = 1; i <= MAX_NUMBER; ++i)
+        for (int i = 1; i <= Constants.INGRIDIENT_MAX_NUMBER; ++i)
         {
             _ingredientCountDict[i] = false;
             _inputInfoImages[i].color = Color.white;
         }
-        IngredientAmount = SUM_NUMBER;
+        IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
     }
 
     private void InputIngredient()
@@ -151,10 +149,10 @@ public class IngredientSlot : MonoBehaviour
     {
         if (IsFullCount()) return 0;
 
-        int amount = Random.Range(1, MAX_NUMBER + 1);
+        int amount = Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
         while (_ingredientCountDict[amount])
         {
-            amount = Random.Range(1, MAX_NUMBER + 1);
+            amount = Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
         }
 
         //홀짝버프 확인
@@ -181,8 +179,8 @@ public class IngredientSlot : MonoBehaviour
     {
         Debug.Log("재료를 수급합니다!");
 
-        GameManager.GM.PlayInformation.ConsumeGold(REFILL_GOLD);
-        IngredientAmount = SUM_NUMBER;
+        GameManager.GM.PlayInformation.ConsumeGold(Constants.INGRIDIENT_REFILL_GOLD);
+        IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
 
         _inputButtonText.text = "투입";
 

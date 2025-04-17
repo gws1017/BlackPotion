@@ -146,7 +146,7 @@ public class BuffManager : MonoBehaviour
                 //이상한 양조기
                 if (IsActiveBuff(BuffID))
                 {
-                    value += UnityEngine.Random.Range(1, IngredientSlot.MAX_NUMBER);
+                    value += UnityEngine.Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER);
                 }
                 else return;
                 break;
@@ -156,9 +156,9 @@ public class BuffManager : MonoBehaviour
     }
     public bool IsFullBuffList()
     {
-        if (GetBuffCount() >= PlayInfo.MAX_BUFF_COUNT)
+        if (GetBuffCount() >= Constants.MAX_BUFF_COUNT)
         {
-            Debug.Log("버프 아이템 최대로 보유중입니다 " + PlayInfo.MAX_BUFF_COUNT);
+            Debug.Log("버프 아이템 최대로 보유중입니다 " + Constants.MAX_BUFF_COUNT);
             return true;
         }
         return false;

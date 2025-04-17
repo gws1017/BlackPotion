@@ -2,70 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
-using static PlayInfo;
 
 public class PlayInfo : MonoBehaviour
 {
-
-    public const string TARGET_SUCCESS_IMAGE = "Images/targetSucc";
-    public const string TARGET_FAIL_IMAGE = "Images/targetFail";
-
-    public const int RESTART_GOLD = 50; //재시작 골드
-    public const int MAX_RECIPE_GRADE = 4; //레시피 최고 등급
-    public const int MAX_ACCEPT_QUEST_COUNT = 5;
-    public const int MAX_BUFF_COUNT = 3;
-    public const int MAX_QUEST_COUNT_LAYER = 5;
-    public const float QUEST_PENALTY_RATIO = 0.1f;
-    public const float CRITICAL_SUCCESS = 1.5f; //대성공
-
-    public enum QuestGrade
-    {
-        Small,
-        Middle,
-        Large
-    }
-
-    public enum RecipeGrade
-    {
-        Normal,
-        Common,
-        Rare,
-        Uncommon,
-        Legendary
-    }
-
-    public static string RecipeGradeToString(RecipeGrade grade)
-    {
-        switch(grade)
-        {
-            case RecipeGrade.Normal:
-                return "Normal";
-            case RecipeGrade.Common:
-                return "Common";
-            case RecipeGrade.Rare:
-                return "Rare";
-            case RecipeGrade.Uncommon:
-                return "NoUncommonrmal";
-            case RecipeGrade.Legendary:
-                return "Legendary";
-        }
-        return "";
-    }
-
-    public struct PotionCraftGrade
-    {
-        public const string RANK_1 = "A";
-        public const string RANK_2 = "B+";
-        public const string RANK_3 = "B";
-        public const string RANK_4 = "C+";
-        public const string RANK_5 = "C";
-
-        public const int BORDER_1 = 100;
-        public const int BORDER_2 = 80;
-        public const int BORDER_3 = 60;
-        public const int BORDER_4 = 40;
-        public const int BORDER_5 = 20;
-    };
 
     private int _currentCraftDay = 0;//현재 일차
     private int _currentGold = 0;//현재 소유하고 있는 골드량
@@ -186,27 +125,27 @@ public class PlayInfo : MonoBehaviour
     }
     public static string CheckPotionCraftGrade(float qualityPercent)
     {
-        if (qualityPercent <= PotionCraftGrade.BORDER_5)
+        if (qualityPercent <= Constants.PotionCraftGrade.BORDER_5)
         {
-            return PotionCraftGrade.RANK_5;
+            return Constants.PotionCraftGrade.RANK_5;
         }
-        else if (qualityPercent <= PotionCraftGrade.BORDER_4 && qualityPercent > PotionCraftGrade.BORDER_5 + 1)
+        else if (qualityPercent <= Constants.PotionCraftGrade.BORDER_4 && qualityPercent > Constants.PotionCraftGrade.BORDER_5 + 1)
         {
-            return PotionCraftGrade.RANK_4;
+            return Constants.PotionCraftGrade.RANK_4;
         }
-        else if (qualityPercent <= PotionCraftGrade.BORDER_3 && qualityPercent > PotionCraftGrade.BORDER_4 + 1)
+        else if (qualityPercent <= Constants.PotionCraftGrade.BORDER_3 && qualityPercent > Constants.PotionCraftGrade.BORDER_4 + 1)
         {
-            return PotionCraftGrade.RANK_3;
+            return Constants.PotionCraftGrade.RANK_3;
         }
-        else if (qualityPercent <= PotionCraftGrade.BORDER_2 && qualityPercent > PotionCraftGrade.BORDER_3 + 1)
+        else if (qualityPercent <= Constants.PotionCraftGrade.BORDER_2 && qualityPercent > Constants.PotionCraftGrade.BORDER_3 + 1)
         {
-            return PotionCraftGrade.RANK_2;
+            return Constants.PotionCraftGrade.RANK_2;
         }
-        else if (qualityPercent <= PotionCraftGrade.BORDER_1 && qualityPercent > PotionCraftGrade.BORDER_2 + 1)
+        else if (qualityPercent <= Constants.PotionCraftGrade.BORDER_1 && qualityPercent > Constants.PotionCraftGrade.BORDER_2 + 1)
         {
-            return PotionCraftGrade.RANK_1;
+            return Constants.PotionCraftGrade.RANK_1;
         }
-        return PotionCraftGrade.RANK_5;
+        return Constants.PotionCraftGrade.RANK_5;
     }
 
 }

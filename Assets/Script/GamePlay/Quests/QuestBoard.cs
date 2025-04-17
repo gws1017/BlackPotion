@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class QuestBoard : MonoBehaviour
 {
-    public const float LAYER_OFFSET_MULTIPLIER = 2.5f;
+    private const float LAYER_OFFSET_MULTIPLIER = 2.5f;
     public enum ZLayer
     {
         QuestFloor1 = 3,
@@ -136,7 +136,7 @@ public class QuestBoard : MonoBehaviour
             ZLayer selectedlayer = ZLayer.QuestFloor3;
             foreach (ZLayer layer in new[] { ZLayer.QuestFloor3, ZLayer.QuestFloor2, ZLayer.QuestFloor1 })
             {
-                if (_questList[layer].Count < PlayInfo.MAX_QUEST_COUNT_LAYER)
+                if (_questList[layer].Count < Constants.MAX_QUEST_COUNT_LAYER)
                     selectedlayer = layer;
             }
 
@@ -192,7 +192,7 @@ public class QuestBoard : MonoBehaviour
             Debug.Log("이미 수락한 퀘스트 입니다.");
             return;
         }
-        if (_acceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
+        if (_acceptQuestList.Count >= Constants.MAX_ACCEPT_QUEST_COUNT)
         {
             Debug.Log("퀘스트를 최대치로 수락했습니다.");
             return;
@@ -202,7 +202,7 @@ public class QuestBoard : MonoBehaviour
         if(!_questResultDict.ContainsKey(quest))
             _questResultDict.Add(quest, false);
 
-        if (_acceptQuestList.Count >= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
+        if (_acceptQuestList.Count >= Constants.MAX_ACCEPT_QUEST_COUNT)
             CurrentQuestOutlineEffectOn();
         else
             CurrentQuestOutlineEffectOff();
@@ -256,7 +256,7 @@ public class QuestBoard : MonoBehaviour
     {
         if (AcceptQuestList.Count <= 0) return;
 
-        if (AcceptQuestList.Count <= PlayInfo.MAX_ACCEPT_QUEST_COUNT)
+        if (AcceptQuestList.Count <= Constants.MAX_ACCEPT_QUEST_COUNT)
             CurrentQuestOutlineEffectOff();
 
         Quest quest = AcceptQuestList[0];
