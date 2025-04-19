@@ -29,6 +29,7 @@ public class PotionBrewer : MonoBehaviour
     [SerializeField] private Text _questText;
     [SerializeField] private Text _questTitleText;
     [SerializeField] private Text _reqQualityValueText;
+    [SerializeField] private Text _questProgressText;
     [SerializeField] private int _currentQuestIndex;
     private Quest _currentQuest;
 
@@ -153,7 +154,6 @@ public class PotionBrewer : MonoBehaviour
             _gameManager.ShowCraftReceipt();
         }
         _craftButton.gameObject.SetActive(true);
-
     }
 
     public void InsertIngredient(int slotId, int amount)
@@ -181,6 +181,8 @@ public class PotionBrewer : MonoBehaviour
     {
         _currentQuestIndex = questIndex;
         _currentQuest = Board.GetCurrentQuest(_currentQuestIndex);
+
+        _questProgressText.text = $"{_currentQuestIndex + 1} / {Board.CurrentAcceptQuestCount}";
 
         var potionInfo = _currentQuest.PInfo;
 
