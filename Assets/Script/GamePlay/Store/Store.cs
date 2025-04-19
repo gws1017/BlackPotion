@@ -41,6 +41,7 @@ public class Store : MonoBehaviour
     [SerializeField] private int _boxCountPerLine = 3;
     [SerializeField] private float _itemBoxYOffset = 0.0f;
 
+    public Canvas StoreCanvas => _canvas;
     public StoreType SType => _storeType;
     void Start()
     {
