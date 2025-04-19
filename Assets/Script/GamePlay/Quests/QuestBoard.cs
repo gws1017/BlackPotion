@@ -32,6 +32,7 @@ public class QuestBoard : MonoBehaviour
     private List<int> _unAcceptableQuestList; //미보유 레시피
 
     [Header("Current Quest")]
+    [SerializeField] public Button _questStartButton;
     [SerializeField] private Button _questBoardButton;
     [SerializeField] private Button _questCanelButton;
     [SerializeField] private Button _questNextButton;

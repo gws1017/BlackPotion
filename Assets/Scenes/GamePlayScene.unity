@@ -4304,6 +4304,7 @@ MonoBehaviour:
   _questBoardButton: {fileID: 412372150}
   _questCanelButton: {fileID: 326989775}
   _questNextButton: {fileID: 2021243266}
+  _questStartButton: {fileID: 1380281943}
   _currentQuestButton: {fileID: 1360930466}
   _buttonActiveOuline: {fileID: 1360930469}
   _currentQuestUIObject: {fileID: 1735403086}
