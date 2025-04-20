@@ -182,7 +182,6 @@ public class PotionBrewer : MonoBehaviour
         _currentQuestIndex = questIndex;
         _currentQuest = Board.GetCurrentQuest(_currentQuestIndex);
 
-        _questProgressText.text = $"{_currentQuestIndex + 1} / {Board.CurrentAcceptQuestCount}";
 
         var potionInfo = _currentQuest.PInfo;
 
@@ -247,6 +246,7 @@ public class PotionBrewer : MonoBehaviour
     {
         _questText.text = _currentQuest.QuestText;
         _questTitleText.text = _currentQuest.QuestName;
+        _questProgressText.text = $"ÀÇ·Ú {_currentQuestIndex + 1} / {Board.CurrentAcceptQuestCount}";
         _potionImage.sprite = _currentQuest.PotionImage;
         _potionNameText.text = _currentQuest.PotionName;
         _reqQualityValueText.text = _currentQuest.PotionCapacityValue;
