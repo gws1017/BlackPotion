@@ -160,6 +160,8 @@ public class Quest : MonoBehaviour
     protected void CopyQuestInfo(Quest quest)
     {
         _questInfo = quest._questInfo;
+        _questTextInfo = quest._questTextInfo;
+        _potionInfo = quest._potionInfo;
     }
 
     virtual protected void InitializeData()
