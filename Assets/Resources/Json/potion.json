@@ -6,7 +6,7 @@
       "potionGrade": 0,
       "ingredientIdList": [ 3001, 0, 3002 ],
       "materialRatioList": [ 2, 0, 1 ],
-      "recipeCost": 0,
+      "recipeCost": 50,
       "potionImage": "Images/potiongreen"
     },
     {
@@ -15,7 +15,7 @@
       "potionGrade": 0,
       "ingredientIdList": [ 3001, 0, 3003 ],
       "materialRatioList": [ 3, 0, 1 ],
-      "recipeCost": 0,
+      "recipeCost": 50,
       "potionImage": "Images/potionblue"
     },
     {
@@ -24,7 +24,7 @@
       "potionGrade": 0,
       "ingredientIdList": [ 3001, 0, 3004 ],
       "materialRatioList": [ 4, 0, 1 ],
-      "recipeCost": 0,
+      "recipeCost": 50,
       "potionImage": "Images/potionblue"
     },
     {

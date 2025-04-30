@@ -22,6 +22,11 @@ public class QuestBoard : MonoBehaviour
     [ReadOnly] public float _layerOffset;
     [ReadOnly] public bool _CanActiveSelectEffect = true;
 
+    [Header("Reicpe")]
+    [SerializeField] private GameObject _selectRecipeUI;
+    [SerializeField] private GameObject[] _hideUIObjects;
+    [SerializeField] private RecipeObject[] _recipeObjects;
+
     [Header("Quest")]
     [ReadOnly, SerializeField] private Dictionary<ZLayer, List<GameObject>> _questList;
     [SerializeField] private List<Quest> _acceptQuestList;
@@ -93,7 +98,7 @@ public class QuestBoard : MonoBehaviour
             foreach (Quest quest in _acceptQuestList)
                 Destroy(quest.gameObject);
         }
-
+        
         //변수 초기화
         _currentQuestUIObject.SetActive(false);
         if (_questList == null || _questList.Count > 0)
@@ -113,6 +118,13 @@ public class QuestBoard : MonoBehaviour
         _questBoardButton.onClick.AddListener(CloseCurrentQuestUI);
 
         QuestDisableEffectOff(); //커튼 패널 초기위치 조정
+
+        //0일차면 레시피 선택
+        //선택 레시피가 없으면
+        if (GameManager.GM.PlayInformation.CurrentDay == 0)
+        {
+            SelectRecipe();
+        }
     }
 
     public void CreateQuestObject()
@@ -155,7 +167,10 @@ public class QuestBoard : MonoBehaviour
             quest.OriginRotation = rot;
             quest.QuestLayer = selectedlayer;
             //questCanvas.overrideSorting = true;
-
+            if(_selectRecipeUI.activeSelf == true)
+            {
+                Clone.SetActive(false);
+            }
             _questList[selectedlayer].Add(Clone);
         }
     }
@@ -477,5 +492,46 @@ public class QuestBoard : MonoBehaviour
         }
 
         return questID;
+    }
+
+    public void SelectRecipe()
+    {
+        if (_selectRecipeUI == null)
+            return;
+        _selectRecipeUI.SetActive(true);
+
+        if(_hideUIObjects.Length > 0)
+        {
+            foreach (var uiOjbect in _hideUIObjects)
+            {
+                uiOjbect.SetActive(false);
+            }
+        }
+
+        List<int> SelectableRecipe = GameManager.GM.PlayInformation.GetSelectableRecipe();
+        if(SelectableRecipe.Count >= 3)
+        {
+            if(_recipeObjects.Length >= 3)
+            {
+                for(int i = 0; i< SelectableRecipe.Count; ++i)
+                {
+                    int recipeID = SelectableRecipe[i];
+                    _recipeObjects[i].Initialize(recipeID);
+                }
+            }
+        }
+         //_recipeNames;
+         //_materialNames;
+         //_ratioText;
+         //_ratioBox;
+
+        foreach (var questObjects in _questList.Values)
+        {
+            foreach(GameObject questObject in questObjects)
+            {
+                //questObject.SetActive(false);
+            }    
+        }
+        
     }
 }

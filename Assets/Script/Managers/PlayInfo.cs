@@ -1,6 +1,9 @@
+using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UnityEngine;
 
 public class PlayInfo : MonoBehaviour
@@ -52,14 +55,22 @@ public class PlayInfo : MonoBehaviour
         _recipeDict = new Dictionary<int, bool>();
         foreach (var recipeData in ReadJson._dictPotion)
         {
-            // 0골드인 레시피는 기본 레시피이다.
-            if (recipeData.Value.recipeCost != 0)
-                _recipeDict.Add(recipeData.Key, false);
-            else
-                _recipeDict.Add(recipeData.Key, true);
+           _recipeDict.Add(recipeData.Key, false);
         }
     }
     
+    public List<int> GetSelectableRecipe()
+    {
+        List<int> SelectableReicpe = new List<int>();
+        foreach (var recipeData in ReadJson._dictPotion)
+        {
+            if(recipeData.Value.potionGrade == 0)
+                SelectableReicpe.Add(recipeData.Value.potionId);
+        }
+
+        System.Random rand = new System.Random();
+        return SelectableReicpe.OrderBy(x => rand.Next()).Take(3).ToList();
+    }
     //레시피 획득 함수
     public void AddRecipe(int recipeID)
     {
