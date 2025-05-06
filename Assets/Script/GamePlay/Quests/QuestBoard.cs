@@ -23,9 +23,11 @@ public class QuestBoard : MonoBehaviour
     [ReadOnly] public bool _CanActiveSelectEffect = true;
 
     [Header("Reicpe")]
+    [SerializeField] public int _selctRecipeID;
     [SerializeField] private GameObject _selectRecipeUI;
     [SerializeField] private GameObject[] _hideUIObjects;
     [SerializeField] private RecipeObject[] _recipeObjects;
+    [SerializeField] private Button _recipeSelectButton;
 
     [Header("Quest")]
     [ReadOnly, SerializeField] private Dictionary<ZLayer, List<GameObject>> _questList;
@@ -76,7 +78,6 @@ public class QuestBoard : MonoBehaviour
         _layerOffset = _meshExtents.z;
 
         InitializeQuestBoard();
-        CreateQuestObject();
     }
 
 
@@ -123,8 +124,19 @@ public class QuestBoard : MonoBehaviour
         //선택 레시피가 없으면
         if (GameManager.GM.PlayInformation.CurrentDay == 0)
         {
+            _recipeSelectButton.onClick.RemoveAllListeners();
+            _recipeSelectButton.onClick.AddListener(() => {
+                GameManager.GM.PlayInformation.AddRecipe(_selctRecipeID);
+                _selectRecipeUI.SetActive(false);
+                CreateQuestObject();
+            });
             SelectRecipe();
         }
+        else
+        {
+            CreateQuestObject();
+        }
+        
     }
 
     public void CreateQuestObject()
@@ -517,20 +529,20 @@ public class QuestBoard : MonoBehaviour
                 {
                     int recipeID = SelectableRecipe[i];
                     _recipeObjects[i].Initialize(recipeID);
+                    int index = i;
+                    _recipeObjects[index]._selectButton.onClick.AddListener(() => 
+                    {
+                        if (_recipeSelectButton.interactable == false)
+                            _recipeSelectButton.interactable = true;
+                        for (int j = 0; j < SelectableRecipe.Count; ++j)
+                        {
+                            if(_recipeObjects[j]._outline.enabled == true)
+                                _recipeObjects[j].ToggleHighLight();
+                        }
+                        _recipeObjects[index].ToggleHighLight();
+                    });
                 }
             }
-        }
-         //_recipeNames;
-         //_materialNames;
-         //_ratioText;
-         //_ratioBox;
-
-        foreach (var questObjects in _questList.Values)
-        {
-            foreach(GameObject questObject in questObjects)
-            {
-                //questObject.SetActive(false);
-            }    
         }
         
     }

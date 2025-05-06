@@ -11,6 +11,9 @@ public class RecipeObject : MonoBehaviour
     public Text[] _ratioCategoryNames;
     public Text[] _ratioValue;
     public GameObject[] _ratioBox;
+    public Button _selectButton;
+    public Outline _outline;
+
 
     public void Initialize(int recipeID)
     {
@@ -48,5 +51,11 @@ public class RecipeObject : MonoBehaviour
                 _ratioBox[i].SetActive(false);
         }
 
+    }
+
+    public void ToggleHighLight()
+    {
+        _outline.enabled = !_outline.enabled;
+        GameManager.GM.Board._selctRecipeID = _recipeID;
     }
 }
