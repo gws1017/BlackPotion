@@ -23,7 +23,7 @@ public class QuestBoard : MonoBehaviour
     [ReadOnly] public bool _CanActiveSelectEffect = true;
 
     [Header("Reicpe")]
-    [SerializeField] public int _selctRecipeID;
+    [SerializeField] public RecipeObject _selectRecipeObject;
     [SerializeField] private GameObject _selectRecipeUI;
     [SerializeField] private GameObject[] _hideUIObjects;
     [SerializeField] private RecipeObject[] _recipeObjects;
@@ -126,11 +126,9 @@ public class QuestBoard : MonoBehaviour
         {
             _recipeSelectButton.onClick.RemoveAllListeners();
             _recipeSelectButton.onClick.AddListener(() => {
-                GameManager.GM.PlayInformation.AddRecipe(_selctRecipeID);
-                _selectRecipeUI.SetActive(false);
-                CreateQuestObject();
+                _selectRecipeObject.PlayRecipeAnim();
             });
-            SelectRecipe();
+            ShowSelectRecipeUI();
         }
         else
         {
@@ -506,7 +504,7 @@ public class QuestBoard : MonoBehaviour
         return questID;
     }
 
-    public void SelectRecipe()
+    public void ShowSelectRecipeUI()
     {
         if (_selectRecipeUI == null)
             return;
@@ -545,5 +543,12 @@ public class QuestBoard : MonoBehaviour
             }
         }
         
+    }
+
+    public void HideSelectRecipeUI()
+    {
+        GameManager.GM.PlayInformation.AddRecipe(_selectRecipeObject._recipeID);
+        _selectRecipeUI.SetActive(false);
+        CreateQuestObject();
     }
 }
