@@ -46,18 +46,49 @@ public static class Constants
 
     public struct PotionCraftGrade
     {
-        public const string RANK_1 = "A";
-        public const string RANK_2 = "B+";
-        public const string RANK_3 = "B";
-        public const string RANK_4 = "C+";
-        public const string RANK_5 = "C";
+        public const string RANK_S = "S";
+        public const string RANK_A = "A";
+        public const string RANK_BP = "B+";
+        public const string RANK_B = "B";
+        public const string RANK_CP = "C+";
+        public const string RANK_C = "C";
 
-        public const int BORDER_1 = 100;
-        public const int BORDER_2 = 80;
-        public const int BORDER_3 = 60;
-        public const int BORDER_4 = 40;
-        public const int BORDER_5 = 20;
+        public const int BORDER_S = 100;
+        public const int BORDER_A = 90;
+        public const int BORDER_BP = 70;
+        public const int BORDER_B = 50;
+        public const int BORDER_CP = 20;
+        public const int BORDER_C = 0;
     };
+
+    public static string CheckPotionCraftGrade(float qualityPercent)
+    {
+        if (qualityPercent >= PotionCraftGrade.BORDER_S)
+        {
+            return PotionCraftGrade.RANK_S;
+        }
+        else if (qualityPercent >= PotionCraftGrade.BORDER_A && qualityPercent < PotionCraftGrade.BORDER_S)
+        {
+            return PotionCraftGrade.RANK_A;
+        }
+        else if (qualityPercent >= PotionCraftGrade.BORDER_BP && qualityPercent < PotionCraftGrade.BORDER_A)
+        {
+            return PotionCraftGrade.RANK_BP;
+        }
+        else if (qualityPercent >= PotionCraftGrade.BORDER_B && qualityPercent < PotionCraftGrade.BORDER_BP)
+        {
+            return PotionCraftGrade.RANK_B;
+        }
+        else if (qualityPercent >= PotionCraftGrade.BORDER_CP && qualityPercent < PotionCraftGrade.BORDER_B)
+        {
+            return PotionCraftGrade.RANK_CP;
+        }
+        else if(qualityPercent < PotionCraftGrade.BORDER_CP)
+        {
+            return PotionCraftGrade.RANK_C;
+        }
+        return PotionCraftGrade.RANK_C;
+    }
 
     //Scene
 

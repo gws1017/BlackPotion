@@ -18,7 +18,7 @@
       "potionId": 2001,
       "minCapacity": 90,
       "maxCapacity": 180,
-      "reward": [100,1]
+      "reward": [ 100, 1 ]
 
     },
     {
@@ -63,13 +63,33 @@
     },
     {
       "questId": 1007,
-      "questName": "소형 해충약 의뢰",
-      "explainTextId": 4004,
+      "questName": "정찰대 몬스터 기피약 의뢰",
+      "explainTextId": 4301,
       "questGrade": 0,
-      "potionId": 2004,
-      "minCapacity": 20,
-      "maxCapacity": 45,
+      "potionId": 2003,
+      "minCapacity": 35,
+      "maxCapacity": 65,
       "reward": [ 55, 1 ]
+    },
+    {
+      "questId": 1008,
+      "questName": "경계 근무용 몬스터 기피약 의뢰",
+      "explainTextId": 4302,
+      "questGrade": 1,
+      "potionId": 2003,
+      "minCapacity": 120,
+      "maxCapacity": 150,
+      "reward": [ 115, 1 ]
+    },
+    {
+      "questId": 1009,
+      "questName": "대형 탐사 몬스터 기피약 의뢰",
+      "explainTextId": 4303,
+      "questGrade": 2,
+      "potionId": 2003,
+      "minCapacity": 160,
+      "maxCapacity": 200,
+      "reward": [ 225, 2 ]
     }
   ]
   

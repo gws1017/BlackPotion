@@ -25,7 +25,7 @@ public class CraftResult : MonoBehaviour
     [SerializeField] private Text _moneyValueText;
     [SerializeField] private Text _recipeNameText;
     [SerializeField] private Text _selectText;
-    [SerializeField] private Text _potionQualityValueText;
+    [SerializeField] private Text _potionQualityRewardText;
     [SerializeField] private Text _resultText;
     [SerializeField] private Button _selectButton;
     [SerializeField] private Button _moneyButton;
@@ -37,7 +37,7 @@ public class CraftResult : MonoBehaviour
     [SerializeField] private Image _potionImage;
     [SerializeField] private Text _potionName;
     [SerializeField] private Text _potionGrade;
-    [SerializeField] private Text _potionQuality;
+    [SerializeField] private Text _potionQualityResultCheckText;
     [SerializeField] private Text _potionMinQuality;
     [SerializeField] private Text _potionMaxQuality;
     [SerializeField] private Slider _potionQualityProgressBar;
@@ -51,7 +51,7 @@ public class CraftResult : MonoBehaviour
     private float _rewardMultiplier = 1;
     private bool _isPotionCraftSuccessful;
 
-    public int PotionQuality { set => _potionQualityValueText.text = value.ToString(); }
+    public int PotionQuality { set => _potionQualityRewardText.text = value.ToString(); }
     public bool IsPotionCraftSuccessful  {get => _isPotionCraftSuccessful; set => _isPotionCraftSuccessful = value;  }
     public PotionBrewer Brewer => _brewer ? _brewer : (_brewer = GameManager.GM.Brewer);
 
@@ -126,7 +126,8 @@ public class CraftResult : MonoBehaviour
 
         int rewardRecipeGrade = quest.QuestRewardRecipeGrade;
 
-        if (_potionCraftGrade == Constants.PotionCraftGrade.RANK_1)
+        //S랭크인경우 대성공 보너스
+        if (_potionCraftGrade == Constants.PotionCraftGrade.RANK_S)
         {
             _rewardMultiplier = Constants.CRITICAL_SUCCESS;
             if (Constants.MAX_RECIPE_GRADE > rewardRecipeGrade)
@@ -187,7 +188,7 @@ public class CraftResult : MonoBehaviour
 
         _potionImage.sprite = questInfo.PotionImage;
         _potionName.text = questInfo.PotionName;
-        _potionQuality.text = Brewer.CurrentPotionQuality.ToString();
+        _potionQualityResultCheckText.text = Brewer.CurrentPotionQuality.ToString();
         _potionMinQuality.text = questInfo.QInfo.minCapacity.ToString();
         _potionMaxQuality.text = questInfo.QInfo.maxCapacity.ToString();
 
@@ -195,15 +196,15 @@ public class CraftResult : MonoBehaviour
         {
             string plusValue = $" + <color=red>{ReadJson._dictBuff[(int)BuffType.PlusPowder].buffState}</color>";
             
-            _potionQuality.text += plusValue;
-            _potionQualityValueText.text = _potionQuality.text;
+            _potionQualityResultCheckText.text += plusValue;
+            _potionQualityRewardText.text = _potionQualityResultCheckText.text;
         }
         int currentQuality = Brewer.CurrentPotionQuality;
         if (currentQuality < questInfo.QInfo.minCapacity) 
             currentQuality = 0;
 
         float qualityPercent = (float)(currentQuality) / (float)(questInfo.QInfo.maxCapacity) * 100.0f;
-        _potionCraftGrade = PlayInfo.CheckPotionCraftGrade(qualityPercent);
+        _potionCraftGrade = Constants.CheckPotionCraftGrade(qualityPercent);
         _potionGrade.text = _potionCraftGrade;
         _potionQualityProgressBar.value = qualityPercent;
     }
@@ -214,9 +215,11 @@ public class CraftResult : MonoBehaviour
         if (Brewer.CurrentCraftState == PotionBrewer.CraftState.None) 
             return;
 
+        _potionQualityRewardText.text = Brewer.CurrentPotionQuality.ToString();
+
         if (IsPotionCraftSuccessful)
         {
-            _questResultText.text = (_potionCraftGrade == Constants.PotionCraftGrade.RANK_1) ?
+            _questResultText.text = (_potionCraftGrade == Constants.PotionCraftGrade.RANK_S) ?
             "의뢰 대성공" :"의뢰 성공";
             _resultText.text = "성공";
         }

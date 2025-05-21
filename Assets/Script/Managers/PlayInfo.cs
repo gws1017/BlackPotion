@@ -134,29 +134,5 @@ public class PlayInfo : MonoBehaviour
             GameManager.GM.SM.SavePlayInfo();
         IntializeRecipeDict();
     }
-    public static string CheckPotionCraftGrade(float qualityPercent)
-    {
-        if (qualityPercent <= Constants.PotionCraftGrade.BORDER_5)
-        {
-            return Constants.PotionCraftGrade.RANK_5;
-        }
-        else if (qualityPercent <= Constants.PotionCraftGrade.BORDER_4 && qualityPercent > Constants.PotionCraftGrade.BORDER_5 + 1)
-        {
-            return Constants.PotionCraftGrade.RANK_4;
-        }
-        else if (qualityPercent <= Constants.PotionCraftGrade.BORDER_3 && qualityPercent > Constants.PotionCraftGrade.BORDER_4 + 1)
-        {
-            return Constants.PotionCraftGrade.RANK_3;
-        }
-        else if (qualityPercent <= Constants.PotionCraftGrade.BORDER_2 && qualityPercent > Constants.PotionCraftGrade.BORDER_3 + 1)
-        {
-            return Constants.PotionCraftGrade.RANK_2;
-        }
-        else if (qualityPercent <= Constants.PotionCraftGrade.BORDER_1 && qualityPercent > Constants.PotionCraftGrade.BORDER_2 + 1)
-        {
-            return Constants.PotionCraftGrade.RANK_1;
-        }
-        return Constants.PotionCraftGrade.RANK_5;
-    }
 
 }

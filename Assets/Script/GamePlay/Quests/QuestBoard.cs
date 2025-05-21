@@ -549,6 +549,13 @@ public class QuestBoard : MonoBehaviour
     {
         GameManager.GM.PlayInformation.AddRecipe(_selectRecipeObject._recipeID);
         _selectRecipeUI.SetActive(false);
+        if (_hideUIObjects.Length > 0)
+        {
+            foreach (var uiOjbect in _hideUIObjects)
+            {
+                uiOjbect.SetActive(true);
+            }
+        }
         CreateQuestObject();
     }
 }

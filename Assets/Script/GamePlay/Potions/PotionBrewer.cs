@@ -168,8 +168,6 @@ public class PotionBrewer : MonoBehaviour
             _slots[slotId].DisableInputButton();
         }
 
-        //수량 텍스트 업데이트
-        //추후 비율 DB 업데이트후 수정예정
         _ingredientInputAmountText[slotId].text =
             $"{_currentAmount[slotId]} / {_maxAmount[slotId]}";
 
