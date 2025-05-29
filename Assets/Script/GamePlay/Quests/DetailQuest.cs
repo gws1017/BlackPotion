@@ -82,25 +82,7 @@ public class DetailQuest : Quest
     //레시피 보상 등급에 따라 색으로 표기
     private void ShowRewardRecipeGrade()
     {
-        Constants.RecipeGrade grade = (Constants.RecipeGrade)QuestRewardRecipeGrade;
-        switch (grade)
-        {
-            case Constants.RecipeGrade.Normal:
-                _rewardRecipeText.color = Color.gray;
-                break;
-            case Constants.RecipeGrade.Common:
-                _rewardRecipeText.color = Color.white;
-                break;
-            case Constants.RecipeGrade.Rare:
-                _rewardRecipeText.color = Color.blue;
-                break;
-            case Constants.RecipeGrade.Uncommon:
-                _rewardRecipeText.color = Color.green;
-                break;
-            case Constants.RecipeGrade.Legendary:
-                _rewardRecipeText.color = Color.yellow;
-                break;
-        }
+        Constants.SetRecipeIcon(_rewardRecipe, QuestRewardRecipeGrade);
         _rewardRecipeText.text = Constants.RecipeGradeToString((Constants.RecipeGrade)QuestRewardRecipeGrade);
 
     }

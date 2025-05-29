@@ -30,6 +30,7 @@ public class CraftResult : MonoBehaviour
     [SerializeField] private Button _selectButton;
     [SerializeField] private Button _moneyButton;
     [SerializeField] private Button _recipeButton;
+    [SerializeField] private Image _recipeImage;
     [SerializeField] private Outline _moneyOutline;
     [SerializeField] private Outline _recipeOutline;
 
@@ -144,6 +145,8 @@ public class CraftResult : MonoBehaviour
                 availableRecipes.Add(RecipeData.potionId);
             }
         }
+
+        Constants.SetRecipeIcon(_recipeImage, rewardRecipeGrade);
 
         _rewardButtons.SetActive(true);
         _moneyValueText.text = $"{((int)(quest.QuestRewardMoney * _rewardMultiplier))} °ñµå";

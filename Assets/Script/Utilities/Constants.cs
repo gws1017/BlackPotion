@@ -1,5 +1,9 @@
 
 
+using Microsoft.Unity.VisualStudio.Editor;
+using UnityEngine;
+using UnityEngine.UI;
+
 public static class Constants
 {
     //Play Information
@@ -88,6 +92,29 @@ public static class Constants
             return PotionCraftGrade.RANK_C;
         }
         return PotionCraftGrade.RANK_C;
+    }
+
+    public static void SetRecipeIcon(UnityEngine.UI.Image recipeImage,int recipeGrade)
+    {
+        RecipeGrade grade = (RecipeGrade)recipeGrade;
+        switch (grade)
+        {
+            case RecipeGrade.Normal:
+                recipeImage.sprite = Resources.Load<Sprite>(PathHelper.RECIPE_ICON_NORMAL);
+                break;
+            case RecipeGrade.Common:
+                recipeImage.sprite = Resources.Load<Sprite>(PathHelper.RECIPE_ICON_COMMON);
+                break;
+            case RecipeGrade.Rare:
+                recipeImage.sprite = Resources.Load<Sprite>(PathHelper.RECIPE_ICON_RARE);
+                break;
+            case RecipeGrade.Uncommon:
+                recipeImage.sprite = Resources.Load<Sprite>(PathHelper.RECIPE_ICON_UNCOMMON);
+                break;
+            case RecipeGrade.Legendary:
+                recipeImage.sprite = Resources.Load<Sprite>(PathHelper.RECIPE_ICON_LEGEND);
+                break;
+        }
     }
 
     //Scene

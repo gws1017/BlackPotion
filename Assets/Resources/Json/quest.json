@@ -49,7 +49,7 @@
       "potionId": 2002,
       "minCapacity": 120,
       "maxCapacity": 240,
-      "reward": [ 110, 1 ]
+      "reward": [ 110, 2 ]
     },
     {
       "questId": 1006,
@@ -59,7 +59,7 @@
       "potionId": 2002,
       "minCapacity": 200,
       "maxCapacity": 400,
-      "reward": [ 250, 1 ]
+      "reward": [ 250, 2 ]
     },
     {
       "questId": 1007,
