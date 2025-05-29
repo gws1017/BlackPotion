@@ -3573,7 +3573,7 @@ GameObject:
   - component: {fileID: 1378969686094991551}
   - component: {fileID: 3491703524365303196}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Recipe Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3626,7 +3626,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 68487e02355b2e340913b74fef40c7c7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 09ed4067f6eef004790af4f9cf844f9d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

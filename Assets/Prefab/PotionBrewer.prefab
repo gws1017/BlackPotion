@@ -2857,18 +2857,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5470830747398361663}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2348581296540267639 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7744957341130188360, guid: ef04a5bc421e7fd44879101f3f49d6e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 5470830747398361663}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3548051785671226171 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8849993112738160900, guid: ef04a5bc421e7fd44879101f3f49d6e3,
@@ -2941,18 +2929,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5470830747398361663}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4326677583857853129 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8639937917793923318, guid: ef04a5bc421e7fd44879101f3f49d6e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 5470830747398361663}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4479910279948948280 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8486924911360377095, guid: ef04a5bc421e7fd44879101f3f49d6e3,
@@ -3017,17 +2993,18 @@ MonoBehaviour:
   _moneyValueText: {fileID: 3548051785671226171}
   _recipeNameText: {fileID: 8199722740876016216}
   _selectText: {fileID: 6484887368907577992}
-  _potionQualityValueText: {fileID: 4326677583857853129}
+  _potionQualityRewardText: {fileID: 0}
   _resultText: {fileID: 5981483158650362449}
   _selectButton: {fileID: 339956838299535433}
   _moneyButton: {fileID: 6564027378509676707}
   _recipeButton: {fileID: 3840755765907077876}
+  _recipeImage: {fileID: 8906235840287682467}
   _moneyOutline: {fileID: 3658196241968681580}
   _recipeOutline: {fileID: 6485602222116701825}
   _potionImage: {fileID: 7188463116730758105}
   _potionName: {fileID: 8830641307449500771}
   _potionGrade: {fileID: 3926674869891863726}
-  _potionQuality: {fileID: 2348581296540267639}
+  _potionQualityResultCheckText: {fileID: 0}
   _potionMinQuality: {fileID: 34837202019916232}
   _potionMaxQuality: {fileID: 3995483612916309951}
   _potionQualityProgressBar: {fileID: 4479910279948948280}
@@ -3139,6 +3116,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8906235840287682467 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3491703524365303196, guid: ef04a5bc421e7fd44879101f3f49d6e3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5470830747398361663}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8769598790134382687

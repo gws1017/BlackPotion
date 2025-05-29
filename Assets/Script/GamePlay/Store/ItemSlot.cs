@@ -30,6 +30,8 @@ public class ItemSlot : MonoBehaviour
     public void InitializeItemSlot(BuffInfo buffInfo)
     {
         SetupItemSlot(buffInfo.buffId, buffInfo.buffCost, buffInfo.buffImage, buffInfo.buffName);
+        ItemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(258.0f,433.0f);
+
     }
 
     public void InitializeItemSlot(PotionInfo potionInfo)
