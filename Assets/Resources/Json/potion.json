@@ -29,31 +29,77 @@
     },
     {
       "potionId": 2004,
-      "potionName": "해충제",
+      "potionName": "산들바람 물약",
       "potionGrade": 1,
-      "ingredientIdList": [ 0, 3003, 0 ],
-      "maxMount": [ 0, 1, 0 ],
-      "recipeCost": 45,
-      "potionImage": "Images/redpotion"
+      "ingredientIdList": [ 3001, 3005, 0 ],
+      "materialRatioList": [ 2, 1, 0 ],
+      "recipeCost": 100,
+      "potionImage": "Images/potion_breeze"
     },
     {
       "potionId": 2005,
-      "potionName": "희귀 회복약",
-      "potionGrade": 2,
-      "ingredientIdList": [ 3002, 0, 3001 ],
-      "maxMount": [ 15, 0, 17 ],
-      "recipeCost": 75,
-      "potionImage": "Images/redpotion"
+      "potionName": "숲속의 이슬물약",
+      "potionGrade": 1,
+      "ingredientIdList": [ 3006, 3007, 0 ],
+      "materialRatioList": [ 2, 1, 0 ],
+      "recipeCost": 100,
+      "potionImage": "Images/potion_forestdew"
     },
     {
       "potionId": 2006,
-      "potionName": "환약",
+      "potionName": "용암 포션",
+      "potionGrade": 2,
+      "ingredientIdList": [ 3001, 3003, 3008 ],
+      "materialRatioList": [ 2, 2, 1 ],
+      "recipeCost": 250,
+      "potionImage": "Images/potion_lava"
+    },
+    {
+      "potionId": 2007,
+      "potionName": "미스틱 미스트",
+      "potionGrade": 2,
+      "ingredientIdList": [ 3001, 3009, 0 ],
+      "materialRatioList": [ 2, 1, 0 ],
+      "recipeCost": 250,
+      "potionImage": "Images/potion_mysticmist"
+    },
+    {
+      "potionId": 2008,
+      "potionName": "별빛의 고요 포션",
       "potionGrade": 3,
-      "ingredientIdList": [ 3001, 3002, 3004 ],
-      "maxMount": [ 13, 16, 16 ],
-      "recipeCost": 45,
-      "potionImage": "Images/redpotion"
+      "ingredientIdList": [ 3001, 3003, 3010 ],
+      "materialRatioList": [ 3, 2, 2 ],
+      "recipeCost": 450,
+      "potionImage": "Images/potion_starlight"
+    },
+    {
+      "potionId": 2009,
+      "potionName": "검게 물든 각성제",
+      "potionGrade": 3,
+      "ingredientIdList": [ 3001, 3011, 3002 ],
+      "materialRatioList": [ 3, 2, 1 ],
+      "recipeCost": 450,
+      "potionImage": "Images/potion_darkawakening"
+    },
+    {
+      "potionId": 2010,
+      "potionName": "용의 숨결",
+      "potionGrade": 4,
+      "ingredientIdList": [ 3001, 3012, 3003 ],
+      "materialRatioList": [ 4, 3, 2 ],
+      "recipeCost": 600,
+      "potionImage": "Images/potion_dragonbreath"
+    },
+    {
+      "potionId": 2011,
+      "potionName": "대지의 눈물",
+      "potionGrade": 4,
+      "ingredientIdList": [ 3001, 3013, 3002 ],
+      "materialRatioList": [ 3, 3, 3 ],
+      "recipeCost": 600,
+      "potionImage": "Images/potion_earthtear"
     }
+
   ]
   
 }

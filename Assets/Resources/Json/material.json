@@ -23,6 +23,60 @@
       "materialName": "퇴치가루",
       "materialGrade": 1,
       "materialImage": "Images/yellowdust"
+    },
+    {
+      "materialId": 3005,
+      "materialName": "바람의 정령 가루",
+      "materialGrade": 1,
+      "materialImage": "Images/windessence"
+    },
+    {
+      "materialId": 3006,
+      "materialName": "숲속의 이슬",
+      "materialGrade": 1,
+      "materialImage": "Images/forestdew"
+    },
+    {
+      "materialId": 3007,
+      "materialName": "숲의 기운",
+      "materialGrade": 1,
+      "materialImage": "Images/forestenergy"
+    },
+    {
+      "materialId": 3008,
+      "materialName": "용암석",
+      "materialGrade": 2,
+      "materialImage": "Images/lavastone"
+    },
+    {
+      "materialId": 3009,
+      "materialName": "신비의 꽃잎",
+      "materialGrade": 2,
+      "materialImage": "Images/mysticpetal"
+    },
+    {
+      "materialId": 3010,
+      "materialName": "별빛 결정",
+      "materialGrade": 3,
+      "materialImage": "Images/starlightcrystal"
+    },
+    {
+      "materialId": 3011,
+      "materialName": "암흑 가루",
+      "materialGrade": 3,
+      "materialImage": "Images/darkdust"
+    },
+    {
+      "materialId": 3012,
+      "materialName": "용의 비늘",
+      "materialGrade": 4,
+      "materialImage": "Images/dragonscale"
+    },
+    {
+      "materialId": 3013,
+      "materialName": "대지의 결정",
+      "materialGrade": 4,
+      "materialImage": "Images/earthcrystal"
     }
   ]
   
