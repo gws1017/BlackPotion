@@ -64,7 +64,7 @@
     {
       "questId": 1007,
       "questName": "정찰대 몬스터 기피약 의뢰",
-      "explainTextId": 4301,
+      "explainTextId": 4006,
       "questGrade": 0,
       "potionId": 2003,
       "minCapacity": 35,
@@ -74,7 +74,7 @@
     {
       "questId": 1008,
       "questName": "경계 근무용 몬스터 기피약 의뢰",
-      "explainTextId": 4302,
+      "explainTextId": 4106,
       "questGrade": 1,
       "potionId": 2003,
       "minCapacity": 120,
@@ -84,12 +84,92 @@
     {
       "questId": 1009,
       "questName": "대형 탐사 몬스터 기피약 의뢰",
-      "explainTextId": 4303,
+      "explainTextId": 4205,
       "questGrade": 2,
       "potionId": 2003,
       "minCapacity": 160,
       "maxCapacity": 200,
       "reward": [ 225, 2 ]
+    },
+    {
+      "questId": 1010,
+      "questName": "산들바람 물약 소량 의뢰",
+      "explainTextId": 4003,
+      "questGrade": 0,
+      "potionId": 2004,
+      "minCapacity": 80,
+      "maxCapacity": 160,
+      "reward": [ 120, 1 ]
+    },
+    {
+      "questId": 1011,
+      "questName": "미스틱 미스트 소량 의뢰",
+      "explainTextId": 4004,
+      "questGrade": 0,
+      "potionId": 2007,
+      "minCapacity": 80,
+      "maxCapacity": 160,
+      "reward": [ 120, 2 ]
+    },
+    {
+      "questId": 1012,
+      "questName": "용의 숨결 소량 의뢰",
+      "explainTextId": 4005,
+      "questGrade": 0,
+      "potionId": 2010,
+      "minCapacity": 240,
+      "maxCapacity": 480,
+      "reward": [ 400, 4 ]
+    },
+    {
+      "questId": 1013,
+      "questName": "숲속의 이슬물약 중량 의뢰",
+      "explainTextId": 4103,
+      "questGrade": 1,
+      "potionId": 2005,
+      "minCapacity": 100,
+      "maxCapacity": 180,
+      "reward": [ 130, 1 ]
+    },
+    {
+      "questId": 1014,
+      "questName": "별빛의 고요 포션 중량 의뢰",
+      "explainTextId": 4104,
+      "questGrade": 1,
+      "potionId": 2008,
+      "minCapacity": 200,
+      "maxCapacity": 350,
+      "reward": [ 300, 3 ]
+    },
+    {
+      "questId": 1015,
+      "questName": "대지의 눈물 중량 의뢰",
+      "explainTextId": 4105,
+      "questGrade": 1,
+      "potionId": 2011,
+      "minCapacity": 260,
+      "maxCapacity": 500,
+      "reward": [ 450, 4 ]
+    },
+    {
+      "questId": 1016,
+      "questName": "용암 포션 대량 의뢰",
+      "explainTextId": 4203,
+      "questGrade": 2,
+      "potionId": 2006,
+      "minCapacity": 180,
+      "maxCapacity": 320,
+      "reward": [ 250, 2 ]
+    },
+    {
+      "questId": 1017,
+      "questName": "검게 물든 각성제 대량 의뢰",
+      "explainTextId": 4204,
+      "questGrade": 2,
+      "potionId": 2009,
+      "minCapacity": 200,
+      "maxCapacity": 350,
+      "reward": [ 300, 3 ]
     }
   ]
   

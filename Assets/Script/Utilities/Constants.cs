@@ -41,7 +41,7 @@ public static class Constants
             case RecipeGrade.Rare:
                 return "Rare";
             case RecipeGrade.Uncommon:
-                return "NoUncommonrmal";
+                return "Uncommon";
             case RecipeGrade.Legendary:
                 return "Legendary";
         }
