@@ -14,6 +14,8 @@ public class GamePlayHUD : HUD
     {
         base.Start();
         _menuButton.onClick.AddListener(TogglePauseMenu);
+        SoundManager._Instance.CurrentBGM = BGMType.InGame;
+        SoundManager._Instance.PlayBGM();
     }
     private void LateUpdate()
     {
