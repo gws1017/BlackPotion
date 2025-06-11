@@ -7,13 +7,20 @@ public enum BGMType
 {
     None = -1,
     Title = 0,
-    InGame = 1
+    InGame = 1,
+    Ambient = 2
 }
 
 public enum SFXType
 {
     None = -1, 
     Click = 0,
+    Money,
+    Item,
+    Recipe1,
+    Recipe2,
+    Add,
+    Craft
 }
 
 public class SoundManager : MonoBehaviour
@@ -23,13 +30,14 @@ public class SoundManager : MonoBehaviour
 
     [Header("Audio Sources")]
     [SerializeField] private AudioSource _bgmSource;
+    [SerializeField] private AudioSource _bgmAmbientSource;
     [SerializeField] private AudioSource _sfxSource;
 
     [Header("Audio Clips")]
-    [Tooltip("인덱스 0번은 None, 1=Lobby, 2=InGame")]
+    [Tooltip("0=Title, 1=InGame, 2=Ambient")]
     [SerializeField] private AudioClip[] _bgmClips;
 
-    [Tooltip("인덱스 0번은 None")]
+    [Tooltip("0=click , 1=money")]
     [SerializeField] private AudioClip[] _sfxClips;
 
     private Dictionary<string, AudioSource> _sfxChannelMap = new Dictionary<string, AudioSource>();
@@ -76,6 +84,14 @@ public class SoundManager : MonoBehaviour
         _Instance = this;
         DontDestroyOnLoad(this.gameObject);
 
+        if (_bgmAmbientSource == null)
+        {
+            _bgmAmbientSource = gameObject.AddComponent<AudioSource>();
+            _bgmAmbientSource.playOnAwake = false;
+            _bgmAmbientSource.loop = true;
+            _bgmAmbientSource.spatialBlend = 0f;
+            _bgmAmbientSource.volume = 0.1f;
+        }
         if (_bgmSource == null)
         {
             // 없으면 자동으로 생성
@@ -86,7 +102,7 @@ public class SoundManager : MonoBehaviour
         }
 
         _bgmSource.volume = _bgmVolume;
-        _sfxSource.volume = _sfxVolume;
+        //_sfxSource.volume = _sfxVolume;
     }
 
     public void PlayBGM()
@@ -104,7 +120,21 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        // 이미 재생 중이라면 중단 후 다시 Play
+        AudioClip ambientClip = _bgmClips[(int)BGMType.Ambient];
+        if (ambientClip == null)
+        {
+            Debug.LogWarning($"[SoundManager] PlayBGM: BGMType {BGMType.Ambient}에 해당하는 AudioClip이 할당되지 않았습니다.");
+        }
+        else
+        {
+            if (_bgmAmbientSource.isPlaying)
+                _bgmAmbientSource.Stop();
+
+            _bgmAmbientSource.clip = ambientClip;
+            _bgmAmbientSource.loop = true;
+            _bgmAmbientSource.Play();
+        }
+
         if (_bgmSource.isPlaying)
             _bgmSource.Stop();
 
@@ -126,6 +156,15 @@ public class SoundManager : MonoBehaviour
         {
             Debug.LogError($"[SoundManager] PlaySFX2D: SFXType {(int)type}에 해당하는 AudioClip이 없습니다.");
             return;
+        }
+
+        if (_sfxSource == null)
+        {
+            // 없으면 자동으로 생성
+            _sfxSource = gameObject.AddComponent<AudioSource>();
+            _sfxSource.playOnAwake = false;
+            _sfxSource.loop = true;
+            _sfxSource.spatialBlend = 0f;
         }
 
         _sfxSource.clip = _sfxClips[(int)type];

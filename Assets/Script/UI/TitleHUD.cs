@@ -41,6 +41,8 @@ public class TitleHUD : HUD
         _continueButton.onClick.AddListener(() => TriggerAction(MainMenuButton.Continue));
         _settingButton.onClick.AddListener(()=>TriggerAction(MainMenuButton.Setting));
         _quitButton.onClick.AddListener(() => TriggerAction(MainMenuButton.Quit));
+        SoundManager._Instance.CurrentBGM = BGMType.Title;
+        SoundManager._Instance.PlayBGM();
     }
 
     private void TriggerAction(MainMenuButton type)

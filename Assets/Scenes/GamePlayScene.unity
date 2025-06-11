@@ -394,14 +394,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bgmSource: {fileID: 0}
+  _bgmAmbientSource: {fileID: 0}
   _sfxSource: {fileID: 0}
   _bgmClips:
-  - {fileID: 8300000, guid: 735a728750c7969419419f6fb93cff6d, type: 3}
-  - {fileID: 8300000, guid: 735a728750c7969419419f6fb93cff6d, type: 3}
+  - {fileID: 8300000, guid: f390f27e2d5ae8d43988d46eb89ce1a8, type: 3}
+  - {fileID: 8300000, guid: 04cf2f7c0e726b34c8ca2e3960d08a1e, type: 3}
+  - {fileID: 0}
   _sfxClips:
-  - {fileID: 8300000, guid: 54749aae5001b1b4da8d8850877386f8, type: 3}
-  _bgmVolume: 0.5
-  _sfxVolume: 0.3
+  - {fileID: 8300000, guid: c5fce4c8e99ee904c994dd6434e77715, type: 3}
+  - {fileID: 8300000, guid: 4252f986c396a0b49a3e09baf04914c9, type: 3}
+  - {fileID: 8300000, guid: b0792cab2d29eaa41adadbc9859f0b68, type: 3}
+  - {fileID: 8300000, guid: c5fce4c8e99ee904c994dd6434e77715, type: 3}
+  - {fileID: 8300000, guid: a30013857f13e4c449773ce089b2acfe, type: 3}
+  - {fileID: 8300000, guid: ad88fc4092fa390428016fe55372fd30, type: 3}
+  - {fileID: 8300000, guid: a9b41af8dd818b04a9802236c36974b9, type: 3}
+  _bgmVolume: 0.3
+  _sfxVolume: 0.6
 --- !u!4 &253640549
 Transform:
   m_ObjectHideFlags: 0

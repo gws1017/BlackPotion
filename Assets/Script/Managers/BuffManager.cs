@@ -56,6 +56,7 @@ public class BuffManager : MonoBehaviour
 
     public void ToggleBuffInventory()
     {
+        SoundManager._Instance.PlaySFXAtObject(_buffInventoryObject, SFXType.Item);
         Vector3 position = _buffInventoryObject.transform.localPosition;
         if (position.y == _buffInventoryToggleDistance)
         {

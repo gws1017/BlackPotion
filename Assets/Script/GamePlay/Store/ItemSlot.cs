@@ -90,6 +90,8 @@ public class ItemSlot : MonoBehaviour
             _soldOutImage.gameObject.SetActive(true);
             ItemSlotButton.interactable = false;
             ItemNameText.text = "¸ÅÁø";
+            SoundManager._Instance.PlaySFX2D(SFXType.Money);
+
         }
         else
         {

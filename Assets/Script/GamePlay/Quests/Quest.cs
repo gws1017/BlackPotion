@@ -202,7 +202,7 @@ public class Quest : MonoBehaviour
         DetailQuestObject.SetActive(true);
         Board._CanActiveSelectEffect = false;
         Board.DisableOpenButtons();
-        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
+        //SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
     }
 
     public void DisableOpenButton()

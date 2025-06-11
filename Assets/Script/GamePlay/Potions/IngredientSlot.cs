@@ -107,6 +107,7 @@ public class IngredientSlot : MonoBehaviour
 
     private void InputIngredient()
     {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Add);
         int amount = GetRandomAmount();
 
         if (amount == 0)
