@@ -199,10 +199,10 @@ public class Quest : MonoBehaviour
 
     public void OpenDetailQuest()
     {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Recipe1);
         DetailQuestObject.SetActive(true);
         Board._CanActiveSelectEffect = false;
         Board.DisableOpenButtons();
-        //SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
     }
 
     public void DisableOpenButton()

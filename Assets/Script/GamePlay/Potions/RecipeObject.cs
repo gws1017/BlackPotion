@@ -58,11 +58,14 @@ public class RecipeObject : MonoBehaviour
     {
         _outline.enabled = !_outline.enabled;
         GameManager.GM.Board._selectRecipeObject = this;
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Recipe1);
+
     }
 
     public void PlayRecipeAnim()
     {
         _animator.SetTrigger("Slide");
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Recipe2);
     }
 
     public void RecipeAnimEnd()

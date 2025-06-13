@@ -17,7 +17,7 @@ public class ItemSlot : MonoBehaviour
     public Store ParentStore;
     private PlayInfo _playInfo;
     [SerializeField] private Image _soldOutImage;
-    [SerializeField] private float _floatSpeed = 1.0f;
+    [SerializeField] private float _floatSpeed = 0.3f;
     [SerializeField] private float _floatDistance = 0.5f;
     [SerializeField] private GameObject _purchaseFailUIPrefab;
 
@@ -55,6 +55,8 @@ public class ItemSlot : MonoBehaviour
 
     public void ShowPurchaseUI()
     {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
+
         ParentStore.PurchaseUI.SetActive(true);
         ParentStore.ConfirmText.text = $"{ItemNameText.text}를 구매합니다.";
         ParentStore.PurchaseAcceptButton.onClick.RemoveAllListeners();
@@ -63,11 +65,15 @@ public class ItemSlot : MonoBehaviour
 
     public void ClosePurchaseUI()
     {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
+
         ParentStore.PurchaseUI.SetActive(false);
     }
 
     public void AcceptPurchase()
     {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
+
         int currentGold = _playInfo.CurrentGold;
 
         if (currentGold >= ItemCost)

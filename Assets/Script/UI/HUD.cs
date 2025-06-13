@@ -27,6 +27,7 @@ public class HUD : MonoBehaviour
     }
     public void HideMenu()
     {
+        SoundManager._Instance.PlayClickSound();
         _settingMenuObject.SetActive(false);
     }
     

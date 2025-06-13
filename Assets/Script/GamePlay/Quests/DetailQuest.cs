@@ -63,12 +63,14 @@ public class DetailQuest : Quest
 
     public void CloseDetailQuest()
     {
+        SoundManager._Instance.PlayClickSound();
         Board.EnableOpenButtons();
         Destroy(gameObject);
     }
 
     public void AcceptQuest()
     {
+
         Board.AcceptQuest(ParentQuest);
         SetAcceptQuestText(Board.CurrentAcceptQuestCount);
         CloseDetailQuest();

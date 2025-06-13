@@ -120,6 +120,8 @@ public class CraftReceipt : MonoBehaviour
     }
     public void ShowRecipeStore()
     {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
+
         _storeUI.OpenStoreUI(Store.StoreType.Recipe);
     }
 

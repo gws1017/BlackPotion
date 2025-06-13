@@ -120,6 +120,14 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0.16666667
+    functionName: OnAnimationPlayStamp
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 407fafcab81c24249bfd09d6b39c810d,
+      type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1
     functionName: OnAnimationComplete
     data: 

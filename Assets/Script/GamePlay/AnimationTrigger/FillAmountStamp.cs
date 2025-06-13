@@ -15,4 +15,8 @@ public class FillAmountStamp : MonoBehaviour
     {
         _TitleHUD.OnAnimationComplete();
     }
+    public void OnAnimationPlayStamp()
+    {
+        _TitleHUD.OnAnimationPlayStamp();
+    }
 }

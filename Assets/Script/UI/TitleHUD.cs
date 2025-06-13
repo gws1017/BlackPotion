@@ -67,6 +67,10 @@ public class TitleHUD : HUD
         _stampAnimators[id].SetTrigger("PlayFill");
     }
 
+    public void OnAnimationPlayStamp()
+    {
+        SoundManager._Instance.PlaySFX2D(SFXType.Stamp);
+    }
     public void OnAnimationComplete()
     {
         int index = (int)_currentButtonType;

@@ -239,6 +239,7 @@ public class BuffManager : MonoBehaviour
      
         buffObject.IsActive = true;
         buffObject.BuffUI.GetComponentInChildren<Button>().interactable = false;
+        SoundManager._Instance.PlaySFXAtObject(buffObject.BuffUI, SFXType.Click);
         return true;
 
     }

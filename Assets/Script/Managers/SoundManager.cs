@@ -20,7 +20,11 @@ public enum SFXType
     Recipe1,
     Recipe2,
     Add,
-    Craft
+    Craft,
+    Coin,
+    Stamp,
+    Succ,
+    Fail
 }
 
 public class SoundManager : MonoBehaviour
@@ -144,6 +148,29 @@ public class SoundManager : MonoBehaviour
         _bgmSource.Play();
     }
 
+    public void PlayClickSound()
+    {
+        if (_sfxClips == null || (int)SFXType.Click >= _sfxClips.Length || _sfxClips[(int)SFXType.Click] == null)
+        {
+            Debug.LogError($"[SoundManager] PlaySFX2D: SFXType {(int)SFXType.Click}에 해당하는 AudioClip이 없습니다.");
+            return;
+        }
+
+        if (_sfxSource == null)
+        {
+            // 없으면 자동으로 생성
+            _sfxSource = gameObject.AddComponent<AudioSource>();
+            _sfxSource.playOnAwake = false;
+            _sfxSource.loop = false;
+            _sfxSource.spatialBlend = 0f;
+        }
+
+        _sfxSource.clip = _sfxClips[(int)SFXType.Click];
+        _sfxSource.volume = _sfxVolume;
+        _sfxSource.loop = false;
+        _sfxSource.Play();
+
+    }
     public void PlaySFX2D(SFXType type)
     {
         if (type <= SFXType.None)
@@ -163,7 +190,7 @@ public class SoundManager : MonoBehaviour
             // 없으면 자동으로 생성
             _sfxSource = gameObject.AddComponent<AudioSource>();
             _sfxSource.playOnAwake = false;
-            _sfxSource.loop = true;
+            _sfxSource.loop = false;
             _sfxSource.spatialBlend = 0f;
         }
 

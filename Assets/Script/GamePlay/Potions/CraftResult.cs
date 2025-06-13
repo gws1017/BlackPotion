@@ -51,6 +51,7 @@ public class CraftResult : MonoBehaviour
     private int _rewardRecipeId;
     private float _rewardMultiplier = 1;
     private bool _isPotionCraftSuccessful;
+    private bool _playResultSound = false;
 
     public int PotionQuality { set => _potionQualityRewardText.text = value.ToString(); }
     public bool IsPotionCraftSuccessful  {get => _isPotionCraftSuccessful; set => _isPotionCraftSuccessful = value;  }
@@ -90,9 +91,11 @@ public class CraftResult : MonoBehaviour
 
     public void ShowCraftResultUI()
     {
+
         InitializeRewardUI();
         OffHighlight();
 
+        SoundManager._Instance.PlaySFXAtObject(Brewer.gameObject, SFXType.Craft);
         _restartButton.interactable = true;
 
         _resultCheckUIInstance.SetActive(false);
@@ -106,7 +109,7 @@ public class CraftResult : MonoBehaviour
         _animatorLeft.SetTrigger("PlayOnce");
         _animatorRight.SetTrigger("PlayOnce");
 
-        
+
 
         if (IsPotionCraftSuccessful)
         {
@@ -179,9 +182,12 @@ public class CraftResult : MonoBehaviour
         playInfo.ConsumeGold((int)(quest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO));
     }
 
+    //제조버튼 클릭시 호출됨
     public void ShowResultCheckUI()
     {
         InitializeResultCheckUI();
+
+        SoundManager._Instance.PlayClickSound();
 
         gameObject.SetActive(true);
         _resultCheckUIInstance.SetActive(true);
@@ -220,17 +226,24 @@ public class CraftResult : MonoBehaviour
 
         _potionQualityRewardText.text = Brewer.CurrentPotionQuality.ToString();
 
+
         if (IsPotionCraftSuccessful)
         {
             _questResultText.text = (_potionCraftGrade == Constants.PotionCraftGrade.RANK_S) ?
             "의뢰 대성공" :"의뢰 성공";
             _resultText.text = "성공";
+            if(_playResultSound == false)
+                SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Succ);
         }
         else
         {
             _questResultText.text = "의뢰 실패\n위약금 발생";
             _resultText.text = "실패";
+            if(_playResultSound == false)
+                SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Fail);
         }
+        _playResultSound = true;
+
     }
 
     public void SelectReward()
@@ -253,6 +266,9 @@ public class CraftResult : MonoBehaviour
             else 
                 return;
         }
+        _playResultSound = false;
+
+        SoundManager._Instance.PlayClickSound();
 
         //버프 상점 오픈
         Brewer._activePlusPowder = false;
@@ -266,6 +282,8 @@ public class CraftResult : MonoBehaviour
     {
         if (Brewer.CurrentQuest.IsRestart) 
             return;
+
+        SoundManager._Instance.PlayClickSound();
 
         Brewer.CurrentCraftState = PotionBrewer.CraftState.Retry;
         gameObject.SetActive(false);
@@ -283,6 +301,7 @@ public class CraftResult : MonoBehaviour
         _selectReward = 1;
         _moneyOutline.effectColor = Color.black;
         _recipeOutline.effectColor = Color.white;
+        SoundManager._Instance.PlaySFX2D(SFXType.Coin);
     }
 
     public void SelectRecipe()
@@ -290,5 +309,7 @@ public class CraftResult : MonoBehaviour
         _selectReward = 2;
         _moneyOutline.effectColor = Color.white;
         _recipeOutline.effectColor = Color.black;
+        SoundManager._Instance.PlaySFX2D(SFXType.Recipe1);
+
     }
 }

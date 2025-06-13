@@ -141,7 +141,6 @@ public class PotionBrewer : MonoBehaviour
 
     public void GetNextCraft()
     {
-        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Craft);
         _currentQuestIndex++;
         if (Board.CurrentAcceptQuestCount > _currentQuestIndex)
         {

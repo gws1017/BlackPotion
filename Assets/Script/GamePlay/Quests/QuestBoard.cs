@@ -134,7 +134,7 @@ public class QuestBoard : MonoBehaviour
         {
             CreateQuestObject();
         }
-        
+
     }
 
     public void CreateQuestObject()
@@ -285,6 +285,8 @@ public class QuestBoard : MonoBehaviour
         if (AcceptQuestList.Count <= Constants.MAX_ACCEPT_QUEST_COUNT)
             CurrentQuestOutlineEffectOff();
 
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Recipe2);
+
         Quest quest = AcceptQuestList[0];
         GameObject questObject = quest.gameObject;
 
@@ -304,6 +306,8 @@ public class QuestBoard : MonoBehaviour
     public void NextCurrentQuest()
     {
         if (AcceptQuestList.Count <= 1) return;
+
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Recipe1);
         ShiftCurrentQuest();
     }
 

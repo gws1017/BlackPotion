@@ -141,12 +141,14 @@ public class Store : MonoBehaviour
 
     private void NextQuest()
     {
+        SoundManager._Instance.PlayClickSound();
         CloseStoreUI();
         GameManager.GM.Brewer.GetNextCraft();
     }
 
     private void NextDay()
     {
+        SoundManager._Instance.PlayClickSound();
         CloseStoreUI();
         GameManager.GM.CheckRecipt();
     }
