@@ -23,7 +23,9 @@ public class CraftReceipt : MonoBehaviour
     [Header("Setting Variable")]
     [SerializeField] private int[] _targetMoney;
     [SerializeField] private float _typingSpeed = 0.05f;
+    [SerializeField] private float _typingSFXSpeed = 0.5f;
     private bool _isTargetAchieved;
+    private bool _isRunningTypingSFXCorutine = false;
     private Sprite _targetSuccessSprite;
     private Sprite _targetFailSprite;
     public bool TargetSuccess => _isTargetAchieved;
@@ -114,10 +116,21 @@ public class CraftReceipt : MonoBehaviour
         for (int i = 0; i <= typingLength; i++)
         {
             text.text = str.Typing(i);
+            if(_isRunningTypingSFXCorutine == false)
+                StartCoroutine(TypingSoundgCorutine());
             yield return new WaitForSeconds(_typingSpeed);
         }
 
     }
+
+    public IEnumerator TypingSoundgCorutine()
+    {
+        _isRunningTypingSFXCorutine = true;
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Writing);
+        yield return new WaitForSeconds(_typingSFXSpeed);
+        _isRunningTypingSFXCorutine = false;
+    }
+
     public void ShowRecipeStore()
     {
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);

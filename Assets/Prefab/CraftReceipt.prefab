@@ -533,7 +533,7 @@ MonoBehaviour:
   _resultImage: {fileID: 5599178472789623266}
   _targetMoneyText: {fileID: 649718537252881340}
   _targetMoney: 6400000096000000fa0000009001000000000000
-  _typingSpeed: 0.05
+  _typingSpeed: 0.5
 --- !u!1 &3503608801243159238
 GameObject:
   m_ObjectHideFlags: 0

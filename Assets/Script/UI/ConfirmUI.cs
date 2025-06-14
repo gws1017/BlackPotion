@@ -10,6 +10,9 @@ public class ConfirmUI : MonoBehaviour
     public void InitializeUI(string str)
     {
         _infoText.text = str;
-        _confirmButton.onClick.AddListener(() => { Destroy(gameObject); });
+        _confirmButton.onClick.AddListener(() => {
+            SoundManager._Instance.PlayClickSound();
+            Destroy(gameObject); 
+        });
     }
 }

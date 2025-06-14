@@ -24,7 +24,8 @@ public enum SFXType
     Coin,
     Stamp,
     Succ,
-    Fail
+    Fail,
+    Writing
 }
 
 public class SoundManager : MonoBehaviour
