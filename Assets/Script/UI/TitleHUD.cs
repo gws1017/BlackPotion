@@ -85,7 +85,13 @@ public class TitleHUD : HUD
     public void StartGame()
     {
         SceneSharedData.loadSaveData = false;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.LoadScene(Constants.GAME_PLAY_SCENE);
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        GameManager.GM.InitializeGameManager();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     public void ContinueGame()
     {

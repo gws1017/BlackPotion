@@ -75,6 +75,13 @@ public class SoundManager : MonoBehaviour
             _sfxVolume = Mathf.Clamp01(value);
             if (_sfxSource != null)
                 _sfxSource.volume = value;
+
+            var Sources = _sfxChannelMap.Values;
+            if (Sources.Count <= 0) return;
+            foreach (var Source in Sources)
+            {
+                Source.volume = value;
+            }
         }
     }
 

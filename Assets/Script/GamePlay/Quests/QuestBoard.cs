@@ -258,6 +258,7 @@ public class QuestBoard : MonoBehaviour
 
     public void OpenCurrentQuestUI()
     {
+        SoundManager._Instance.PlayClickSound();
         _currentQuestUIObject.SetActive(true);
         _currentQuestButton.gameObject.SetActive(false);
 
@@ -269,6 +270,7 @@ public class QuestBoard : MonoBehaviour
     }
     public void CloseCurrentQuestUI()
     {
+        SoundManager._Instance.PlayClickSound();
         _currentQuestUIObject.SetActive(false);
         _currentQuestButton.gameObject.SetActive(true);
 

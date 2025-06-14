@@ -24,6 +24,7 @@ public class GamePlayHUD : HUD
 
     public void TogglePauseMenu()
     {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
         _settingMenuObject.SetActive(!_settingMenuObject.activeSelf);
         //_settingMenuObject.SetActive(false);
         _gm.Board._CanActiveSelectEffect = !_settingMenuObject.activeSelf;

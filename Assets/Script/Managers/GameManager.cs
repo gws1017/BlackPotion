@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
     //의뢰 시작(포션제조) 단계 전환
     private void QuestStart()
     {
+            SoundManager._Instance.PlayClickSound();
         //수주 의뢰 저장
         if (Board.CurrentAcceptQuestCount > 0)
         {
