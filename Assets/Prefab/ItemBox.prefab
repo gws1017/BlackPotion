@@ -491,7 +491,7 @@ MonoBehaviour:
   _startY: 0
   ParentStore: {fileID: 0}
   _soldOutImage: {fileID: 4217479781104664020}
-  _floatSpeed: 1
+  _floatSpeed: 0
   _floatDistance: 0.1
   _purchaseFailUIPrefab: {fileID: 8919018508989369657, guid: be71f0f6f6c8e504683478f84c470d4e,
     type: 3}

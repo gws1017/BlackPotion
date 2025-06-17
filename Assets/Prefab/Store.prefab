@@ -440,9 +440,9 @@ MonoBehaviour:
   _itemIdList: 
   _storeType: 0
   _slotStartPosition: {x: -13, y: 3, z: 0}
-  _boxOffset: {x: 13, y: -13}
+  _boxOffset: {x: 13, y: -10}
   _boxCountPerLine: 3
-  _itemBoxYOffset: 0
+  _itemBoxYOffset: 1
 --- !u!1 &3987370387404442518
 GameObject:
   m_ObjectHideFlags: 0

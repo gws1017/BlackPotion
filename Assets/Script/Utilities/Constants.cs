@@ -126,4 +126,7 @@ public static class Constants
     public const int INGRIDIENT_REFILL_GOLD = 10;
     public const int INGRIDIENT_MAX_NUMBER = 10;
     public const int INGRIDIENT_SUM_NUMBER = ((INGRIDIENT_MAX_NUMBER + 1) * INGRIDIENT_MAX_NUMBER) / 2;
+
+    public static readonly Color32 POTION_SUCC_GREEN = new Color32(99, 164, 14, 255);
+    public static readonly Color32 REWARD_SELECT_HILIGHT = new Color32(177, 18, 33, 255);
 }

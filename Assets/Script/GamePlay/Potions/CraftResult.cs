@@ -22,6 +22,7 @@ public class CraftResult : MonoBehaviour
     [Header("Reward UI")]
     [SerializeField] private GameObject _rewardButtons;
     [SerializeField] private Text _questResultText;
+    [SerializeField] private Text _questFailText;
     [SerializeField] private Text _moneyValueText;
     [SerializeField] private Text _recipeNameText;
     [SerializeField] private Text _selectText;
@@ -225,6 +226,7 @@ public class CraftResult : MonoBehaviour
             return;
 
         _potionQualityRewardText.text = Brewer.CurrentPotionQuality.ToString();
+        _questResultText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 432);
 
 
         if (IsPotionCraftSuccessful)
@@ -232,14 +234,17 @@ public class CraftResult : MonoBehaviour
             _questResultText.text = (_potionCraftGrade == Constants.PotionCraftGrade.RANK_S) ?
             "의뢰 대성공" :"의뢰 성공";
             _resultText.text = "성공";
-            if(_playResultSound == false)
+            _questFailText.enabled = false;
+            if (_playResultSound == false)
                 SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Succ);
         }
         else
         {
-            _questResultText.text = "의뢰 실패\n위약금 발생";
+            //_questResultText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,184);
+            _questResultText.text = "의뢰 실패";
+            _questFailText.enabled = true;
             _resultText.text = "실패";
-            if(_playResultSound == false)
+            if (_playResultSound == false)
                 SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Fail);
         }
         _playResultSound = true;
@@ -299,8 +304,10 @@ public class CraftResult : MonoBehaviour
     public void SelectMoney()
     {
         _selectReward = 1;
-        _moneyOutline.effectColor = Color.black;
+        
+        _moneyOutline.effectColor = Constants.REWARD_SELECT_HILIGHT;
         _recipeOutline.effectColor = Color.white;
+
         SoundManager._Instance.PlaySFX2D(SFXType.Coin);
     }
 
@@ -308,7 +315,7 @@ public class CraftResult : MonoBehaviour
     {
         _selectReward = 2;
         _moneyOutline.effectColor = Color.white;
-        _recipeOutline.effectColor = Color.black;
+        _recipeOutline.effectColor = Constants.REWARD_SELECT_HILIGHT;
         SoundManager._Instance.PlaySFX2D(SFXType.Recipe1);
 
     }

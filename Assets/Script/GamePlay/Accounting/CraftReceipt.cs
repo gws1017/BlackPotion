@@ -56,15 +56,15 @@ public class CraftReceipt : MonoBehaviour
 
         for (int i = 0; i < _potionNameText.Length; i++)
         {
-                int gold = 0;
+            int gold = 0;
             if(i <uiCount)
             {
                 Quest quest = questList[i];
 
                 if (questResult.ContainsKey(quest) && questResult[quest])
                 {
-                    _potionNameText[i].color = Color.green;
-                    _moneyText[i].color = Color.green;
+                    _potionNameText[i].color = Constants.POTION_SUCC_GREEN;
+                    _moneyText[i].color = Constants.POTION_SUCC_GREEN;
                     gold = questList[i].QuestRewardMoney;
                 }
                 else
@@ -85,8 +85,6 @@ public class CraftReceipt : MonoBehaviour
                 _potionNameText[i].enabled = false;
                 _moneyText[i].enabled = false;
             }
-            
-
 
         }
 

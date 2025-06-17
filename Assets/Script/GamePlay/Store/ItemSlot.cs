@@ -50,7 +50,7 @@ public class ItemSlot : MonoBehaviour
         ParentStore.PurchaseCancelButton.onClick.RemoveAllListeners();
         ParentStore.PurchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
         _soldOutImage.gameObject.SetActive(false);
-        StartBoxFloat();
+        //StartBoxFloat();
     }
 
     public void ShowPurchaseUI()
