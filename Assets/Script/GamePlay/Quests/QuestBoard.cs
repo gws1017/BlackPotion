@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class QuestBoard : MonoBehaviour
 {
-    private const float LAYER_OFFSET_MULTIPLIER = 2.5f;
+    private const float LAYER_OFFSET_MULTIPLIER = 2.75f;
     public enum ZLayer
     {
         QuestFloor1 = 3,
@@ -366,7 +366,7 @@ public class QuestBoard : MonoBehaviour
 
         Vector3 curtainPos = _curtainPanel.transform.position;
         curtainPos.z = (float)ZLayer.QuestFloor1 * _layerOffset * LAYER_OFFSET_MULTIPLIER;
-        _curtainPanel.transform.position = curtainPos;
+        _curtainPanel.transform.localPosition = curtainPos;
 
         if(_questList == null)
         {

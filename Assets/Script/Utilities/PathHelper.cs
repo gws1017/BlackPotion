@@ -13,4 +13,8 @@ public static class PathHelper
 
     public const string TARGET_SUCCESS_IMAGE = "Images/targetSucc";
     public const string TARGET_FAIL_IMAGE = "Images/targetFail";
+
+    public const string QUEST_GRADE_OUTLINE_SMALL = "Images/ui_recipe_hl_black";
+    public const string QUEST_GRADE_OUTLINE_MEDIUM = "Images/ui_recipe_hl_yellow";
+    public const string QUEST_GRADE_OUTLINE_LARGE = "Images/ui_recipe_hl_magenta";
 }

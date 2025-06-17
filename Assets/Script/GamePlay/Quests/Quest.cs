@@ -185,13 +185,13 @@ public class Quest : MonoBehaviour
         switch (_questGrade)
         {
             case Constants.QuestGrade.Small:
-                _gradeColor.color = Color.black;
+                _gradeColor.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_OUTLINE_SMALL);
                 break;
             case Constants.QuestGrade.Middle:
-                _gradeColor.color = Color.magenta;
+                _gradeColor.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_OUTLINE_MEDIUM);
                 break;
             case Constants.QuestGrade.Large:
-                _gradeColor.color = Color.yellow;
+                _gradeColor.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_OUTLINE_LARGE);
                 break;
 
         }

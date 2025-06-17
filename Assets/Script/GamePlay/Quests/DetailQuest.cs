@@ -95,15 +95,12 @@ public class DetailQuest : Quest
         switch (_questGrade)
         {
             case Constants.QuestGrade.Small:
-                _gradeColor.color = Color.black;
                 _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_SMALL);
                 break;
             case Constants.QuestGrade.Middle:
-                _gradeColor.color = Color.magenta;
                 _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_MEDIUM);
                 break;
             case Constants.QuestGrade.Large:
-                _gradeColor.color = Color.yellow;
                 _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_LARGE);
                 break;
         }
