@@ -12,6 +12,7 @@ public class Quest : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] protected Text _questText;
+    [SerializeField] protected Text _potionNameText;
     [SerializeField] protected Text _potionCapacityValue;
     [SerializeField] protected Image _gradeColor;
     [SerializeField] protected Image _potionImage;
@@ -175,6 +176,7 @@ public class Quest : MonoBehaviour
 
         //UI 업데이트
         _questText.text = _questTextInfo.questContent;
+        _potionNameText.text = PotionName;
         _potionCapacityValue.text = $"( {_minPotionCapacity} ~ {_maxPotionCapacity}  )";
         CheckQuestGrade();
         _potionImage.sprite = Resources.Load<Sprite>(_potionInfo.potionImage);

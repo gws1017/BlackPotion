@@ -425,7 +425,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5296170cc3715d54fb3489ce23151c21, type: 3}
   - {fileID: 8300000, guid: 62c291689c9fbcd4aa920a9bff55f158, type: 3}
   - {fileID: 8300000, guid: 8cf4007f88253a441b6cefd4b84b4758, type: 3}
-  _bgmVolume: 0.3
+  _bgmVolume: 0.1
   _sfxVolume: 0.6
 --- !u!4 &253640549
 Transform:

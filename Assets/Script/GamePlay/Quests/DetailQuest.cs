@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class DetailQuest : Quest
 {
     [Header("UI")]
-    [SerializeField] private Text _potionName;
     [SerializeField] private Text _rewardMoney;
     [SerializeField] private Text _currentAcceptQuest;
     [SerializeField] private Image _questGradeMark;
@@ -40,7 +39,6 @@ public class DetailQuest : Quest
         base.InitializeData();
 
         //상세의뢰에만 있는 추가적인 데이터를 업데이트
-        _potionName.text = PotionName;
         _rewardMoney.text = QuestRewardMoney.ToString();
 
         ShowRewardRecipeGrade();
