@@ -34,6 +34,8 @@ public class BuffManager : MonoBehaviour
     [SerializeField] private float _uiSpacing = 0.015f;
     [SerializeField] private int _buffInventoryToggleDistance = -55;
 
+    private int _disableCount = 0;
+    private bool _canActiveBuff = true;
     //Getter
     public int GetStateFromBuffId(int id) => ReadJson._dictBuff[id].buffState;
     public string GetNameFromBuffId(int id) => ReadJson._dictBuff[id].buffName;
@@ -52,6 +54,7 @@ public class BuffManager : MonoBehaviour
         _buffDictionary = new Dictionary<int, List<BuffObject>>();
         _buffListButton.onClick.RemoveAllListeners();
         _buffListButton.onClick.AddListener(ToggleBuffInventory);
+        AddBuff(5001);
     }
 
     public void ToggleBuffInventory()
@@ -214,6 +217,7 @@ public class BuffManager : MonoBehaviour
 
     public bool IsActiveBuff(int buffID = -1)
     {
+        
         if (buffID == -1)
         {
             return _buffDictionary.Values.Any(list => list.Any(buff => buff.IsActive));
@@ -230,6 +234,8 @@ public class BuffManager : MonoBehaviour
 
     public bool ActivateBuff(BuffObject buffObject)
     {
+        if (_canActiveBuff == false)
+            return false;
         //버프는 한번에 한개만 활성화 가능
         if (IsActiveBuff() == true) return false;
         if(buffObject.Id == (int)BuffType.PlusPowder)
@@ -257,4 +263,18 @@ public class BuffManager : MonoBehaviour
         UpdateBuffUIPositions();
     }
 
+    public void EnableBuffInventory()
+    {
+        _disableCount--;
+        if(_disableCount <= 0)
+        {
+            _disableCount = 0;
+            _canActiveBuff = true;
+        }
+    }
+    public void DisableBuffInventory()
+    {
+        _disableCount++;
+        _canActiveBuff = false;
+    }
 }

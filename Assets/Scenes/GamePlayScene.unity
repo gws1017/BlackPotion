@@ -1194,6 +1194,8 @@ MonoBehaviour:
   destroyObjects: []
   _questStartButton: {fileID: 1380281943}
   _debugText: {fileID: 981598329}
+  _infoUIPrefab: {fileID: 8919018508989369657, guid: be71f0f6f6c8e504683478f84c470d4e,
+    type: 3}
 --- !u!114 &374720874
 MonoBehaviour:
   m_ObjectHideFlags: 0

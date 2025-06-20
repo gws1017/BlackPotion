@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button _questStartButton;
 
     [SerializeField] private Text _debugText;
+
+    [SerializeField] private GameObject _infoUIPrefab;
     //Getter Setter
 
     public static GameManager GM
@@ -235,5 +237,15 @@ public class GameManager : MonoBehaviour
     {
         if (_camera != null)
             _camera.transform.rotation = Quaternion.Euler(eulerAngles);
+    }
+
+    public void CreateInfoUI(string infoText, Transform parentTransform, Vector3? localPosition = null, Vector3? localScale = null)
+    {
+        GameObject uiPrefab = Instantiate(_infoUIPrefab, parentTransform);
+        if (localPosition.HasValue)
+            uiPrefab.transform.localPosition = localPosition.Value;
+        if (localScale.HasValue)
+            uiPrefab.transform.localScale = localScale.Value;
+        uiPrefab.GetComponent<ConfirmUI>().InitializeUI(infoText);
     }
 }

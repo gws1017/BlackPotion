@@ -42,6 +42,7 @@ public class CraftResult : MonoBehaviour
     [SerializeField] private Text _potionQualityResultCheckText;
     [SerializeField] private Text _potionMinQuality;
     [SerializeField] private Text _potionMaxQuality;
+    [SerializeField] private Text _retryGoldText;
     [SerializeField] private Slider _potionQualityProgressBar;
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _nextButton;
@@ -64,6 +65,7 @@ public class CraftResult : MonoBehaviour
         var gm = GameManager.GM;
         _canvas.worldCamera = gm.MainCamera;
         _brewer = gm.Brewer;
+        _retryGoldText.text = $"{Constants.RETRY_GOLD} °ñµå";
         InitializeRewardUI();
     }
 
@@ -194,6 +196,7 @@ public class CraftResult : MonoBehaviour
 
         SoundManager._Instance.PlayClickSound();
 
+        GameManager.GM.BM.DisableBuffInventory();
         gameObject.SetActive(true);
         _resultCheckUIInstance.SetActive(true);
         _rewardUIInstance.SetActive(false);
@@ -293,6 +296,8 @@ public class CraftResult : MonoBehaviour
         SoundManager._Instance.PlayClickSound();
 
         //¹öÇÁ »óÁ¡ ¿ÀÇÂ
+        GameManager.GM.BM.EnableBuffInventory();
+
         Brewer._activePlusPowder = false;
         Brewer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
         _questResultText.text = "ÀÇ·Ú °á°ú";
@@ -304,10 +309,16 @@ public class CraftResult : MonoBehaviour
     {
         if (Brewer.CurrentQuest.IsRestart) 
             return;
-
+        if (GameManager.GM.PlayInformation.CurrentGold < Constants.RETRY_GOLD)
+        {
+            GameManager.GM.CreateInfoUI("°ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.",
+                GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform, new Vector3(0, -200, 0), Vector3.one * 128);
+            return;
+        }
         SoundManager._Instance.PlayClickSound();
 
         Brewer.CurrentCraftState = PotionBrewer.CraftState.Retry;
+        GameManager.GM.BM.EnableBuffInventory();
         gameObject.SetActive(false);
     }
 

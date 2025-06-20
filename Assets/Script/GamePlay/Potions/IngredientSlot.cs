@@ -16,12 +16,15 @@ public class IngredientSlot : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Button _inputButton;
-    [SerializeField] private Text _inputButtonText;
     [SerializeField] private Button _inputInfoButton;
+    [SerializeField] private Text _inputButtonText;
+    [SerializeField] private Text _refillGoldText;
     [SerializeField] private Image _ingredientImage;
     [SerializeField] private Image[] _inputInfoImages;
     [SerializeField] private GameObject _inputInfoUIInstance;
     [SerializeField] private GameObject _ingredientInfoUIPrefab;
+    [SerializeField] private GameObject _refillGoldObject;
+
     private GameObject _ingredientInfoUIInstance;
 
     [SerializeField] private int _ingredientAmount;
@@ -44,6 +47,7 @@ public class IngredientSlot : MonoBehaviour
         _brewer = GameManager.GM.Brewer;
 
         _inputButton.onClick.AddListener(InputIngredient);
+        _refillGoldText.text = $"{Constants.INGRIDIENT_REFILL_GOLD} 골드";
     }
 
     public void ShowIngredientImage()
@@ -88,6 +92,8 @@ public class IngredientSlot : MonoBehaviour
 
 
         }
+
+        _refillGoldObject.SetActive(false);
 
         ResetIngredientUsage();
 
@@ -138,6 +144,7 @@ public class IngredientSlot : MonoBehaviour
         if (IngredientAmount <= 0 && _questGrade <= 1)
         {
             _inputButtonText.text = "재료 수급";
+            _refillGoldObject.SetActive(true);
             _inputButton.onClick.RemoveAllListeners();
             _inputButton.onClick.AddListener(IngredientSupply);
         }
@@ -179,6 +186,13 @@ public class IngredientSlot : MonoBehaviour
     private void IngredientSupply()
     {
         Debug.Log("재료를 수급합니다!");
+
+        if(GameManager.GM.PlayInformation.CurrentGold < Constants.INGRIDIENT_REFILL_GOLD)
+        {
+            GameManager.GM.CreateInfoUI("골드가 부족합니다.", GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform,
+   new Vector3(0, -200, 0), Vector3.one * 128);
+            return;
+        }
 
         GameManager.GM.PlayInformation.ConsumeGold(Constants.INGRIDIENT_REFILL_GOLD);
         IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;

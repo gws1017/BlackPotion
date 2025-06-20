@@ -149,7 +149,7 @@ public class PotionBrewer : MonoBehaviour
 
     private void ProcessCraftRetry()
     {
-        _gameManager.PlayInformation.ConsumeGold(Constants.RESTART_GOLD);
+        _gameManager.PlayInformation.ConsumeGold(Constants.RETRY_GOLD);
         _currentQuest.IsRestart = true;
         UpdateQuestInfo(_currentQuestIndex);
         _gameManager.SM.SaveQuest();

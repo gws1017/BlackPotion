@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public static class Constants
 {
     //Play Information
-    public const int RESTART_GOLD = 50; //재시작 골드
+    public const int RETRY_GOLD = 50; //재시작 골드
     public const int MAX_RECIPE_GRADE = 4; //레시피 최고 등급
     public const int MAX_ACCEPT_QUEST_COUNT = 5;
     public const int MAX_BUFF_COUNT = 3;

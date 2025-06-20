@@ -10,8 +10,11 @@ public class ConfirmUI : MonoBehaviour
     public void InitializeUI(string str)
     {
         _infoText.text = str;
+        GameManager.GM.BM.DisableBuffInventory();
+
         _confirmButton.onClick.AddListener(() => {
             SoundManager._Instance.PlayClickSound();
+            GameManager.GM.BM.EnableBuffInventory();
             Destroy(gameObject); 
         });
     }

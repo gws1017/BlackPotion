@@ -52,10 +52,12 @@ public class Store : MonoBehaviour
     {
         gameObject.SetActive(true);
         InitializeStore(type);
+        GameManager.GM.BM.DisableBuffInventory();
     }
 
     public void CloseStoreUI()
     {
+        GameManager.GM.BM.EnableBuffInventory();
         foreach (var itemSlot in _itemSlotsList)
         {
             itemSlot.GetComponent<ItemSlot>().StopBoxFloat();

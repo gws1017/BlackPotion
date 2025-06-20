@@ -19,7 +19,6 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private Image _soldOutImage;
     [SerializeField] private float _floatSpeed = 0.3f;
     [SerializeField] private float _floatDistance = 0.5f;
-    [SerializeField] private GameObject _purchaseFailUIPrefab;
 
     void Start()
     {
@@ -101,14 +100,8 @@ public class ItemSlot : MonoBehaviour
         }
         else
         {
-            //추후 UI로 표기
-            GameObject uiPrefab = Instantiate(_purchaseFailUIPrefab, ParentStore.StoreCanvas.transform);
-            Vector3 pos = uiPrefab.transform.localPosition;
-            pos.y = -7;
-            pos.z = -7;
-            uiPrefab.transform.localPosition = pos;
-            uiPrefab.transform.localScale = Vector3.one*5;
-            uiPrefab.GetComponent<ConfirmUI>().InitializeUI("골드가 부족합니다.");
+            GameManager.GM.CreateInfoUI("골드가 부족합니다.", ParentStore.StoreCanvas.transform,
+               new Vector3(0, -7, -7), Vector3.one * 5);
         }
         ParentStore.PurchaseUI.SetActive(false);
     }
