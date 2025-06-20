@@ -12,6 +12,8 @@ public class PotionBrewer : MonoBehaviour
     [Header("Main Component")]
     [SerializeField] private IngredientSlot[] _slots;
     [SerializeField] private Store _storeUI;
+    [SerializeField] private GameObject _storeUIPrefab;
+    private GameObject _storeObject;
     private GameManager _gameManager;
 
     //UI
@@ -57,7 +59,21 @@ public class PotionBrewer : MonoBehaviour
 
     //Getter Setter
     public int CurrentPotionQuality => _currentPotionQuality;
-    public Store StoreUI => _storeUI;
+    public Store StoreUI 
+    {
+        get
+        {
+            if(_storeUI == null)
+            {
+                if(_storeObject == null)
+                {
+                    _storeObject = Instantiate(_storeUIPrefab);
+                }
+                _storeUI = _storeObject.GetComponent<Store>();
+            }
+            return _storeUI;
+        }
+    }
     public QuestBoard Board => GameManager.GM.Board;
     public Quest CurrentQuest => _currentQuest;
 
@@ -80,7 +96,7 @@ public class PotionBrewer : MonoBehaviour
         _craftButton.onClick.AddListener(CraftPotion);
     }
 
-    private bool IsCraftSuccessful()
+    public bool IsCraftSuccessful()
     {
         _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionQuality);
 

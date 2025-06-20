@@ -277,6 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8963834139539783762}
+  - component: {fileID: 806083132563606593}
   m_Layer: 0
   m_Name: Craft Result UI
   m_TagString: Untagged
@@ -292,14 +293,55 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301994723698015790}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.2877235, y: -16.363895, z: 1.8649788}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 294618105023069960}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &806083132563606593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301994723698015790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddef64abf8fcd22438e977a914ae4e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvas: {fileID: 9218171246393484374}
+  _animatorLeft: {fileID: 5246316760183518446}
+  _animatorRight: {fileID: 431120679310613522}
+  _rewardUIInstance: {fileID: 8492073323820737245}
+  _resultCheckUIInstance: {fileID: 5298897204491891759}
+  _rewardButtons: {fileID: 6289905231486410146}
+  _questResultText: {fileID: 2474121068239008395}
+  _questFailText: {fileID: 6986735690277039012}
+  _moneyValueText: {fileID: 8849993112738160900}
+  _recipeNameText: {fileID: 4190335534883514471}
+  _selectText: {fileID: 1302306789837080759}
+  _potionQualityRewardText: {fileID: 8639937917793923318}
+  _resultText: {fileID: 1796431205741152366}
+  _selectButton: {fileID: 5718321816992864886}
+  _moneyButton: {fileID: 1221697656606479004}
+  _recipeButton: {fileID: 9124662904452966603}
+  _recipeImage: {fileID: 3491703524365303196}
+  _moneyOutline: {fileID: 8730453885778427987}
+  _recipeOutline: {fileID: 1291749484446274750}
+  _potionImage: {fileID: 2895469908153147878}
+  _potionName: {fileID: 3558115213081179740}
+  _potionGrade: {fileID: 9048314845076473489}
+  _potionQualityResultCheckText: {fileID: 7744957341130188360}
+  _potionMinQuality: {fileID: 5446980415420845047}
+  _potionMaxQuality: {fileID: 8979760639026367872}
+  _potionQualityProgressBar: {fileID: 8486924911360377095}
+  _restartButton: {fileID: 2393960763558302951}
+  _nextButton: {fileID: 597597122498360208}
+  _sliderObject: {fileID: 8338984952202169372}
 --- !u!1 &642437788800098411
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,7 +1067,7 @@ GameObject:
   - component: {fileID: 1899481769717526536}
   - component: {fileID: 8849993112738160900}
   m_Layer: 5
-  m_Name: Reward Value
+  m_Name: Money Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1445,7 +1487,7 @@ GameObject:
   - component: {fileID: 1221697656606479004}
   - component: {fileID: 8730453885778427987}
   m_Layer: 5
-  m_Name: Reward Button
+  m_Name: Money Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1760,7 +1802,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uD3EC\uC158 \uC644\uC131"
+  m_Text: "\uD3EC\uC158 \uC81C\uC870 \uACB0\uACFC"
 --- !u!1 &3100533381951853201
 GameObject:
   m_ObjectHideFlags: 0
@@ -2026,7 +2068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5900d0b29585804898f9f1e2adf7078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _craftResult: {fileID: 0}
+  _craftResult: {fileID: 806083132563606593}
 --- !u!1 &3615666959383288791
 GameObject:
   m_ObjectHideFlags: 0
@@ -2720,7 +2762,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3450417135754065624}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Potion Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2841,7 +2883,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6001778265900234838
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3281,7 +3323,7 @@ RectTransform:
   m_Father: {fileID: 2433468183166094937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3437,7 +3479,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uB4F1\uAE09"
+  m_Text: "\uC81C\uC870 \uB4F1\uAE09"
 --- !u!1 &8338984952202169372
 GameObject:
   m_ObjectHideFlags: 0

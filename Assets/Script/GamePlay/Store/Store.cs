@@ -61,7 +61,7 @@ public class Store : MonoBehaviour
             itemSlot.GetComponent<ItemSlot>().StopBoxFloat();
             Destroy(itemSlot);
         }
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     private void InitializeStore(StoreType type)
@@ -84,6 +84,7 @@ public class Store : MonoBehaviour
                     _itemIdList.Add(ID);
 
                 maxItems = Mathf.Min(MAX_ITEMS, _itemIdList.Count);
+                gameObject.transform.SetPositionAndRotation(new Vector3(20, 0, -40), Quaternion.Euler(0, 90, 0));
                 break;
 
             case StoreType.Recipe:
@@ -97,6 +98,7 @@ public class Store : MonoBehaviour
                         _itemIdList.Add(ID);
                 }
                 maxItems = Mathf.Min(MAX_ITEMS, _itemIdList.Count);
+                gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, -80), Quaternion.Euler(0, 180, 0));
 
                 break;
             default:
