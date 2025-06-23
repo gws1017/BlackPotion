@@ -295,11 +295,11 @@ public class CraftResult : MonoBehaviour
 
         SoundManager._Instance.PlayClickSound();
 
-        //버프 상점 오픈
-        GameManager.GM.BM.EnableBuffInventory();
 
+        //버프 상점 오픈
         Brewer._activePlusPowder = false;
         Brewer.StoreUI.OpenStoreUI(Store.StoreType.Buff);
+        GameManager.GM.BM.EnableBuffInventory();
         _questResultText.text = "의뢰 결과";
         _resultText.text = "결과";
         gameObject.SetActive(false);

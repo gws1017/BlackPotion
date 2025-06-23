@@ -54,7 +54,6 @@ public class BuffManager : MonoBehaviour
         _buffDictionary = new Dictionary<int, List<BuffObject>>();
         _buffListButton.onClick.RemoveAllListeners();
         _buffListButton.onClick.AddListener(ToggleBuffInventory);
-        AddBuff(5001);
     }
 
     public void ToggleBuffInventory()
@@ -150,7 +149,21 @@ public class BuffManager : MonoBehaviour
                 //이상한 양조기
                 if (IsActiveBuff(BuffID))
                 {
-                    value += UnityEngine.Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER);
+                    var brewer = GameManager.GM.Brewer;
+                    int[] ma = brewer.MaxAmount;
+                    if (ma != null )
+                    {
+                        for(int i =0; i<ma.Length; ++i)
+                        {
+                            int amount = ma[i];
+                            if (amount != 0)
+                            {
+                                int val = UnityEngine.Random.Range(0, GameManager.GM.Brewer.MaxAmount[i]);
+                                brewer.SetCurrentAmount(i, val);
+                            }
+                        }
+                    }
+                    
                 }
                 else return;
                 break;
@@ -246,6 +259,9 @@ public class BuffManager : MonoBehaviour
         buffObject.IsActive = true;
         buffObject.BuffUI.GetComponentInChildren<Button>().interactable = false;
         SoundManager._Instance.PlaySFXAtObject(buffObject.BuffUI, SFXType.Click);
+        int val= 0 ;
+        //임시로 즉시적용
+        CheckBuff(BuffType.StrangeBrew, ref val);
         return true;
 
     }

@@ -59,6 +59,8 @@ public class PotionBrewer : MonoBehaviour
 
     //Getter Setter
     public int CurrentPotionQuality => _currentPotionQuality;
+    public int[] MaxAmount => _maxAmount;
+    public int[] CurrentAmount => _currentAmount;
     public Store StoreUI 
     {
         get
@@ -189,6 +191,13 @@ public class PotionBrewer : MonoBehaviour
 
         _currentPotionQuality = 0;
         _currentPotionQuality = _currentAmount.Sum();
+    }
+
+    public void SetCurrentAmount(int index,int value)
+    {
+        _currentAmount[index] = value;
+        _ingredientInputAmountText[index].text =
+            $"{_currentAmount[index]} / {_maxAmount[index]}";
     }
 
     public void UpdateQuestInfo(int questIndex = 0)
