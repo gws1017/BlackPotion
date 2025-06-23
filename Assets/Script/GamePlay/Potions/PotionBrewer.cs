@@ -223,26 +223,30 @@ public class PotionBrewer : MonoBehaviour
         int ingridientCount = 0;
         for (int i = 0; i < INGREDIENT_SLOT_COUNT; ++i)
         {
-            _capacityObjects[i].SetActive(true);
+            _capacityObjects[ingridientCount].SetActive(true);
             _slots[i].gameObject.SetActive(true);
             _slots[i].InitializeSlot();
             _slots[i].EnableInputButton();
             int ingredientId = potionInfo.ingredientIdList[i];
 
+            _ingredientInputAmountText[i].color = Color.black;
+            _maxAmount[i] = (potionInfo.materialRatioList[i] * amountMultiply);
+            _ingredientInputAmountText[ingridientCount].text = $"{_currentAmount[i]} / {_maxAmount[i]}";
+
             if (ingredientId != 0)
             {
-                _inputIngredientNameText[i].text = ReadJson._dictMaterial[ingredientId].materialName;
-                _ingredientNameText[i].text = $"{uiIndex++}. {_inputIngredientNameText[i].text}";
+                _inputIngredientNameText[ingridientCount].text = ReadJson._dictMaterial[ingredientId].materialName;
+                _ingredientNameText[ingridientCount].text = $"{uiIndex++}. {_inputIngredientNameText[ingridientCount].text}";
                 ingridientCount++;
             }
-            else
-                _ingredientNameText[i].text = string.Empty;
-
-
-            _ingredientInputAmountText[i].color = Color.black;
-            _maxAmount[i] = (potionInfo.materialRatioList[i] * amountMultiply) ;
-            _ingredientInputAmountText[i].text = $"{_currentAmount[i]} / {_maxAmount[i]}";
         }
+
+        for(int i = ingridientCount; i< INGREDIENT_SLOT_COUNT; ++i)
+        {
+            _capacityObjects[i].SetActive(false);
+            _ingredientNameText[i].text = string.Empty;
+        }
+        
         _ingredientCount = ingridientCount;
         // 재료 투입 슬롯 조정
         if (_ingredientCount == 1)
@@ -251,14 +255,14 @@ public class PotionBrewer : MonoBehaviour
             {
                 if (i != 1)//가운데만
                 {
-                    _capacityObjects[i].SetActive(false);
+                    //_capacityObjects[i].SetActive(false);
                     _slots[i].gameObject.SetActive(false);
                 }
             }
         }
         else if (_ingredientCount == 2)
         {
-            _capacityObjects[1].SetActive(false);
+            //_capacityObjects[1].SetActive(false);
             _slots[1].gameObject.SetActive(false);
         }
 
