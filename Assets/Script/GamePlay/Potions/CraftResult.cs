@@ -65,7 +65,7 @@ public class CraftResult : MonoBehaviour
         var gm = GameManager.GM;
         _canvas.worldCamera = gm.MainCamera;
         _brewer = gm.Brewer;
-        _retryGoldText.text = $"{Constants.RETRY_GOLD} °ñµå";
+        _retryGoldText.text = $"{Constants.RETRY_GOLD} G";
         InitializeRewardUI();
     }
 
@@ -159,7 +159,7 @@ public class CraftResult : MonoBehaviour
         Constants.SetRecipeIcon(_recipeImage, rewardRecipeGrade);
 
         _rewardButtons.SetActive(true);
-        _moneyValueText.text = $"{((int)(quest.QuestRewardMoney * _rewardMultiplier))} °ñµå";
+        _moneyValueText.text = $"{((int)(quest.QuestRewardMoney * _rewardMultiplier))} G";
 
         if (availableRecipes.Count == 0)
         {
@@ -315,6 +315,7 @@ public class CraftResult : MonoBehaviour
                 GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform, new Vector3(0, -200, 0), Vector3.one * 128);
             return;
         }
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Item);
         SoundManager._Instance.PlayClickSound();
 
         Brewer.CurrentCraftState = PotionBrewer.CraftState.Retry;

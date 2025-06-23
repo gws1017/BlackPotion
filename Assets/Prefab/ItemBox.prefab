@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -277,7 +277,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uAC00\uACA9: 45\uACE8\uB4DC"
+  m_Text: "45\uACE8\uB4DC"
 --- !u!1 &5128418275652034586
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,7 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -493,8 +493,6 @@ MonoBehaviour:
   _soldOutImage: {fileID: 4217479781104664020}
   _floatSpeed: 0
   _floatDistance: 0.1
-  _purchaseFailUIPrefab: {fileID: 8919018508989369657, guid: be71f0f6f6c8e504683478f84c470d4e,
-    type: 3}
 --- !u!1001 &8690124316053243740
 PrefabInstance:
   m_ObjectHideFlags: 0

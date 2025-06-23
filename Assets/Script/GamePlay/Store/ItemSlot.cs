@@ -44,7 +44,7 @@ public class ItemSlot : MonoBehaviour
         ItemCost = cost;
         ItemImage.sprite = Resources.Load<Sprite>(imagePath);
         ItemNameText.text = name;
-        ItemCostText.text = $"°¡°Ý : {ItemCost}°ñµå";
+        ItemCostText.text = $"{ItemCost}G";
 
         ParentStore.PurchaseCancelButton.onClick.RemoveAllListeners();
         ParentStore.PurchaseCancelButton.onClick.AddListener(ClosePurchaseUI);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,11 @@ public class IngredientSlot : MonoBehaviour
     [SerializeField] private Button _inputButton;
     [SerializeField] private Button _inputInfoButton;
     [SerializeField] private Text _inputButtonText;
-    [SerializeField] private Text _refillGoldText;
+
     [SerializeField] private Image _ingredientImage;
     [SerializeField] private Image[] _inputInfoImages;
     [SerializeField] private GameObject _inputInfoUIInstance;
     [SerializeField] private GameObject _ingredientInfoUIPrefab;
-    [SerializeField] private GameObject _refillGoldObject;
 
     private GameObject _ingredientInfoUIInstance;
 
@@ -32,6 +32,7 @@ public class IngredientSlot : MonoBehaviour
 
     private PotionBrewer _brewer;
     private int _slotId;
+    private int _ingridientIndex;
     private int _questGrade;
 
     private Dictionary<int, bool> _ingredientCountDict = new Dictionary<int, bool>(); //현재까지 투입된 수량
@@ -39,6 +40,7 @@ public class IngredientSlot : MonoBehaviour
     //Getter Setter
     public int IngredientAmount { get => _ingredientAmount; set => _ingredientAmount = value; }
     public int SlotId { get => _slotId; set => _slotId = value; }
+    public int IngridientIndex { get => _ingridientIndex; set => _ingridientIndex = value; }
 
     void Start()
     {
@@ -47,7 +49,6 @@ public class IngredientSlot : MonoBehaviour
         _brewer = GameManager.GM.Brewer;
 
         _inputButton.onClick.AddListener(InputIngredient);
-        _refillGoldText.text = $"{Constants.INGRIDIENT_REFILL_GOLD} 골드";
     }
 
     public void ShowIngredientImage()
@@ -93,8 +94,6 @@ public class IngredientSlot : MonoBehaviour
 
         }
 
-        _refillGoldObject.SetActive(false);
-
         ResetIngredientUsage();
 
     }
@@ -131,7 +130,7 @@ public class IngredientSlot : MonoBehaviour
             }
         }
         Debug.Log(amount);
-        _brewer.InsertIngredient(SlotId, amount);
+        _brewer.InsertIngredient(_slotId,_ingridientIndex, amount);
         _ingredientCountDict[amount] = true;
         _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
 
@@ -144,7 +143,6 @@ public class IngredientSlot : MonoBehaviour
         if (IngredientAmount <= 0 && _questGrade <= 1)
         {
             _inputButtonText.text = "재료 수급";
-            _refillGoldObject.SetActive(true);
             _inputButton.onClick.RemoveAllListeners();
             _inputButton.onClick.AddListener(IngredientSupply);
         }
@@ -157,10 +155,10 @@ public class IngredientSlot : MonoBehaviour
     {
         if (IsFullCount()) return 0;
 
-        int amount = Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
+        int amount = UnityEngine.Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
         while (_ingredientCountDict[amount])
         {
-            amount = Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
+            amount = UnityEngine.Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
         }
 
         //홀짝버프 확인
@@ -187,23 +185,34 @@ public class IngredientSlot : MonoBehaviour
     {
         Debug.Log("재료를 수급합니다!");
 
-        if(GameManager.GM.PlayInformation.CurrentGold < Constants.INGRIDIENT_REFILL_GOLD)
+        Transform parentTranform = GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform;
+        Vector3 uiPosition = new Vector3(0, -200, 0);
+        Vector3 uiScale = Vector3.one * 128;
+        if (GameManager.GM.PlayInformation.CurrentGold < Constants.INGRIDIENT_REFILL_GOLD)
         {
-            GameManager.GM.CreateInfoUI("골드가 부족합니다.", GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform,
-   new Vector3(0, -200, 0), Vector3.one * 128);
+            GameManager.GM.CreateInfoUI("골드가 부족합니다.", parentTranform, uiPosition, uiScale);
             return;
         }
+        else
+        {
+            Action supplyAction = () => 
+            {
+                SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Item);
+                GameManager.GM.PlayInformation.ConsumeGold(Constants.INGRIDIENT_REFILL_GOLD);
+                IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
 
-        GameManager.GM.PlayInformation.ConsumeGold(Constants.INGRIDIENT_REFILL_GOLD);
-        IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
+                _inputButtonText.text = "투입";
 
-        _inputButtonText.text = "투입";
+                _ingredientCountDict.Clear();
 
-        _ingredientCountDict.Clear();
-
-        _inputButton.onClick.RemoveAllListeners();
-        _inputButton.onClick.AddListener(InputIngredient);
-        ResetIngredientUsage();
+                _inputButton.onClick.RemoveAllListeners();
+                _inputButton.onClick.AddListener(InputIngredient);
+                ResetIngredientUsage();
+            };
+            GameManager.GM.CreateInfoUI("재료를 수급하시겠습니까?", parentTranform, uiPosition, uiScale
+                , ConfirmUI.UIInfoType.YesAndNo, supplyAction);
+        }
+        
     }
 
     public void ToggleInputInfoUI()

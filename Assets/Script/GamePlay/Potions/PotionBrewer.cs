@@ -174,7 +174,7 @@ public class PotionBrewer : MonoBehaviour
         _craftButton.gameObject.SetActive(true);
     }
 
-    public void InsertIngredient(int slotId, int amount)
+    public void InsertIngredient(int slotId,int ingridientIndex, int amount)
     {
         int prevValue = _currentAmount[slotId];
         _currentAmount[slotId] += amount;
@@ -186,7 +186,7 @@ public class PotionBrewer : MonoBehaviour
             _slots[slotId].DisableInputButton();
         }
 
-        _ingredientInputAmountText[slotId].text =
+        _ingredientInputAmountText[ingridientIndex].text =
             $"{_currentAmount[slotId]} / {_maxAmount[slotId]}";
 
         _currentPotionQuality = 0;
@@ -227,6 +227,7 @@ public class PotionBrewer : MonoBehaviour
             _slots[i].gameObject.SetActive(true);
             _slots[i].InitializeSlot();
             _slots[i].EnableInputButton();
+            _slots[i].IngridientIndex = ingridientCount;
             int ingredientId = potionInfo.ingredientIdList[i];
 
             _ingredientInputAmountText[i].color = Color.black;
