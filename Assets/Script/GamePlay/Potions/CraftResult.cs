@@ -91,6 +91,7 @@ public class CraftResult : MonoBehaviour
 
         if (Brewer.CurrentQuest.IsRestart) _restartButton.interactable = false;
         _potionQualityProgressBar.maxValue = MAX_QUALITY_VALUE;
+        _potionQualityProgressBar.interactable = false;
     }
 
     public void ShowCraftResultUI()
