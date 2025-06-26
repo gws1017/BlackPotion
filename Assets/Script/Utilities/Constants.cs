@@ -81,7 +81,7 @@ public static class Constants
         {
             return PotionCraftGrade.RANK_CP;
         }
-        else if (qualityPercent > PotionCraftGrade.BORDER_C && qualityPercent <= PotionCraftGrade.BORDER_CP)
+        else if (qualityPercent >= PotionCraftGrade.BORDER_C && qualityPercent <= PotionCraftGrade.BORDER_CP)
         {
             return PotionCraftGrade.RANK_C;
         }

@@ -98,20 +98,26 @@ public class PotionBrewer : MonoBehaviour
         _craftButton.onClick.AddListener(CraftPotion);
     }
 
-    public bool IsCraftSuccessful()
+    public bool IsFullSlot()
     {
-        _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionQuality);
-
-        if (_currentQuest.RequirePotionCapacity > _currentPotionQuality)
-            return false;
-
         foreach (var slot in _slots)
         {
             int sid = slot.SlotId;
             if (slot.enabled && _currentAmount[sid] > _maxAmount[sid])
                 return false;
         }
+
         return true;
+    }
+
+    public bool IsCraftSuccessful()
+    {
+        _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionQuality);
+        bool ret = (_currentQuest.RequirePotionCapacity < _currentPotionQuality);
+
+        ret &= IsFullSlot();
+        
+        return ret;
     }
 
     public void CraftPotion()

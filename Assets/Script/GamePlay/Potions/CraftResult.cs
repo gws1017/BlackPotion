@@ -223,12 +223,10 @@ public class CraftResult : MonoBehaviour
         _potionCraftGrade = Constants.CheckPotionCraftGrade(qualityPercent);
         _potionGrade.text = _potionCraftGrade;
 
-        if (currentQuality < 0 || Brewer.IsCraftSuccessful() == false)
+        if (currentQuality < 0 || Brewer.IsFullSlot() == false)
         {
             _potionGrade.color = Color.red;
             _sliderObject.SetActive(false);
-            _potionCraftGrade = "F";
-            _potionGrade.text = _potionCraftGrade;
         }
         else
         {
