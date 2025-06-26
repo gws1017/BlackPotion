@@ -8,12 +8,30 @@ public class GamePlayHUD : HUD
 {
     [SerializeField] private Text _currentGoldUIText;
     [SerializeField] private Button _menuButton;
+    [SerializeField] private Button _debugButton;
+    [SerializeField] private Button _goldButton;
+    [SerializeField] private GameObject _debugPannel;
+
 
 
     override protected void Start() 
     {
         base.Start();
         _menuButton.onClick.AddListener(TogglePauseMenu);
+
+        bool isReleaseBuild = !Application.isEditor && !Debug.isDebugBuild;
+        if(isReleaseBuild == false)
+        {
+            _debugButton.enabled = true;
+            _debugButton.onClick.AddListener(ToggleDebugPannel);
+            _goldButton.onClick.AddListener(CheatGold);
+        }
+        else
+        {
+            _debugButton.enabled = false;
+            _debugPannel.SetActive(false);
+        }
+
         SoundManager._Instance.CurrentBGM = BGMType.InGame;
         SoundManager._Instance.PlayBGM();
     }
@@ -32,5 +50,16 @@ public class GamePlayHUD : HUD
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
+    }
+
+    public void ToggleDebugPannel()
+    {
+        _debugPannel.SetActive(!_debugPannel.activeSelf);
+    }
+
+    public void CheatGold()
+    {
+        if(GameManager.GM.PlayInformation.CurrentGold <1000)
+            GameManager.GM.PlayInformation.IncrementGold(9000);
     }
 }
