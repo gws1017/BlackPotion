@@ -114,7 +114,7 @@ public class PotionBrewer : MonoBehaviour
     public bool IsCraftSuccessful()
     {
         _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionQuality);
-        bool ret = (_currentQuest.RequirePotionCapacity < _currentPotionQuality);
+        bool ret = (_currentQuest.RequirePotionCapacity <= _currentPotionQuality);
 
         ret &= IsFullSlot();
         

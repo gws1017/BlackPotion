@@ -8,7 +8,10 @@ public class GamePlayHUD : HUD
 {
     [SerializeField] private Text _currentGoldUIText;
     [SerializeField] private Button _menuButton;
+
+    [Header("Debug Option")]
     [SerializeField] private Button _debugButton;
+    [SerializeField] private Text _requireQualityText;
     [SerializeField] private Button _goldButton;
     [SerializeField] private GameObject _debugPannel;
 
@@ -55,6 +58,7 @@ public class GamePlayHUD : HUD
     public void ToggleDebugPannel()
     {
         _debugPannel.SetActive(!_debugPannel.activeSelf);
+        _requireQualityText.text = GameManager.GM.Brewer.CurrentQuest.RequirePotionCapacity.ToString();
     }
 
     public void CheatGold()
