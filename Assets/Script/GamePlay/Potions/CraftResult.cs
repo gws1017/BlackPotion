@@ -222,6 +222,7 @@ public class CraftResult : MonoBehaviour
 
         float qualityPercent = (float)(currentQuality) / (float)(questInfo.QInfo.maxCapacity - questInfo.QInfo.minCapacity) * 100.0f;
         _potionCraftGrade = Constants.CheckPotionCraftGrade(qualityPercent);
+        Brewer.CurrentQuest.PotionCraftGrade = _potionCraftGrade;
         _potionGrade.text = _potionCraftGrade;
 
         if (currentQuality < 0 || Brewer.IsFullSlot() == false)
@@ -280,12 +281,17 @@ public class CraftResult : MonoBehaviour
 
             if (_selectReward == 1)
             {
-                playInfo.IncrementGold((int)(quest.QuestRewardMoney * _rewardMultiplier));
+                int rewardMoney = (int)(quest.QuestRewardMoney * _rewardMultiplier);
+                quest.SelectRewardRecipeId = -1;
+                quest.SelectRewardMoney = rewardMoney;
+                playInfo.IncrementGold(rewardMoney);
             }
             else if (_selectReward == 2)
             {
                 var RecipeData = ReadJson._dictPotion[_rewardRecipeId];
                 playInfo.AddRecipe(_rewardRecipeId);
+                quest.SelectRewardMoney = 0;
+                quest.SelectRewardRecipeId = _rewardRecipeId;
                 Debug.Log(RecipeData.potionName.ToString() + " 레시피 해금되었습니다.");
             }
             else 

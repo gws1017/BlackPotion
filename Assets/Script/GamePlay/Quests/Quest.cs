@@ -38,6 +38,11 @@ public class Quest : MonoBehaviour
     [SerializeField] private GameObject _detailQuestPrefab;
     private GameObject _detailQuestObject;
 
+    //제조 결과 저장용
+    private string _potionCraftGrade;
+    private int _selectRewardMoney;
+    private int _selectRewardRecipeId;
+
     //Getter&Setter
     public float OriginZ => _originPosition.z; 
     public bool IsRestart { get => _isRestart; set => _isRestart = value; }
@@ -52,6 +57,11 @@ public class Quest : MonoBehaviour
 
     public string QuestName { get => QInfo.questName; }
     public string QuestText { get => _questText.text;  set => _questText.text = value; }
+
+    public string PotionCraftGrade { get => _potionCraftGrade; set => _potionCraftGrade = value; }
+    
+    public int SelectRewardMoney { get => _selectRewardMoney; set => _selectRewardMoney = value; }
+    public int SelectRewardRecipeId { get => _selectRewardRecipeId; set => _selectRewardRecipeId = value; }
 
     public int RequirePotionCapacity => _reqPotionCapacity;
     public string PotionName => _potionInfo.potionName;
