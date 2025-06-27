@@ -76,6 +76,11 @@ public class DetailQuest : Quest
 
     private void SetAcceptQuestText(int count)
     {
+        if (count >= Constants.MAX_ACCEPT_QUEST_COUNT)
+            _acceptButton.interactable = false;
+        else
+            _acceptButton.interactable = true;
+
         _currentAcceptQuest.text = $"( {count} / {Constants.MAX_ACCEPT_QUEST_COUNT} )";
     }
 
