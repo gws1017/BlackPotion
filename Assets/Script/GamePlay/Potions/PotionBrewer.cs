@@ -179,6 +179,10 @@ public class PotionBrewer : MonoBehaviour
     public void InsertIngredient(int slotId,int ingridientIndex, int amount)
     {
         int prevValue = _currentAmount[slotId];
+
+        //양조기강화 적용
+        GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
+
         _currentAmount[slotId] += amount;
         if (prevValue == _currentAmount[slotId]) return;
 
