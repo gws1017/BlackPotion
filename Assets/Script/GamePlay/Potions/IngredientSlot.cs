@@ -138,9 +138,6 @@ public class IngredientSlot : MonoBehaviour
         _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
 
 
-        //양조기강화 버프 체크
-        GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
-
         IngredientAmount -= amount;
 
         if (IngredientAmount <= 0 && _questGrade <= 1)

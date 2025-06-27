@@ -47,6 +47,7 @@ public class PotionBrewer : MonoBehaviour
     private int _currentPotionQuality;
     public bool _activePlusPowder;
 
+    public IngredientSlot[] Slots => _slots;
     public enum CraftState
     {
         None,
@@ -183,6 +184,10 @@ public class PotionBrewer : MonoBehaviour
     public void InsertIngredient(int slotId,int ingridientIndex, int amount)
     {
         int prevValue = _currentAmount[slotId];
+
+        //양조기강화 버프 체크
+        GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
+
         _currentAmount[slotId] += amount;
         if (prevValue == _currentAmount[slotId]) return;
 
@@ -199,11 +204,17 @@ public class PotionBrewer : MonoBehaviour
         _currentPotionQuality = _currentAmount.Sum();
     }
 
-    public void SetCurrentAmount(int index,int value)
+    public void SetCurrentAmount(int slotId, int ingridientIndex,int value)
     {
-        _currentAmount[index] = value;
-        _ingredientInputAmountText[index].text =
-            $"{_currentAmount[index]} / {_maxAmount[index]}";
+        _currentAmount[slotId] = value;
+        _ingredientInputAmountText[ingridientIndex].text =
+            $"{_currentAmount[slotId]} / {_maxAmount[slotId]}";
+
+        if(_currentAmount[slotId] / _maxAmount[slotId] < 1)
+        {
+            _ingredientInputAmountText[ingridientIndex].color = Color.black;
+            _slots[slotId].EnableInputButton();
+        }
     }
 
     public void UpdateQuestInfo(int questIndex = 0)

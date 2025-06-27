@@ -150,7 +150,9 @@ public class BuffManager : MonoBehaviour
                 if (IsActiveBuff(BuffID))
                 {
                     var brewer = GameManager.GM.Brewer;
+                    var slots = brewer.Slots;
                     int[] ma = brewer.MaxAmount;
+
                     if (ma != null )
                     {
                         for(int i =0; i<ma.Length; ++i)
@@ -159,7 +161,8 @@ public class BuffManager : MonoBehaviour
                             if (amount != 0)
                             {
                                 int val = UnityEngine.Random.Range(0, GameManager.GM.Brewer.MaxAmount[i]);
-                                brewer.SetCurrentAmount(i, val);
+                                int id = slots[i].GetComponent<IngredientSlot>().IngridientIndex;
+                                brewer.SetCurrentAmount(i,id, val);
                             }
                         }
                     }
