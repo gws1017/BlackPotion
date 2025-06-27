@@ -61,6 +61,8 @@ public class PotionBrewer : MonoBehaviour
     public int CurrentPotionQuality => _currentPotionQuality;
     public int[] MaxAmount => _maxAmount;
     public int[] CurrentAmount => _currentAmount;
+
+    public IngredientSlot[] Slots => _slots;
     public Store StoreUI 
     {
         get
@@ -193,11 +195,17 @@ public class PotionBrewer : MonoBehaviour
         _currentPotionQuality = _currentAmount.Sum();
     }
 
-    public void SetCurrentAmount(int index,int value)
+    public void SetCurrentAmount(int slotId,int ingridientIndex,int value)
     {
-        _currentAmount[index] = value;
-        _ingredientInputAmountText[index].text =
-            $"{_currentAmount[index]} / {_maxAmount[index]}";
+        _currentAmount[slotId] = value;
+        _ingredientInputAmountText[ingridientIndex].text =
+            $"{_currentAmount[slotId]} / {_maxAmount[slotId]}";
+       
+        if (_currentAmount[slotId] / _maxAmount[slotId] < 1)
+        {
+            _ingredientInputAmountText[ingridientIndex].color = Color.black;
+            _slots[slotId].EnableInputButton();
+        }
     }
 
     public void UpdateQuestInfo(int questIndex = 0)
