@@ -44,11 +44,7 @@ public class IngredientSlot : MonoBehaviour
 
     void Start()
     {
-        _canvas = GetComponentInChildren<Canvas>();
-        _canvas.worldCamera = GameManager.GM.MainCamera;
-        _brewer = GameManager.GM.Brewer;
-
-        _inputButton.onClick.AddListener(InputIngredient);
+        
     }
 
     public void ShowIngredientImage()
@@ -75,6 +71,13 @@ public class IngredientSlot : MonoBehaviour
 
     public void InitializeSlot()
     {
+        _canvas = GetComponentInChildren<Canvas>();
+        _canvas.worldCamera = GameManager.GM.MainCamera;
+        _brewer = GameManager.GM.Brewer;
+
+        _inputButton.onClick.RemoveAllListeners();
+        _inputButton.onClick.AddListener(InputIngredient);
+
         _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
         IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
 

@@ -261,7 +261,8 @@ public class CraftResult : MonoBehaviour
             //_questResultText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,184);
             _questResultText.text = "의뢰 실패";
             _questFailText.enabled = true;
-            _questFailText.text = $"위약금 발생\n{Brewer.CurrentQuest.QuestRewardMoney * -0.1f}G";
+            int penaltyAmount = (int)(Brewer.CurrentQuest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO);
+            _questFailText.text = $"위약금 발생\n-{penaltyAmount}G";
             _resultText.text = "실패";
             if (_playResultSound == false)
                 SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Fail);

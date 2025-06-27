@@ -188,7 +188,7 @@ public class PotionBrewer : MonoBehaviour
 
         if (_maxAmount[slotId] <= _currentAmount[slotId])
         {
-            _ingredientInputAmountText[slotId].color = Color.red;
+            _ingredientInputAmountText[ingridientIndex].color = Color.red;
             _slots[slotId].DisableInputButton();
         }
 
