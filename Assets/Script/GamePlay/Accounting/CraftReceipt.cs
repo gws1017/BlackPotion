@@ -124,7 +124,7 @@ public class CraftReceipt : MonoBehaviour
     public IEnumerator TypingSoundgCorutine()
     {
         _isRunningTypingSFXCorutine = true;
-        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Writing);
+        SoundManager._Instance.PlaySFX2D(SFXType.Writing);
         yield return new WaitForSeconds(_typingSFXSpeed);
         _isRunningTypingSFXCorutine = false;
     }

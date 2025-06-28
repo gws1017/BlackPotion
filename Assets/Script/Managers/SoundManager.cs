@@ -80,7 +80,8 @@ public class SoundManager : MonoBehaviour
             if (Sources.Count <= 0) return;
             foreach (var Source in Sources)
             {
-                Source.volume = value;
+                if (Source != null)
+                    Source.volume = value;
             }
         }
     }
