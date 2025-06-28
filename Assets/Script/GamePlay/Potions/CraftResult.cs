@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static Constants;
 
 public class CraftResult : MonoBehaviour
 {
@@ -222,11 +223,11 @@ public class CraftResult : MonoBehaviour
 
         float qualityPercent = (float)(currentQuality) / (float)(questInfo.QInfo.maxCapacity - questInfo.QInfo.minCapacity) * 100.0f;
         _potionCraftGrade = Constants.CheckPotionCraftGrade(qualityPercent);
-        Brewer.CurrentQuest.PotionCraftGrade = _potionCraftGrade;
-        _potionGrade.text = _potionCraftGrade;
+        
 
         if (currentQuality < 0 || Brewer.IsFullSlot() == false)
         {
+            _potionCraftGrade = "F";
             _potionGrade.color = Color.red;
             _sliderObject.SetActive(false);
         }
@@ -236,6 +237,9 @@ public class CraftResult : MonoBehaviour
             _potionQualityProgressBar.value = qualityPercent;
             _sliderObject.SetActive(true);
         }
+
+        Brewer.CurrentQuest.PotionCraftGrade = _potionCraftGrade;
+        _potionGrade.text = _potionCraftGrade;
     }
 
 
