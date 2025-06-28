@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GamePlayHUD : HUD
 {
     [SerializeField] private Text _currentGoldUIText;
+    [SerializeField] private Text _currentDayUIText;
     [SerializeField] private Button _menuButton;
 
     [Header("Debug Option")]
@@ -41,6 +42,7 @@ public class GamePlayHUD : HUD
     private void LateUpdate()
     {
         _currentGoldUIText.text = _gm.PlayInformation.CurrentGold.ToString();
+        _currentDayUIText.text = (_gm.PlayInformation.CurrentDay + 1).ToString();
     }
 
     public void TogglePauseMenu()
