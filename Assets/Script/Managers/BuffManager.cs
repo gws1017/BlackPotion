@@ -207,7 +207,7 @@ public class BuffManager : MonoBehaviour
         image.sprite = Resources.Load<Sprite>(ReadJson._dictBuff[id].buffImage);
         var button = buffObject.BuffUI.GetComponentInChildren<Button>();
         button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => ActivateBuff(buffObject));
+        button.onClick.AddListener(() => ToggleBuff(buffObject));
 
         if (_buffDictionary.ContainsKey(id) == false)
             _buffDictionary.Add(id, new List<BuffObject>());
@@ -250,6 +250,15 @@ public class BuffManager : MonoBehaviour
         }
     }
 
+
+    public bool ToggleBuff(BuffObject buffObject)
+    {
+        if (buffObject.IsActive)
+            return DeActivateBuff(buffObject);
+        else
+            return ActivateBuff(buffObject);
+    }
+
     public bool ActivateBuff(BuffObject buffObject)
     {
         if (_canActiveBuff == false)
@@ -262,11 +271,45 @@ public class BuffManager : MonoBehaviour
         }
      
         buffObject.IsActive = true;
-        buffObject.BuffUI.GetComponentInChildren<Button>().interactable = false;
+
+        Button BuffButton = buffObject.BuffUI.GetComponentInChildren<Button>();
+        ColorBlock colorBlock = BuffButton.colors;
+        colorBlock.normalColor = new Color(1, 1, 1, 0.1f);
+        colorBlock.highlightedColor = new Color(0.96f, 0.96f, 0.96f, 0.1f);
+        colorBlock.pressedColor = new Color(0.78f, 0.78f, 0.78f, 0.1f);
+        BuffButton.colors = colorBlock;
+
         SoundManager._Instance.PlaySFXAtObject(buffObject.BuffUI, SFXType.Click);
         int val= 0 ;
         //임시로 즉시적용
         CheckBuff(BuffType.StrangeBrew, ref val);
+        return true;
+
+    }
+
+    //버프해제
+    public bool DeActivateBuff(BuffObject buffObject)
+    {
+        if (_canActiveBuff == false)
+            return false;
+        if (buffObject.IsActive == false) return false;
+
+        if (buffObject.Id == (int)BuffType.PlusPowder)
+        {
+            GameManager.GM.Brewer._activePlusPowder = false;
+        }
+
+        buffObject.IsActive = false;
+
+        Button BuffButton = buffObject.BuffUI.GetComponentInChildren<Button>();
+        ColorBlock colorBlock = BuffButton.colors;
+        colorBlock.normalColor = new Color(1f, 1f, 1f, 1f);
+        colorBlock.highlightedColor = new Color(0.96f, 0.96f, 0.96f, 1f);
+        colorBlock.pressedColor = new Color(0.78f, 0.78f, 0.78f, 1f);
+        BuffButton.colors = colorBlock;
+
+        SoundManager._Instance.PlaySFXAtObject(buffObject.BuffUI, SFXType.Click);
+
         return true;
 
     }
