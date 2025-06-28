@@ -258,6 +258,20 @@ public class QuestBoard : MonoBehaviour
         quest.transform.SetPositionAndRotation(position, rotation);
         quest.gameObject.transform.localScale = _currentQuestScale;
 
+        _currentQuestUIObject.SetActive(true);
+        quest.CanvasRef.overrideSorting = true;
+        quest.CanvasRef.sortingOrder = 6 - _acceptQuestList.Count;
+        foreach(var aq in _acceptQuestList)
+        {
+            if(aq.CanvasRef.sortingOrder < 4)
+            {
+                aq.gameObject.SetActive(false);
+            }
+        }
+
+        _currentQuestUIObject.SetActive(false);
+
+        Debug.Log(quest.CanvasRef.overrideSorting);
     }
 
     public void OpenCurrentQuestUI()
@@ -323,20 +337,29 @@ public class QuestBoard : MonoBehaviour
 
         Vector3 lastPosition = lastQuest.gameObject.transform.position;
         Quaternion lastRotation = lastQuest.gameObject.transform.rotation;
-
+        int sOrder = lastQuest.CanvasRef.sortingOrder;
+        int j = 2;
         for (int i = AcceptQuestList.Count - 1; i > 0; --i)
         {
             Transform currentQuestTransform = AcceptQuestList[i].gameObject.transform;
             Transform prevQuestTransform = AcceptQuestList[i - 1].gameObject.transform;
             currentQuestTransform.position = prevQuestTransform.position;
             currentQuestTransform.rotation = prevQuestTransform.rotation;
+            AcceptQuestList[i].CanvasRef.sortingOrder += 1;
+            if (AcceptQuestList[i].CanvasRef.sortingOrder < 4)
+                AcceptQuestList[i].gameObject.SetActive(false);
+            else
+                AcceptQuestList[i].gameObject.SetActive(true);
         }
         Quest frontQuest = AcceptQuestList[0];
         frontQuest.gameObject.transform.position = lastPosition;
         frontQuest.gameObject.transform.rotation = lastRotation;
+        frontQuest.CanvasRef.sortingOrder = sOrder;
 
         AcceptQuestList.RemoveAt(0);
         AcceptQuestList.Add(frontQuest);
+        if(frontQuest.CanvasRef.sortingOrder < 4)
+            frontQuest.gameObject.SetActive(false);
 
         Transform frontQuestTransform = AcceptQuestList[0].gameObject.transform;
         Vector3 frontPosition = frontQuestTransform.position;
@@ -551,8 +574,8 @@ public class QuestBoard : MonoBehaviour
                             _recipeSelectButton.interactable = true;
                         for (int j = 0; j < SelectableRecipe.Count; ++j)
                         {
-                            if(recipeObject._outline.enabled == true)
-                                recipeObject.ToggleHighLight();
+                            if (_recipeObjects[j]._outline.enabled == true)
+                                _recipeObjects[j].ToggleHighLight();
                         }
                         recipeObject.ToggleHighLight();
                     });

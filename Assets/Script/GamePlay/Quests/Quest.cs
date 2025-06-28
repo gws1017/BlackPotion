@@ -108,7 +108,7 @@ public class Quest : MonoBehaviour
         }
     }
     
-    protected Canvas CanvasRef
+    public Canvas CanvasRef
     {
         get
         {
@@ -128,7 +128,6 @@ public class Quest : MonoBehaviour
     void Start()
     {
         CanvasRef.worldCamera = GameManager.GM.MainCamera;
-
         _openDetailQuestButton = GetComponent<Button>();
         _openDetailQuestButton.onClick.RemoveAllListeners();
         _openDetailQuestButton.onClick.AddListener(OpenDetailQuest);
@@ -220,13 +219,13 @@ public class Quest : MonoBehaviour
     public void DisableOpenButton()
     {
         if(_openDetailQuestButton != null)
-        _openDetailQuestButton.interactable = false;
+        _openDetailQuestButton.enabled = false;
         IsDisable = true;
     }
     public void EnableOpenButton()
     {
         if(_openDetailQuestButton != null)
-            _openDetailQuestButton.interactable = true;
+            _openDetailQuestButton.enabled = true;
         IsDisable = false;
     }
 }
