@@ -123,4 +123,6 @@ public static class Constants
 
     public static readonly Color32 POTION_SUCC_GREEN = new Color32(99, 164, 14, 255);
     public static readonly Color32 REWARD_SELECT_HILIGHT = new Color32(177, 18, 33, 255);
+
+    public const int UI_SCALE = 128;
 }

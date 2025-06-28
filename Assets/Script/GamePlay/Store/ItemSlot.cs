@@ -100,8 +100,9 @@ public class ItemSlot : MonoBehaviour
         }
         else
         {
-            GameManager.GM.CreateInfoUI("골드가 부족합니다.", ParentStore.StoreCanvas.transform,
-               new Vector3(0, -7, -7), Vector3.one * 5);
+            GameManager.GM.CreateInfoUI("골드가 부족합니다.", 
+                GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform, 
+                null, Vector3.one * Constants.UI_SCALE);
         }
         ParentStore.PurchaseUI.SetActive(false);
     }

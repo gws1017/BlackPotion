@@ -178,7 +178,9 @@ public class BuffManager : MonoBehaviour
     {
         if (GetBuffCount() >= Constants.MAX_BUFF_COUNT)
         {
-            Debug.Log("버프 아이템 최대로 보유중입니다 " + Constants.MAX_BUFF_COUNT);
+            Canvas camCanvas = GameManager.GM.MainCamera.GetComponentInChildren<Canvas>();
+            GameManager.GM.CreateInfoUI("도구함이 가득찼습니다.",
+                camCanvas.transform,null,Vector3.one * Constants.UI_SCALE);
             return true;
         }
         return false;

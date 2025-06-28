@@ -186,11 +186,10 @@ public class IngredientSlot : MonoBehaviour
         Debug.Log("재료를 수급합니다!");
 
         Transform parentTranform = GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform;
-        Vector3 uiPosition = new Vector3(0, -200, 0);
-        Vector3 uiScale = Vector3.one * 128;
+        Vector3 uiScale = Vector3.one * Constants.UI_SCALE;
         if (GameManager.GM.PlayInformation.CurrentGold < Constants.INGRIDIENT_REFILL_GOLD)
         {
-            GameManager.GM.CreateInfoUI("골드가 부족합니다.", parentTranform, uiPosition, uiScale);
+            GameManager.GM.CreateInfoUI("골드가 부족합니다.", parentTranform, null, uiScale);
             return;
         }
         else
@@ -209,7 +208,7 @@ public class IngredientSlot : MonoBehaviour
                 _inputButton.onClick.AddListener(InputIngredient);
                 ResetIngredientUsage();
             };
-            GameManager.GM.CreateInfoUI("재료를 수급하시겠습니까?", parentTranform, uiPosition, uiScale
+            GameManager.GM.CreateInfoUI("재료를 수급하시겠습니까?", parentTranform, null, uiScale
                 , ConfirmUI.UIInfoType.YesAndNo, supplyAction);
         }
         

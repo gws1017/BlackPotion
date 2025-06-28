@@ -124,7 +124,6 @@ public class GameManager : MonoBehaviour
             return _buffManager;
         }
     }
-
     private void Awake()
     {
         if (_instance == null)
@@ -148,6 +147,7 @@ public class GameManager : MonoBehaviour
         InitializeManagerComponent();
         if (_questStartButton == null)
             _questStartButton = Board._questStartButton;
+        _questStartButton.onClick.RemoveAllListeners();
         _questStartButton.onClick.AddListener(QuestStart);
     }
 
@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour
     //의뢰 시작(포션제조) 단계 전환
     private void QuestStart()
     {
-            SoundManager._Instance.PlayClickSound();
+        SoundManager._Instance.PlayClickSound();
         //수주 의뢰 저장
         if (Board.CurrentAcceptQuestCount > 0)
         {
@@ -185,11 +185,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-#if UNITY_EDITOR
-#else
-            //_debugText.text = "의뢰를 1개이상 수주하셔야합니다.";
-#endif
-            Debug.Log("의뢰를 1개이상 수주하셔야합니다.");
+            Canvas camCanvas = MainCamera.GetComponentInChildren<Canvas>();
+            CreateInfoUI("의뢰를 1개 이상 수락해야합니다.",
+                camCanvas.transform, null, Vector3.one * Constants.UI_SCALE);
         }
     }
     //정산 단계로 전환

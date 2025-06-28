@@ -318,7 +318,7 @@ public class CraftResult : MonoBehaviour
         if (GameManager.GM.PlayInformation.CurrentGold < Constants.RETRY_GOLD)
         {
             GameManager.GM.CreateInfoUI("골드가 부족합니다.",
-                GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform, new Vector3(0, -200, 0), Vector3.one * 128);
+                GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform, null, Vector3.one * 128);
             return;
         }
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Item);
