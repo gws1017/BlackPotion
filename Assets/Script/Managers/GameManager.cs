@@ -200,11 +200,11 @@ public class GameManager : MonoBehaviour
     public void ShowQuestBoard()
     {
         Board.InitializeQuestBoard();
-        Board.CreateQuestObject();
-
 
         foreach (var item in destroyObjects)
+        {
             Destroy(item);
+        }
         destroyObjects.Clear();
 
         RotateCamera(new Vector3(0, 0, 0));

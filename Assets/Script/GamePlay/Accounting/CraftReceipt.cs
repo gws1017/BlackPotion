@@ -133,7 +133,7 @@ public class CraftReceipt : MonoBehaviour
     {
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
 
-        _storeUI.OpenStoreUI(Store.StoreType.Recipe);
+        GameManager.GM.Brewer.StoreUI.OpenStoreUI(Store.StoreType.Recipe);
     }
 
     private void ResetUIText()

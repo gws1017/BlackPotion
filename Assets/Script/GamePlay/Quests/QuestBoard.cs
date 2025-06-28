@@ -86,12 +86,14 @@ public class QuestBoard : MonoBehaviour
         //기존 오브젝트 삭제
         if (_questList != null)
         {
-            foreach (var quests in _questList.Values)
+            var questLists = _questList.Values;
+            foreach (var questList in questLists)
             {
-                foreach (var questObj in quests)
+                foreach (var questObj in questList)
                 {
-                    Destroy(questObj);
+                    GameManager.GM.DestoryQuest(questObj);
                 }
+                questList.Clear();
             }
         }
         if (_acceptQuestList != null)
