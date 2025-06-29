@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void InitializeGameManager()
+    public void InitializeGameManager(bool isLoad = false)
     {
         InitializeManagerComponent();
         if (_questStartButton == null)
@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
         _questStartButton.onClick.AddListener(QuestStart);
     }
 
-    private void InitializeManagerComponent()
+    private void InitializeManagerComponent(bool isLoad = false)
     {
         if (_camera == null)
             _camera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();

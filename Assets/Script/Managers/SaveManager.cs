@@ -106,6 +106,8 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
+        GameManager.GM.InitializeGameManager();
+
         string loadJson = PlayerPrefs.GetString(SaveKey);
         try
         {

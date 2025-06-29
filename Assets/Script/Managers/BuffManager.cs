@@ -40,7 +40,13 @@ public class BuffManager : MonoBehaviour
     public int GetStateFromBuffId(int id) => ReadJson._dictBuff[id].buffState;
     public string GetNameFromBuffId(int id) => ReadJson._dictBuff[id].buffName;
     public string GetExplainFromBuffId(int id) => ReadJson._dictBuff[id].buffExplain;
-    public List<int> GetCurrentBuffList() => _buffDictionary.Keys.ToList();
+    public List<int> GetCurrentBuffList()
+    {
+        if (_buffDictionary.Count > 0)
+            return _buffDictionary.Keys.ToList();
+        else
+            return null;
+    }
 
     private int GetBuffCount() => _buffDictionary.Values.Sum(list => list.Count);
 

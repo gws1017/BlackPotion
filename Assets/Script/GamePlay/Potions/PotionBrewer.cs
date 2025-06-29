@@ -82,12 +82,12 @@ public class PotionBrewer : MonoBehaviour
 
     void Start()
     {
-        _gameManager = GameManager.GM;
         InitializeBrewer();
     }
 
     public void InitializeBrewer()
     {
+        _gameManager = GameManager.GM;
         _canvas.worldCamera = _gameManager.MainCamera;
         _craftResult.gameObject.SetActive(false);
 
