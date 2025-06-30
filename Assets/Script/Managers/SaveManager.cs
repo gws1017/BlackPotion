@@ -2,9 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static SaveManager;
 
 public class SaveManager : MonoBehaviour
 {
+
+    [System.Serializable]
+    public class SlotInfo
+    {
+        public int slotId;
+        public int uiIngridientIdx;
+        public List<int> inputAmountList;
+    }
 
     [System.Serializable]
     public class SaveData
@@ -13,6 +22,14 @@ public class SaveManager : MonoBehaviour
         public List<bool> isQuestRestarted = new List<bool>();
         public List<int> buffIds = new List<int>();
         public List<int> recipeIds = new List<int>();
+
+        //Slot
+        public List<SlotInfo> slotInfoList = new List<SlotInfo>
+        {
+            new SlotInfo(),
+            new SlotInfo(),
+            new SlotInfo()
+        };
         public Quaternion cameraRotation = Quaternion.identity;
         public int currentGold;
         public int currentDay;
@@ -23,6 +40,7 @@ public class SaveManager : MonoBehaviour
     private const string SaveKey = "Save";
 
     [SerializeField] private SaveData _saveData = new SaveData();
+    private bool _isLoading = false;
 
 
     void Start()
@@ -38,14 +56,50 @@ public class SaveManager : MonoBehaviour
         //GameSave();
     }
 
+    public void SaveInputAmount(int slotId, int value)
+    {
+        if (_isLoading) return;
+        if (slotId >= 0 && slotId < 3)
+        {
+            //투입내역을 전부 슬롯 별로 기록한다
+            _saveData.slotInfoList[slotId].inputAmountList.Add(value);
+            GameSave();
+        }
+    }
+
+    public void SaveSlotInfo(int slotId, int uiId)
+    {
+        if (_isLoading) return;
+        if (slotId >= 3 || slotId < 0) return;
+        if (_saveData.slotInfoList[slotId].inputAmountList != null) return;
+
+        SlotInfo slotInfo = new SlotInfo();
+        slotInfo.slotId = (int)slotId;
+        slotInfo.uiIngridientIdx = (int)uiId;
+        slotInfo.inputAmountList = new List<int>();
+
+        _saveData.slotInfoList[(int)slotId] = slotInfo;
+    }
+
     public void SaveQuestOrder(int value)
     {
+        if (_isLoading) return;
+        //다음 퀘스트 넘어갈때 호출
+
+        //투입내역 초기화
+        _saveData.slotInfoList = new List<SlotInfo>
+        {
+            new SlotInfo(),
+            new SlotInfo(),
+            new SlotInfo()
+        };
         _saveData.currentQuestOrder = value;
         GameSave();
     }
 
     public void SavePlayInfo()
     {
+        if (_isLoading) return;
         var gm = GameManager.GM;
         _saveData.currentGold = gm.PlayInformation.CurrentGold;
         _saveData.currentDay = gm.PlayInformation.CurrentDay;
@@ -56,12 +110,11 @@ public class SaveManager : MonoBehaviour
 
     public void SaveQuest()
     {
-        var gm = GameManager.GM;
-
+        if (_isLoading) return;
+        var board = GameManager.GM.Board;
         _saveData.acceptQuestIds.Clear();
-        _saveData.isQuestRestarted.Clear();
 
-        foreach (var quest in gm.Board.AcceptQuestList)
+        foreach (var quest in board.AcceptQuestList)
         {
             _saveData.acceptQuestIds.Add(quest.QuestID);
             _saveData.isQuestRestarted.Add(quest.IsRestart);
@@ -71,18 +124,22 @@ public class SaveManager : MonoBehaviour
 
     public void SaveBuff()
     {
+        if (_isLoading) return;
         _saveData.buffIds = GameManager.GM.BM.GetCurrentBuffList();
         GameSave();
     }
 
     public void SaveStage()
     {
+        if (_isLoading) return;
         _saveData.cameraRotation = GameManager.GM.MainCamera.transform.rotation;
         GameSave();
     }
 
     private void GameSave()
     {
+        if (_isLoading) return;
+
         try
         {
             string json = JsonUtility.ToJson(_saveData);
@@ -90,12 +147,12 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.Save();
             Debug.Log("Game Save Success");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError("Save Error : " + ex.Message);
         }
 
-        
+
     }
 
     public void GameLoad()
@@ -105,6 +162,8 @@ public class SaveManager : MonoBehaviour
             Debug.LogError("Save is not found");
             return;
         }
+
+        _isLoading = true;
 
         GameManager.GM.InitializeGameManager();
 
@@ -151,7 +210,7 @@ public class SaveManager : MonoBehaviour
                 Quest quest = questObject.GetComponent<Quest>();
                 quest.InitializeQuestFromID(id);
 
-                if(_saveData.isQuestRestarted!= null && _saveData.isQuestRestarted.Count > i)
+                if (_saveData.isQuestRestarted != null && _saveData.isQuestRestarted.Count > i)
                     quest.IsRestart = _saveData.isQuestRestarted[i];
 
                 gm.DestoryQuest(questObject);
@@ -159,11 +218,25 @@ public class SaveManager : MonoBehaviour
             }
             brewer.UpdateQuestInfo(_saveData.currentQuestOrder);
 
+            var slotInfoList = _saveData.slotInfoList;
+
+            if (slotInfoList.Count > 0)
+            {
+                foreach (var slot in slotInfoList)
+                {
+                    foreach (var amount in slot.inputAmountList)
+                    {
+                        brewer.InsertIngredient(slot.slotId, slot.uiIngridientIdx, amount);
+                    }
+                }
+            }
+
+
         }
         //레시피 로드
-        if(_saveData.recipeIds != null && _saveData.recipeIds.Count > 0)
+        if (_saveData.recipeIds != null && _saveData.recipeIds.Count > 0)
         {
-            foreach(int recipeID in _saveData.recipeIds)
+            foreach (int recipeID in _saveData.recipeIds)
             {
                 gm.PlayInformation.AddRecipe(recipeID);
             }
@@ -171,11 +244,13 @@ public class SaveManager : MonoBehaviour
         //버프 로드
         if (_saveData.buffIds != null && _saveData.buffIds.Count > 0)
         {
-           foreach(int buffID in _saveData.buffIds)
-           {
-               gm.BM.AddBuff(buffID);
-           }
+            foreach (int buffID in _saveData.buffIds)
+            {
+                gm.BM.AddBuff(buffID);
+            }
         }
+        _isLoading = false;
+
 
     }
 }

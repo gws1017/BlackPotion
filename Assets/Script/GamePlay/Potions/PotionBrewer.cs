@@ -42,8 +42,8 @@ public class PotionBrewer : MonoBehaviour
 
     //내부 변수
     private int _ingredientCount;
-    private int[] _currentAmount;
-    private int[] _maxAmount;
+    private int[] _currentAmount = new int[INGREDIENT_SLOT_COUNT];
+    private int[] _maxAmount = new int[INGREDIENT_SLOT_COUNT];
     private int _currentPotionQuality;
     public bool _activePlusPowder;
 
@@ -167,9 +167,9 @@ public class PotionBrewer : MonoBehaviour
     public void GetNextCraft()
     {
         _currentQuestIndex++;
+            _gameManager.SM.SaveQuestOrder(_currentQuestIndex);
         if (Board.CurrentAcceptQuestCount > _currentQuestIndex)
         {
-            _gameManager.SM.SaveQuestOrder(_currentQuestIndex);
             UpdateQuestInfo(_currentQuestIndex);
         }
         else
@@ -189,8 +189,9 @@ public class PotionBrewer : MonoBehaviour
         GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
 
         _currentAmount[slotId] += amount;
-        if (prevValue == _currentAmount[slotId]) return;
+        GameManager.GM.SM.SaveInputAmount(slotId, amount);
 
+        if (prevValue == _currentAmount[slotId]) return;
         if (_maxAmount[slotId] <= _currentAmount[slotId])
         {
             _ingredientInputAmountText[ingridientIndex].color = Color.red;
@@ -245,6 +246,9 @@ public class PotionBrewer : MonoBehaviour
             _slots[i].InitializeSlot();
             _slots[i].EnableInputButton();
             _slots[i].IngridientIndex = ingridientCount;
+
+            GameManager.GM.SM.SaveSlotInfo(i, _slots[i].IngridientIndex);
+
             int ingredientId = potionInfo.ingredientIdList[i];
 
             _ingredientInputAmountText[i].color = Color.black;

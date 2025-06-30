@@ -99,7 +99,10 @@ public class BuffManager : MonoBehaviour
 
     public void ClearBuffList()
     {
-        foreach (var buffList in _buffDictionary.Values)
+        if (_buffDictionary == null) return;
+
+        var buffLists = _buffDictionary.Values;
+        foreach (var buffList in buffLists)
         {
             foreach (var buff in buffList)
             {

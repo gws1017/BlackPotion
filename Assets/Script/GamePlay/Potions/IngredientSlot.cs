@@ -32,7 +32,7 @@ public class IngredientSlot : MonoBehaviour
 
     private PotionBrewer _brewer;
     private int _slotId;
-    private int _ingridientIndex;
+    private int _uiIngredientIdx;
     private int _questGrade;
 
     private Dictionary<int, bool> _ingredientCountDict = new Dictionary<int, bool>(); //현재까지 투입된 수량
@@ -40,7 +40,7 @@ public class IngredientSlot : MonoBehaviour
     //Getter Setter
     public int IngredientAmount { get => _ingredientAmount; set => _ingredientAmount = value; }
     public int SlotId { get => _slotId; set => _slotId = value; }
-    public int IngridientIndex { get => _ingridientIndex; set => _ingridientIndex = value; }
+    public int IngridientIndex { get => _uiIngredientIdx; set => _uiIngredientIdx = value; }
 
     void Start()
     {
@@ -133,7 +133,7 @@ public class IngredientSlot : MonoBehaviour
             }
         }
         Debug.Log(amount);
-        _brewer.InsertIngredient(_slotId,_ingridientIndex, amount);
+        _brewer.InsertIngredient(_slotId,_uiIngredientIdx, amount);
         _ingredientCountDict[amount] = true;
         _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
 

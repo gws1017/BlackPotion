@@ -124,9 +124,15 @@ public class QuestBoard : MonoBehaviour
 
         QuestDisableEffectOff(); //커튼 패널 초기위치 조정
 
+        TryOpenSelectRecipeUI();
+
+    }
+
+    public void TryOpenSelectRecipeUI()
+    {
         //0일차면 레시피 선택
         //선택 레시피가 없으면
-        if (GameManager.GM.PlayInformation.CurrentDay == 0 && GameManager.GM.MainCamera.transform.rotation == Quaternion.identity )
+        if (GameManager.GM.PlayInformation.CurrentDay == 0 && GameManager.GM.MainCamera.transform.rotation == Quaternion.identity)
         {
             _recipeSelectButton.onClick.RemoveAllListeners();
             _recipeSelectButton.onClick.AddListener(() => {
@@ -137,9 +143,13 @@ public class QuestBoard : MonoBehaviour
         else
         {
             _selectRecipeUI.SetActive(false);
+            if(_hideUIObjects.Length > 0)
+            {
+                foreach (var uiObject in _hideUIObjects)
+                    uiObject.SetActive(true);
+            }
             CreateQuestObject();
         }
-
     }
 
     public void CreateQuestObject()
@@ -271,8 +281,6 @@ public class QuestBoard : MonoBehaviour
         }
 
         _currentQuestUIObject.SetActive(false);
-
-        Debug.Log(quest.CanvasRef.overrideSorting);
     }
 
     public void OpenCurrentQuestUI()
