@@ -16,8 +16,19 @@ public class SaveManager : MonoBehaviour
     }
 
     [System.Serializable]
+    public class AcceptQuestInfo
+    {
+        public int questId = 0;
+        public int selectedReward = 0;
+        public int requireCapacity = 0;
+        public bool isQuestResult = false;
+        public bool isQuestRestarted = false;
+    }
+
+    [System.Serializable]
     public class SaveData
     {
+        public List<AcceptQuestInfo> acceptQuestInfos = new List<AcceptQuestInfo>();
         public List<int> acceptQuestIds = new List<int>();
         public List<bool> isQuestRestarted = new List<bool>();
         public List<int> buffIds = new List<int>();
@@ -108,14 +119,52 @@ public class SaveManager : MonoBehaviour
         GameSave();
     }
 
-    public void SaveQuest()
+    public void SaveQuestReward(int index, int reward)
+    {
+        if (_isLoading) return;
+        if(_saveData.acceptQuestInfos.Count > index)
+            _saveData.acceptQuestInfos[index].selectedReward = reward;
+        else
+            Debug.LogWarning("Save Data AcceptQuestInfo Count 0");
+        GameSave();
+    }
+    public void SaveQuestResult(int index, bool isResult)
+    {
+        if (_isLoading) return;
+        if(_saveData.acceptQuestInfos.Count > index)
+            _saveData.acceptQuestInfos[index].isQuestRestarted = isResult;
+        else
+            Debug.LogWarning("Save Data AcceptQuestInfo Count 0");
+        GameSave();
+    }
+    public void SaveQuestRestart(int index, bool isRestart = true)
+    {
+        if (_isLoading) return;
+        if(_saveData.acceptQuestInfos.Count > index)
+            _saveData.acceptQuestInfos[index].isQuestRestarted = isRestart;
+        else
+            Debug.LogWarning("Save Data AcceptQuestInfo Count 0");
+        GameSave();
+    }
+    public void SaveQuestList()
     {
         if (_isLoading) return;
         var board = GameManager.GM.Board;
+
+        _saveData.acceptQuestInfos.Clear();
+        //삭제
         _saveData.acceptQuestIds.Clear();
+
 
         foreach (var quest in board.AcceptQuestList)
         {
+            AcceptQuestInfo questInfo = new AcceptQuestInfo();
+            questInfo.questId = quest.QuestID;
+            questInfo.requireCapacity = quest.RequirePotionCapacity;
+
+            _saveData.acceptQuestInfos.Add(questInfo);
+
+            //삭제예정
             _saveData.acceptQuestIds.Add(quest.QuestID);
             _saveData.isQuestRestarted.Add(quest.IsRestart);
         }
@@ -196,25 +245,31 @@ public class SaveManager : MonoBehaviour
         brewer.InitializeBrewer();
 
         //수주 의뢰 Load
-        if (_saveData.acceptQuestIds != null && _saveData.acceptQuestIds.Count > 0)
+        if (_saveData.acceptQuestInfos != null && _saveData.acceptQuestInfos.Count > 0)
         {
             board.InitializeQuestBoard();
             //_isSaveData = true;
-            int idCnt = Mathf.Min(Constants.MAX_ACCEPT_QUEST_COUNT, _saveData.acceptQuestIds.Count);
+            int idCnt = Mathf.Min(Constants.MAX_ACCEPT_QUEST_COUNT, _saveData.acceptQuestInfos.Count);
 
             for (int i = 0; i < idCnt; ++i)
             {
-                int id = _saveData.acceptQuestIds[i];
+                AcceptQuestInfo questInfo = _saveData.acceptQuestInfos[i];
+                int id = questInfo.questId;
                 var questObject = Instantiate(board.QuestPrefab);
 
                 Quest quest = questObject.GetComponent<Quest>();
                 quest.InitializeQuestFromID(id);
 
-                if (_saveData.isQuestRestarted != null && _saveData.isQuestRestarted.Count > i)
-                    quest.IsRestart = _saveData.isQuestRestarted[i];
+                quest.IsRestart = questInfo.isQuestRestarted;
+                quest.RequirePotionCapacity = questInfo.requireCapacity;
+                quest.SelectRewardMoney = questInfo.selectedReward;
 
                 gm.DestoryQuest(questObject);
                 board.AcceptQuest(quest);
+                if(board._questResultDict.ContainsKey(quest))
+                {
+                    board._questResultDict[quest] = questInfo.isQuestResult;
+                }
             }
             brewer.UpdateQuestInfo(_saveData.currentQuestOrder);
 

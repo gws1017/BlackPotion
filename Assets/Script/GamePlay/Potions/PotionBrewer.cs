@@ -60,6 +60,7 @@ public class PotionBrewer : MonoBehaviour
 
     //Getter Setter
     public int CurrentPotionQuality => _currentPotionQuality;
+    public int CurrentQuestIndex => _currentQuestIndex;
     public int[] MaxAmount => _maxAmount;
     public int[] CurrentAmount => _currentAmount;
     public Store StoreUI 
@@ -149,6 +150,8 @@ public class PotionBrewer : MonoBehaviour
         _craftResult.IsPotionCraftSuccessful = isSuccess;
         Board.SetQuestResult(_currentQuest, isSuccess);
 
+        _gameManager.SM.SaveQuestResult(CurrentQuestIndex, isSuccess);
+
         _craftButton.gameObject.SetActive(false);
 
 
@@ -161,7 +164,6 @@ public class PotionBrewer : MonoBehaviour
         _gameManager.PlayInformation.ConsumeGold(Constants.RETRY_GOLD);
         _currentQuest.IsRestart = true;
         UpdateQuestInfo(_currentQuestIndex);
-        _gameManager.SM.SaveQuest();
     }
 
     public void GetNextCraft()
@@ -223,6 +225,7 @@ public class PotionBrewer : MonoBehaviour
         _currentQuestIndex = questIndex;
         _currentQuest = Board.GetCurrentQuest(_currentQuestIndex);
 
+        _gameManager.SM.SaveQuestRestart(CurrentQuestIndex, _currentQuest.IsRestart);
 
         var potionInfo = _currentQuest.PInfo;
 

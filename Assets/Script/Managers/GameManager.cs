@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
             Board.CurrentQuestOutlineEffectOff();
             RotateCamera(new Vector3(0, 90, 0));
             Brewer.UpdateQuestInfo();
-            SM.SaveQuest();
+            SM.SaveQuestList();
             SM.SaveStage();
         }
         else
@@ -208,7 +208,7 @@ public class GameManager : MonoBehaviour
         destroyObjects.Clear();
 
         RotateCamera(new Vector3(0, 0, 0));
-        SM.SaveQuest();
+        SM.SaveQuestList();
         SM.SaveStage();
 
     }

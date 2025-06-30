@@ -19,10 +19,10 @@ public class Quest : MonoBehaviour
     [SerializeField] private Button _openDetailQuestButton;
 
     [Header("Quest Data")]
-    [ReadOnly,SerializeField] protected int _questID;
+    [ReadOnly, SerializeField] protected int _questID;
     [SerializeField] protected int _minPotionCapacity;
     [SerializeField] protected int _maxPotionCapacity;
-    [ReadOnly,SerializeField] protected int _reqPotionCapacity;
+    [ReadOnly, SerializeField] protected int _reqPotionCapacity;
     [SerializeField] protected Constants.QuestGrade _questGrade;
     protected QuestInfo _questInfo;
     protected QuestTextInfo _questTextInfo;
@@ -44,26 +44,26 @@ public class Quest : MonoBehaviour
     private int _selectRewardRecipeId;
 
     //Getter&Setter
-    public float OriginZ => _originPosition.z; 
+    public float OriginZ => _originPosition.z;
     public bool IsRestart { get => _isRestart; set => _isRestart = value; }
     public Vector3 OriginPosition { get => _originPosition; set => _originPosition = value; }
     public Quaternion OriginRotation { get => _originRotation; set => _originRotation = value; }
     public bool IsDisable { get => _disableQuest; set => _disableQuest = value; }
-    public int QuestID { get=> _questID; set => _questID = value; }
+    public int QuestID { get => _questID; set => _questID = value; }
     public Constants.QuestGrade QuestGrade => _questGrade;
     //ÀÇ·Ú º¸»ó
     public int QuestRewardMoney => QInfo.reward[0];
     public int QuestRewardRecipeGrade => QInfo.reward[1];
 
     public string QuestName { get => QInfo.questName; }
-    public string QuestText { get => _questText.text;  set => _questText.text = value; }
+    public string QuestText { get => _questText.text; set => _questText.text = value; }
 
     public string PotionCraftGrade { get => _potionCraftGrade; set => _potionCraftGrade = value; }
-    
+
     public int SelectRewardMoney { get => _selectRewardMoney; set => _selectRewardMoney = value; }
     public int SelectRewardRecipeId { get => _selectRewardRecipeId; set => _selectRewardRecipeId = value; }
 
-    public int RequirePotionCapacity => _reqPotionCapacity;
+    public int RequirePotionCapacity { get => _reqPotionCapacity; set => _reqPotionCapacity = value; }
     public string PotionName => _potionInfo.potionName;
 
     public string PotionCapacityValue

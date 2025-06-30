@@ -130,8 +130,6 @@ public class CraftResult : MonoBehaviour
         }
     }
 
-    
-
     private void ProcessSuccessResult()
     {
         var quest = Brewer.CurrentQuest;
@@ -300,7 +298,9 @@ public class CraftResult : MonoBehaviour
             }
             else 
                 return;
+            GameManager.GM.SM.SaveQuestReward(Brewer.CurrentQuestIndex, quest.SelectRewardMoney);
         }
+        
         _playResultSound = false;
 
         SoundManager._Instance.PlayClickSound();
