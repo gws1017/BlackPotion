@@ -60,7 +60,7 @@ public class GamePlayHUD : HUD
     public void ToggleDebugPannel()
     {
         _debugPannel.SetActive(!_debugPannel.activeSelf);
-        if (_requireQualityText == null) return;
+        if (GameManager.GM.Brewer.CurrentQuest == null) return;
         _requireQualityText.text = GameManager.GM.Brewer.CurrentQuest.RequirePotionCapacity.ToString();
     }
 

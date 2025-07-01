@@ -19,7 +19,8 @@ public enum BuffType
     OddNumber = 5002,
     PlusPowder = 5003,
     UpgradeBrew = 5004,
-    StrangeBrew = 5005
+    StrangeBrew = 5005,
+    InsightPowder = 5006
 }
 
 public class BuffManager : MonoBehaviour
@@ -179,6 +180,28 @@ public class BuffManager : MonoBehaviour
                 }
                 else return;
                 break;
+            case BuffType.InsightPowder:
+                //통찰의 가루
+                if (IsActiveBuff(BuffID))
+                {
+                    var brewer = GameManager.GM.Brewer;
+                    int reqCapacity = brewer.CurrentQuest.RequirePotionCapacity;
+                    int digit = 0;
+                    while(reqCapacity / 10 > 0)
+                    {
+                        reqCapacity /= 10;
+                        digit++;
+                    }
+
+                    string reqCapacityText = $"{reqCapacity}";
+                    for (int i = 0; i < digit; ++i)
+                        reqCapacityText += "X";
+
+                    brewer.ReqCapacityValueText.text = reqCapacityText;
+
+                }
+                else return;
+                break;
 
         }
         RemoveUsedBuff();
@@ -292,6 +315,7 @@ public class BuffManager : MonoBehaviour
         int val= 0 ;
         //임시로 즉시적용
         CheckBuff(BuffType.StrangeBrew, ref val);
+        CheckBuff(BuffType.InsightPowder, ref val);
         return true;
 
     }

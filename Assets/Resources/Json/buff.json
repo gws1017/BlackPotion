@@ -46,9 +46,19 @@
       "buffCost": 45,
       "buffImage": "Images/buffStrangeBrew",
       "buffState": 0,
-      "buffExplain": "1~10사이의 랜덤한 숫자 하나가 들어간다.",
+      "buffExplain": "각 투입한 재료의 값을 무작위 값으로 바꾼다.",
       "buffType": 2,
       "buffTarget": 1
+    },
+    {
+      "buffId": 5006,
+      "buffName": "통찰의 가루",
+      "buffCost": 65,
+      "buffImage": "Images/buffMagnifier",
+      "buffState": 0,
+      "buffExplain": "요구 용량 수치의 첫째 자리의 숫자를 확인할 수 있다.",
+      "buffType": 2,
+      "buffTarget": 0
     }
   ]
   
