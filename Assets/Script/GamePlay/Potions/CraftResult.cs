@@ -97,6 +97,7 @@ public class CraftResult : MonoBehaviour
 
     public void ShowCraftResultUI()
     {
+        gameObject.SetActive(true);
 
         InitializeRewardUI();
         OffHighlight();
@@ -107,7 +108,7 @@ public class CraftResult : MonoBehaviour
         _resultCheckUIInstance.SetActive(false);
         _rewardUIInstance.SetActive(true);
 
-        Brewer.CurrentCraftState = PotionBrewer.CraftState.Success;
+        Brewer.CurrentCraftState = PotionBrewer.CraftState.Complete;
     }
 
     public void UpdateCraftResultUI()
@@ -186,7 +187,11 @@ public class CraftResult : MonoBehaviour
         _rewardButtons.SetActive(false);
         _selectText.text = "다음";
 
-        playInfo.ConsumeGold((int)(quest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO));
+        if (GameManager.GM.SM.ProcessPenalty == false)
+        {
+            playInfo.ConsumeGold((int)(quest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO));
+            GameManager.GM.SM.SaveFailPenalty(true);
+        }
     }
 
     //제조버튼 클릭시 호출됨

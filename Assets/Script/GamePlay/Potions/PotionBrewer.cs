@@ -52,7 +52,7 @@ public class PotionBrewer : MonoBehaviour
     {
         None,
         Retry,
-        Success
+        Complete
     }
 
     private CraftState _craftState;
@@ -134,7 +134,7 @@ public class PotionBrewer : MonoBehaviour
 
         yield return new WaitUntil(() => _craftState != CraftState.None);
 
-        if (_craftState == CraftState.Success)
+        if (_craftState == CraftState.Complete)
         {
             ProcessCraftResult();
         }
@@ -144,7 +144,7 @@ public class PotionBrewer : MonoBehaviour
         }
     }
 
-    private void ProcessCraftResult()
+    public void ProcessCraftResult()
     {
         bool isSuccess = IsCraftSuccessful();
         _craftResult.IsPotionCraftSuccessful = isSuccess;
@@ -154,7 +154,7 @@ public class PotionBrewer : MonoBehaviour
 
         _craftButton.gameObject.SetActive(false);
 
-
+        _gameManager.SM.SaveVisibleCraftResult(true);
         _craftResult.UpdateCraftResultUI();
         _reqQualityValueText.text = _currentQuest.RequirePotionCapacity.ToString();
     }
@@ -166,10 +166,19 @@ public class PotionBrewer : MonoBehaviour
         UpdateQuestInfo(_currentQuestIndex);
     }
 
+    public void ShowCraftResultUI()
+    {
+        _craftResult.ShowCraftResultUI();
+        ProcessCraftResult();
+    }
+
     public void GetNextCraft()
     {
         _currentQuestIndex++;
-            _gameManager.SM.SaveQuestOrder(_currentQuestIndex);
+
+        _gameManager.SM.SaveVisibleCraftResult(false);
+        _gameManager.SM.SaveFailPenalty(false);
+        _gameManager.SM.SaveQuestOrder(_currentQuestIndex);
         if (Board.CurrentAcceptQuestCount > _currentQuestIndex)
         {
             UpdateQuestInfo(_currentQuestIndex);
