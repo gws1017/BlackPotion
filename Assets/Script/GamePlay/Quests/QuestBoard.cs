@@ -132,7 +132,7 @@ public class QuestBoard : MonoBehaviour
     {
         //0일차면 레시피 선택
         //선택 레시피가 없으면
-        if (GameManager.GM.PlayInformation.CurrentDay == 0 && GameManager.GM.MainCamera.transform.rotation == Quaternion.identity)
+        if (GameManager.GM.PlayInformation.CurrentDay == 0 && GameManager.GM.CurrentStage == GameStage.QuestBoard)
         {
             _recipeSelectButton.onClick.RemoveAllListeners();
             _recipeSelectButton.onClick.AddListener(() => {

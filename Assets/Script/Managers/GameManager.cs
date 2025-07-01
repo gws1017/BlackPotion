@@ -5,8 +5,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using static ConfirmUI;
 
+public enum GameStage
+{
+    QuestBoard,       // 의뢰 게시판 (0, 0, 0)
+    Brewing,          // 포션 제조 (0, 90, 0)
+    Receipt,          // 정산 (0, 180, 0)
+}
+
 public class GameManager : MonoBehaviour
 {
+    
+
     //GameManager 인스턴스 GM으로 접근
     private static GameManager _instance;
 
@@ -25,8 +34,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text _debugText;
 
     [SerializeField] private GameObject _infoUIPrefab;
-    //Getter Setter
 
+    private readonly Dictionary<GameStage, Vector3> _stageRotationDict = new Dictionary<GameStage, Vector3>
+    {
+        { GameStage.QuestBoard, new Vector3(0, 0, 0) },
+        { GameStage.Brewing, new Vector3(0, 90, 0) },
+        { GameStage.Receipt, new Vector3(0, 180, 0) },
+    };
+
+    GameStage _stage = GameStage.QuestBoard;
+
+    //Getter Setter
+    public GameStage CurrentStage => _stage;
     public static GameManager GM
     {
         get
@@ -178,10 +197,9 @@ public class GameManager : MonoBehaviour
         {
             Board.CloseCurrentQuestUI();
             Board.CurrentQuestOutlineEffectOff();
-            RotateCamera(new Vector3(0, 90, 0));
+            ChangeStage(GameStage.Brewing);
             Brewer.UpdateQuestInfo();
             SM.SaveQuestList();
-            SM.SaveStage();
         }
         else
         {
@@ -193,12 +211,12 @@ public class GameManager : MonoBehaviour
     //정산 단계로 전환
     public void ShowCraftReceipt()
     {
-        RotateCamera(new Vector3(0, 180, 0));
-        SM.SaveStage();
+        ChangeStage(GameStage.Receipt);
     }
     //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()
     {
+        ChangeStage(GameStage.QuestBoard);
         Board.InitializeQuestBoard();
 
         foreach (var item in destroyObjects)
@@ -207,9 +225,7 @@ public class GameManager : MonoBehaviour
         }
         destroyObjects.Clear();
 
-        RotateCamera(new Vector3(0, 0, 0));
         SM.SaveQuestList();
-        SM.SaveStage();
 
     }
 
@@ -232,10 +248,12 @@ public class GameManager : MonoBehaviour
         destroyObjects.Add(gameObject);
     }
 
-    private void RotateCamera(Vector3 eulerAngles)
+    private void ChangeStage(GameStage stage)
     {
-        if (_camera != null)
-            _camera.transform.rotation = Quaternion.Euler(eulerAngles);
+        if (_camera != null && _stageRotationDict.TryGetValue(stage, out var rotation))
+            _camera.transform.rotation = Quaternion.Euler(rotation);
+        _stage = stage;
+        SM.SaveStage();
     }
 
     public void CreateInfoUI(string infoText, Transform parentTransform, Vector3? localPosition = null, Vector3? localScale = null, UIInfoType type = UIInfoType.Confirm, Action yesFunc = null)
