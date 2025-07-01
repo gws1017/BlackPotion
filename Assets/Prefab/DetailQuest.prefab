@@ -1179,6 +1179,7 @@ MonoBehaviour:
   _rewardRecipe: {fileID: 5364331957289727596}
   _rewardRecipeText: {fileID: 4175199344199807129}
   _rewardRecipeOutline: {fileID: 6181751259494294952}
+  _potionNameOutline: {fileID: 7958471321998824308}
   _quitButton: {fileID: 8142619080767763608}
   _acceptButton: {fileID: 5017668816168609023}
 --- !u!1 &7081596953645045197
@@ -1462,7 +1463,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8028559897854913914}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
