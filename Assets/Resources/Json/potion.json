@@ -2,7 +2,7 @@
   "root": [
     {
       "potionId": 2001,
-      "potionName": "하급 상처약",
+      "potionName": "상처약",
       "potionGrade": 0,
       "ingredientIdList": [ 3001, 0, 3002 ],
       "materialRatioList": [ 2, 0, 1 ],
@@ -11,7 +11,7 @@
     },
     {
       "potionId": 2002,
-      "potionName": "하급 마나회복약",
+      "potionName": "마나회복약",
       "potionGrade": 0,
       "ingredientIdList": [ 3001, 0, 3003 ],
       "materialRatioList": [ 3, 0, 1 ],
@@ -20,7 +20,7 @@
     },
     {
       "potionId": 2003,
-      "potionName": "하급 몬스터 기피약",
+      "potionName": "몬스터 기피약",
       "potionGrade": 0,
       "ingredientIdList": [ 3001, 0, 3004 ],
       "materialRatioList": [ 4, 0, 1 ],

@@ -12,6 +12,7 @@ public class DetailQuest : Quest
     [SerializeField] private Image _questGradeMark;
     [SerializeField] private Image _rewardRecipe;
     [SerializeField] private Text _rewardRecipeText;
+    [SerializeField] private Outline _rewardRecipeOutline;
     [SerializeField] private Button _quitButton;
     [SerializeField] private Button _acceptButton;
     
@@ -88,8 +89,9 @@ public class DetailQuest : Quest
     private void ShowRewardRecipeGrade()
     {
         Constants.SetRecipeIcon(_rewardRecipe, QuestRewardRecipeGrade);
-        _rewardRecipeText.text = Constants.RecipeGradeToString((Constants.RecipeGrade)QuestRewardRecipeGrade);
-
+        var grade = (Constants.RecipeGrade)QuestRewardRecipeGrade;
+        _rewardRecipeText.text = Constants.RecipeGradeToString(grade);
+        _rewardRecipeOutline.effectColor = Constants.RecipeGradeToColor(grade);
     }
 
     //의뢰 등급에 맞는 이미지를 업데이트함
