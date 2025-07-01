@@ -49,6 +49,11 @@ public class ItemSlot : MonoBehaviour
         ParentStore.PurchaseCancelButton.onClick.RemoveAllListeners();
         ParentStore.PurchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
         _soldOutImage.gameObject.SetActive(false);
+
+        if(GameManager.GM.SM.CheckPurchase(id))
+        {
+            ItemSoldOut();
+        }
         //StartBoxFloat();
     }
 
@@ -67,6 +72,13 @@ public class ItemSlot : MonoBehaviour
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
 
         ParentStore.PurchaseUI.SetActive(false);
+    }
+
+    public void ItemSoldOut()
+    {
+        _soldOutImage.gameObject.SetActive(true);
+        ItemSlotButton.interactable = false;
+        ItemNameText.text = "매진";
     }
 
     public void AcceptPurchase()
@@ -90,11 +102,11 @@ public class ItemSlot : MonoBehaviour
                 }
                 GameManager.GM.BM.AddBuff(ItemId);
             }
-            StopBoxFloat();
+            GameManager.GM.SM.SavePurchase(ItemId);
+
+            //StopBoxFloat();
             _playInfo.ConsumeGold(ItemCost);
-            _soldOutImage.gameObject.SetActive(true);
-            ItemSlotButton.interactable = false;
-            ItemNameText.text = "매진";
+            ItemSoldOut();
             SoundManager._Instance.PlaySFX2D(SFXType.Money);
 
         }

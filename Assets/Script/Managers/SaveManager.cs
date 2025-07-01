@@ -33,7 +33,7 @@ public class SaveManager : MonoBehaviour
         public List<bool> isQuestRestarted = new List<bool>();
         public List<int> buffIds = new List<int>();
         public List<int> recipeIds = new List<int>();
-
+        public List<int> purchasedStorebuffIds = new List<int>();
         //Slot
         public List<SlotInfo> slotInfoList = new List<SlotInfo>
         {
@@ -46,6 +46,8 @@ public class SaveManager : MonoBehaviour
         public int currentDay;
         //퀘스트 진행도 기본값은 -1(시작x)
         public int currentQuestOrder = -1;
+        public bool processPenalty;
+        public bool isVisibleCraftResult;
     }
 
     private const string SaveKey = "Save";
@@ -53,6 +55,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private SaveData _saveData = new SaveData();
     private bool _isLoading = false;
 
+    public bool ProcessPenalty => _saveData.processPenalty;
 
     void Start()
     {
@@ -66,7 +69,18 @@ public class SaveManager : MonoBehaviour
     {
         //GameSave();
     }
-
+    public void SaveVisibleCraftResult(bool value)
+    {
+        if (_isLoading) return;
+        _saveData.isVisibleCraftResult = value;
+        GameSave();
+    }
+    public void SaveFailPenalty(bool value)
+    {
+        if (_isLoading) return;
+        _saveData.processPenalty = value;
+        GameSave();
+    }
     public void SaveInputAmount(int slotId, int value)
     {
         if (_isLoading) return;
@@ -104,7 +118,9 @@ public class SaveManager : MonoBehaviour
             new SlotInfo(),
             new SlotInfo()
         };
+        _saveData.purchasedStorebuffIds.Clear();
         _saveData.currentQuestOrder = value;
+        _saveData.processPenalty = false;
         GameSave();
     }
 
@@ -114,7 +130,7 @@ public class SaveManager : MonoBehaviour
         var gm = GameManager.GM;
         _saveData.currentGold = gm.PlayInformation.CurrentGold;
         _saveData.currentDay = gm.PlayInformation.CurrentDay;
-        _saveData.buffIds = gm.BM.GetCurrentBuffList();
+        SaveBuff();
         _saveData.recipeIds = gm.PlayInformation.PossessRecipeList;
         GameSave();
     }
@@ -131,7 +147,7 @@ public class SaveManager : MonoBehaviour
     public void SaveQuestResult(int index, bool isResult)
     {
         if (_isLoading) return;
-        if(_saveData.acceptQuestInfos.Count > index)
+        if(_saveData.acceptQuestInfos.Count > index && index >=0)
             _saveData.acceptQuestInfos[index].isQuestRestarted = isResult;
         else
             Debug.LogWarning("Save Data AcceptQuestInfo Count 0");
@@ -171,6 +187,17 @@ public class SaveManager : MonoBehaviour
         GameSave();
     }
 
+    public bool CheckPurchase(int ItemId)
+    {
+        return _saveData.purchasedStorebuffIds.Contains(ItemId);
+    }
+
+    public void SavePurchase(int ItemId)
+    {
+        if (_isLoading) return;
+        _saveData.purchasedStorebuffIds.Add(ItemId);
+        GameSave();
+    }
     public void SaveBuff()
     {
         if (_isLoading) return;
@@ -284,6 +311,12 @@ public class SaveManager : MonoBehaviour
                         brewer.InsertIngredient(slot.slotId, slot.uiIngridientIdx, amount);
                     }
                 }
+            }
+
+            //결과창 한번이라도 봤으면 바로 결과창으로 진입
+            if(_saveData.isVisibleCraftResult)
+            {
+                brewer.ShowCraftResultUI();
             }
 
 
