@@ -22,6 +22,9 @@ public class RecipeObject : MonoBehaviour
         var recipeInfo = ReadJson._dictPotion[recipeID];
         _recipeName.text = recipeInfo.potionName;
 
+        //위치 초기화
+        _outline.enabled = false;
+
         int materialIdx = 0;
         foreach(int materialRatio in recipeInfo.materialRatioList)
         {

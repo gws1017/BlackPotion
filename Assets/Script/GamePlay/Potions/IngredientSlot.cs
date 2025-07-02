@@ -32,7 +32,7 @@ public class IngredientSlot : MonoBehaviour
 
     private PotionBrewer _brewer;
     private int _slotId;
-    private int _ingridientIndex;
+    private int _uiIngredientIdx;
     private int _questGrade;
 
     private Dictionary<int, bool> _ingredientCountDict = new Dictionary<int, bool>(); //현재까지 투입된 수량
@@ -40,15 +40,11 @@ public class IngredientSlot : MonoBehaviour
     //Getter Setter
     public int IngredientAmount { get => _ingredientAmount; set => _ingredientAmount = value; }
     public int SlotId { get => _slotId; set => _slotId = value; }
-    public int IngridientIndex { get => _ingridientIndex; set => _ingridientIndex = value; }
+    public int IngridientIndex { get => _uiIngredientIdx; set => _uiIngredientIdx = value; }
 
     void Start()
     {
-        _canvas = GetComponentInChildren<Canvas>();
-        _canvas.worldCamera = GameManager.GM.MainCamera;
-        _brewer = GameManager.GM.Brewer;
-
-        _inputButton.onClick.AddListener(InputIngredient);
+        
     }
 
     public void ShowIngredientImage()
@@ -75,6 +71,13 @@ public class IngredientSlot : MonoBehaviour
 
     public void InitializeSlot()
     {
+        _canvas = GetComponentInChildren<Canvas>();
+        _canvas.worldCamera = GameManager.GM.MainCamera;
+        _brewer = GameManager.GM.Brewer;
+
+        _inputButton.onClick.RemoveAllListeners();
+        _inputButton.onClick.AddListener(InputIngredient);
+
         _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
         IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
 
@@ -130,13 +133,10 @@ public class IngredientSlot : MonoBehaviour
             }
         }
         Debug.Log(amount);
-        _brewer.InsertIngredient(_slotId,_ingridientIndex, amount);
+        _brewer.InsertIngredient(_slotId,_uiIngredientIdx, amount);
         _ingredientCountDict[amount] = true;
         _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
 
-
-        //양조기강화 버프 체크
-        GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
 
         IngredientAmount -= amount;
 
@@ -186,11 +186,10 @@ public class IngredientSlot : MonoBehaviour
         Debug.Log("재료를 수급합니다!");
 
         Transform parentTranform = GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform;
-        Vector3 uiPosition = new Vector3(0, -200, 0);
-        Vector3 uiScale = Vector3.one * 128;
+        Vector3 uiScale = Vector3.one * Constants.UI_SCALE;
         if (GameManager.GM.PlayInformation.CurrentGold < Constants.INGRIDIENT_REFILL_GOLD)
         {
-            GameManager.GM.CreateInfoUI("골드가 부족합니다.", parentTranform, uiPosition, uiScale);
+            GameManager.GM.CreateInfoUI("골드가 부족합니다.", parentTranform, null, uiScale);
             return;
         }
         else
@@ -209,7 +208,7 @@ public class IngredientSlot : MonoBehaviour
                 _inputButton.onClick.AddListener(InputIngredient);
                 ResetIngredientUsage();
             };
-            GameManager.GM.CreateInfoUI("재료를 수급하시겠습니까?", parentTranform, uiPosition, uiScale
+            GameManager.GM.CreateInfoUI("재료를 수급하시겠습니까?", parentTranform, null, uiScale
                 , ConfirmUI.UIInfoType.YesAndNo, supplyAction);
         }
         

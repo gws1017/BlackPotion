@@ -12,6 +12,8 @@ public class DetailQuest : Quest
     [SerializeField] private Image _questGradeMark;
     [SerializeField] private Image _rewardRecipe;
     [SerializeField] private Text _rewardRecipeText;
+    [SerializeField] private Outline _rewardRecipeOutline;
+    [SerializeField] private Outline _potionNameOutline;
     [SerializeField] private Button _quitButton;
     [SerializeField] private Button _acceptButton;
     
@@ -41,7 +43,7 @@ public class DetailQuest : Quest
         //상세의뢰에만 있는 추가적인 데이터를 업데이트
         _rewardMoney.text = QuestRewardMoney.ToString();
 
-        ShowRewardRecipeGrade();
+        SetGradeTextAndOutline();
         UpdateQuestGradeMark();
 
         //미보유 레시피 비활성화
@@ -76,15 +78,23 @@ public class DetailQuest : Quest
 
     private void SetAcceptQuestText(int count)
     {
+        if (count >= Constants.MAX_ACCEPT_QUEST_COUNT)
+            _acceptButton.interactable = false;
+        else
+            _acceptButton.interactable = true;
+
         _currentAcceptQuest.text = $"( {count} / {Constants.MAX_ACCEPT_QUEST_COUNT} )";
     }
 
     //레시피 보상 등급에 따라 색으로 표기
-    private void ShowRewardRecipeGrade()
+    private void SetGradeTextAndOutline()
     {
         Constants.SetRecipeIcon(_rewardRecipe, QuestRewardRecipeGrade);
-        _rewardRecipeText.text = Constants.RecipeGradeToString((Constants.RecipeGrade)QuestRewardRecipeGrade);
-
+        var grade = (Constants.RecipeGrade)QuestRewardRecipeGrade;
+        var potionGrade = (Constants.RecipeGrade)_potionInfo.potionGrade;
+        _rewardRecipeText.text = Constants.RecipeGradeToString(grade);
+        _rewardRecipeOutline.effectColor = Constants.RecipeGradeToColor(grade);
+        _potionNameOutline.effectColor = Constants.RecipeGradeToColor(potionGrade);
     }
 
     //의뢰 등급에 맞는 이미지를 업데이트함

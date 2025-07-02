@@ -23,6 +23,8 @@ public class TitleHUD : HUD
 
     private MainMenuButton _currentButtonType;
     private Action[] _readyActions;
+
+    bool _isPlayStampAnim = false;
     override protected void Start()
     {
         base.Start();
@@ -47,6 +49,11 @@ public class TitleHUD : HUD
 
     private void TriggerAction(MainMenuButton type)
     {
+        if (_isPlayStampAnim == false)
+            _isPlayStampAnim = true;
+        else
+            return;
+
         _currentButtonType = type;
         int id = (int)type;
         switch(type)
@@ -79,6 +86,7 @@ public class TitleHUD : HUD
             _readyActions[index].Invoke();
             _readyActions[index] = null;
         }
+        _isPlayStampAnim = false;
 
     }
 

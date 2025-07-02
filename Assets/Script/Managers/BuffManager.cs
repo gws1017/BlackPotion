@@ -19,7 +19,8 @@ public enum BuffType
     OddNumber = 5002,
     PlusPowder = 5003,
     UpgradeBrew = 5004,
-    StrangeBrew = 5005
+    StrangeBrew = 5005,
+    InsightPowder = 5006
 }
 
 public class BuffManager : MonoBehaviour
@@ -40,7 +41,13 @@ public class BuffManager : MonoBehaviour
     public int GetStateFromBuffId(int id) => ReadJson._dictBuff[id].buffState;
     public string GetNameFromBuffId(int id) => ReadJson._dictBuff[id].buffName;
     public string GetExplainFromBuffId(int id) => ReadJson._dictBuff[id].buffExplain;
-    public List<int> GetCurrentBuffList() => _buffDictionary.Keys.ToList();
+    public List<int> GetCurrentBuffList()
+    {
+        if (_buffDictionary.Count > 0)
+            return _buffDictionary.Keys.ToList();
+        else
+            return null;
+    }
 
     private int GetBuffCount() => _buffDictionary.Values.Sum(list => list.Count);
 
@@ -93,7 +100,10 @@ public class BuffManager : MonoBehaviour
 
     public void ClearBuffList()
     {
-        foreach (var buffList in _buffDictionary.Values)
+        if (_buffDictionary == null) return;
+
+        var buffLists = _buffDictionary.Values;
+        foreach (var buffList in buffLists)
         {
             foreach (var buff in buffList)
             {
@@ -150,7 +160,9 @@ public class BuffManager : MonoBehaviour
                 if (IsActiveBuff(BuffID))
                 {
                     var brewer = GameManager.GM.Brewer;
+                    var slots = brewer.Slots;
                     int[] ma = brewer.MaxAmount;
+
                     if (ma != null )
                     {
                         for(int i =0; i<ma.Length; ++i)
@@ -159,11 +171,34 @@ public class BuffManager : MonoBehaviour
                             if (amount != 0)
                             {
                                 int val = UnityEngine.Random.Range(0, GameManager.GM.Brewer.MaxAmount[i]);
-                                brewer.SetCurrentAmount(i, val);
+                                int id = slots[i].GetComponent<IngredientSlot>().IngridientIndex;
+                                brewer.SetCurrentAmount(i,id, val);
                             }
                         }
                     }
                     
+                }
+                else return;
+                break;
+            case BuffType.InsightPowder:
+                //통찰의 가루
+                if (IsActiveBuff(BuffID))
+                {
+                    var brewer = GameManager.GM.Brewer;
+                    int reqCapacity = brewer.CurrentQuest.RequirePotionCapacity;
+                    int digit = 0;
+                    while(reqCapacity / 10 > 0)
+                    {
+                        reqCapacity /= 10;
+                        digit++;
+                    }
+
+                    string reqCapacityText = $"{reqCapacity}";
+                    for (int i = 0; i < digit; ++i)
+                        reqCapacityText += "X";
+
+                    brewer.ReqCapacityValueText.text = reqCapacityText;
+
                 }
                 else return;
                 break;
@@ -175,7 +210,9 @@ public class BuffManager : MonoBehaviour
     {
         if (GetBuffCount() >= Constants.MAX_BUFF_COUNT)
         {
-            Debug.Log("버프 아이템 최대로 보유중입니다 " + Constants.MAX_BUFF_COUNT);
+            Canvas camCanvas = GameManager.GM.MainCamera.GetComponentInChildren<Canvas>();
+            GameManager.GM.CreateInfoUI("도구함이 가득찼습니다.",
+                camCanvas.transform,null,Vector3.one * Constants.UI_SCALE);
             return true;
         }
         return false;
@@ -202,7 +239,7 @@ public class BuffManager : MonoBehaviour
         image.sprite = Resources.Load<Sprite>(ReadJson._dictBuff[id].buffImage);
         var button = buffObject.BuffUI.GetComponentInChildren<Button>();
         button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => ActivateBuff(buffObject));
+        button.onClick.AddListener(() => ToggleBuff(buffObject));
 
         if (_buffDictionary.ContainsKey(id) == false)
             _buffDictionary.Add(id, new List<BuffObject>());
@@ -245,6 +282,15 @@ public class BuffManager : MonoBehaviour
         }
     }
 
+
+    public bool ToggleBuff(BuffObject buffObject)
+    {
+        if (buffObject.IsActive)
+            return DeActivateBuff(buffObject);
+        else
+            return ActivateBuff(buffObject);
+    }
+
     public bool ActivateBuff(BuffObject buffObject)
     {
         if (_canActiveBuff == false)
@@ -257,11 +303,46 @@ public class BuffManager : MonoBehaviour
         }
      
         buffObject.IsActive = true;
-        buffObject.BuffUI.GetComponentInChildren<Button>().interactable = false;
+
+        Button BuffButton = buffObject.BuffUI.GetComponentInChildren<Button>();
+        ColorBlock colorBlock = BuffButton.colors;
+        colorBlock.normalColor = new Color(1, 1, 1, 0.1f);
+        colorBlock.highlightedColor = new Color(0.96f, 0.96f, 0.96f, 0.1f);
+        colorBlock.pressedColor = new Color(0.78f, 0.78f, 0.78f, 0.1f);
+        BuffButton.colors = colorBlock;
+
         SoundManager._Instance.PlaySFXAtObject(buffObject.BuffUI, SFXType.Click);
         int val= 0 ;
         //임시로 즉시적용
         CheckBuff(BuffType.StrangeBrew, ref val);
+        CheckBuff(BuffType.InsightPowder, ref val);
+        return true;
+
+    }
+
+    //버프해제
+    public bool DeActivateBuff(BuffObject buffObject)
+    {
+        if (_canActiveBuff == false)
+            return false;
+        if (buffObject.IsActive == false) return false;
+
+        if (buffObject.Id == (int)BuffType.PlusPowder)
+        {
+            GameManager.GM.Brewer._activePlusPowder = false;
+        }
+
+        buffObject.IsActive = false;
+
+        Button BuffButton = buffObject.BuffUI.GetComponentInChildren<Button>();
+        ColorBlock colorBlock = BuffButton.colors;
+        colorBlock.normalColor = new Color(1f, 1f, 1f, 1f);
+        colorBlock.highlightedColor = new Color(0.96f, 0.96f, 0.96f, 1f);
+        colorBlock.pressedColor = new Color(0.78f, 0.78f, 0.78f, 1f);
+        BuffButton.colors = colorBlock;
+
+        SoundManager._Instance.PlaySFXAtObject(buffObject.BuffUI, SFXType.Click);
+
         return true;
 
     }

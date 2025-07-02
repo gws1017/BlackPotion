@@ -79,6 +79,7 @@ public class PlayInfo : MonoBehaviour
 
         if(_recipeDict.ContainsKey(recipeID))
             _recipeDict[recipeID] = true;
+        GameManager.GM.SM.SavePlayInfo();
     }
     //레시피 보유 확인 함수
     public bool HasRecipe(int recipeID)

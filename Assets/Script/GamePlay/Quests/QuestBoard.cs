@@ -25,7 +25,9 @@ public class QuestBoard : MonoBehaviour
     [Header("Reicpe")]
     [SerializeField] public RecipeObject _selectRecipeObject;
     [SerializeField] private GameObject _selectRecipeUI;
+    [SerializeField] private Transform _parentRecipeTransform;
     [SerializeField] private GameObject[] _hideUIObjects;
+    [SerializeField] private GameObject _recipePrefab;
     [SerializeField] private RecipeObject[] _recipeObjects;
     [SerializeField] private Button _recipeSelectButton;
 
@@ -86,12 +88,14 @@ public class QuestBoard : MonoBehaviour
         //기존 오브젝트 삭제
         if (_questList != null)
         {
-            foreach (var quests in _questList.Values)
+            var questLists = _questList.Values;
+            foreach (var questList in questLists)
             {
-                foreach (var questObj in quests)
+                foreach (var questObj in questList)
                 {
-                    Destroy(questObj);
+                    GameManager.GM.DestoryQuest(questObj);
                 }
+                questList.Clear();
             }
         }
         if (_acceptQuestList != null)
@@ -120,9 +124,15 @@ public class QuestBoard : MonoBehaviour
 
         QuestDisableEffectOff(); //커튼 패널 초기위치 조정
 
+        TryOpenSelectRecipeUI();
+
+    }
+
+    public void TryOpenSelectRecipeUI()
+    {
         //0일차면 레시피 선택
         //선택 레시피가 없으면
-        if (GameManager.GM.PlayInformation.CurrentDay == 0)
+        if (GameManager.GM.PlayInformation.CurrentDay == 0 && GameManager.GM.CurrentStage == GameStage.QuestBoard)
         {
             _recipeSelectButton.onClick.RemoveAllListeners();
             _recipeSelectButton.onClick.AddListener(() => {
@@ -132,9 +142,14 @@ public class QuestBoard : MonoBehaviour
         }
         else
         {
+            _selectRecipeUI.SetActive(false);
+            if(_hideUIObjects.Length > 0)
+            {
+                foreach (var uiObject in _hideUIObjects)
+                    uiObject.SetActive(true);
+            }
             CreateQuestObject();
         }
-
     }
 
     public void CreateQuestObject()
@@ -254,6 +269,18 @@ public class QuestBoard : MonoBehaviour
         quest.transform.SetPositionAndRotation(position, rotation);
         quest.gameObject.transform.localScale = _currentQuestScale;
 
+        _currentQuestUIObject.SetActive(true);
+        quest.CanvasRef.overrideSorting = true;
+        quest.CanvasRef.sortingOrder = 6 - _acceptQuestList.Count;
+        foreach(var aq in _acceptQuestList)
+        {
+            if(aq.CanvasRef.sortingOrder < 4)
+            {
+                aq.gameObject.SetActive(false);
+            }
+        }
+
+        _currentQuestUIObject.SetActive(false);
     }
 
     public void OpenCurrentQuestUI()
@@ -319,20 +346,29 @@ public class QuestBoard : MonoBehaviour
 
         Vector3 lastPosition = lastQuest.gameObject.transform.position;
         Quaternion lastRotation = lastQuest.gameObject.transform.rotation;
-
+        int sOrder = lastQuest.CanvasRef.sortingOrder;
+        int j = 2;
         for (int i = AcceptQuestList.Count - 1; i > 0; --i)
         {
             Transform currentQuestTransform = AcceptQuestList[i].gameObject.transform;
             Transform prevQuestTransform = AcceptQuestList[i - 1].gameObject.transform;
             currentQuestTransform.position = prevQuestTransform.position;
             currentQuestTransform.rotation = prevQuestTransform.rotation;
+            AcceptQuestList[i].CanvasRef.sortingOrder += 1;
+            if (AcceptQuestList[i].CanvasRef.sortingOrder < 4)
+                AcceptQuestList[i].gameObject.SetActive(false);
+            else
+                AcceptQuestList[i].gameObject.SetActive(true);
         }
         Quest frontQuest = AcceptQuestList[0];
         frontQuest.gameObject.transform.position = lastPosition;
         frontQuest.gameObject.transform.rotation = lastRotation;
+        frontQuest.CanvasRef.sortingOrder = sOrder;
 
         AcceptQuestList.RemoveAt(0);
         AcceptQuestList.Add(frontQuest);
+        if(frontQuest.CanvasRef.sortingOrder < 4)
+            frontQuest.gameObject.SetActive(false);
 
         Transform frontQuestTransform = AcceptQuestList[0].gameObject.transform;
         Vector3 frontPosition = frontQuestTransform.position;
@@ -515,35 +551,42 @@ public class QuestBoard : MonoBehaviour
         if (_selectRecipeUI == null)
             return;
         _selectRecipeUI.SetActive(true);
+        _recipeSelectButton.interactable = false;
 
-        if(_hideUIObjects.Length > 0)
+        if (_hideUIObjects.Length > 0)
         {
             foreach (var uiOjbect in _hideUIObjects)
             {
                 uiOjbect.SetActive(false);
             }
         }
-
         List<int> SelectableRecipe = GameManager.GM.PlayInformation.GetSelectableRecipe();
         if(SelectableRecipe.Count >= 3)
         {
-            if(_recipeObjects.Length >= 3)
+            _recipeObjects = new RecipeObject[3];
+
+            if (_recipeObjects.Length >= 3)
             {
                 for(int i = 0; i< SelectableRecipe.Count; ++i)
                 {
+                    var recipeObject = Instantiate(_recipePrefab, _parentRecipeTransform).GetComponent<RecipeObject>();
+                    _recipeObjects[i] = recipeObject;
+
                     int recipeID = SelectableRecipe[i];
-                    _recipeObjects[i].Initialize(recipeID);
-                    int index = i;
-                    _recipeObjects[index]._selectButton.onClick.AddListener(() => 
+                    recipeObject.Initialize(recipeID);
+                    recipeObject.transform.localPosition = new Vector3(-20 + i * 20,0,0);
+
+                    recipeObject._selectButton.onClick.RemoveAllListeners();
+                    recipeObject._selectButton.onClick.AddListener(() => 
                     {
                         if (_recipeSelectButton.interactable == false)
                             _recipeSelectButton.interactable = true;
                         for (int j = 0; j < SelectableRecipe.Count; ++j)
                         {
-                            if(_recipeObjects[j]._outline.enabled == true)
+                            if (_recipeObjects[j]._outline.enabled == true)
                                 _recipeObjects[j].ToggleHighLight();
                         }
-                        _recipeObjects[index].ToggleHighLight();
+                        recipeObject.ToggleHighLight();
                     });
                 }
             }
@@ -554,6 +597,10 @@ public class QuestBoard : MonoBehaviour
     public void HideSelectRecipeUI()
     {
         GameManager.GM.PlayInformation.AddRecipe(_selectRecipeObject._recipeID);
+
+        foreach (var recipeObj in _recipeObjects)
+            Destroy(recipeObj.gameObject);
+
         _selectRecipeUI.SetActive(false);
         if (_hideUIObjects.Length > 0)
         {

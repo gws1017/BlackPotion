@@ -65,15 +65,15 @@ public class CraftReceipt : MonoBehaviour
                 {
                     _potionNameText[i].color = Constants.POTION_SUCC_GREEN;
                     _moneyText[i].color = Constants.POTION_SUCC_GREEN;
-                    gold = questList[i].QuestRewardMoney;
+                    gold = quest.SelectRewardMoney;
                 }
                 else
                 {
                     _potionNameText[i].color = Color.red;
                     _moneyText[i].color = Color.red;
-                    gold -= (int)(questList[i].QuestRewardMoney * Constants.QUEST_PENALTY_RATIO);
+                    gold -= (int)(quest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO);
                 }
-                yield return StartCoroutine(TypingCorutine($"{questList[i].PotionName} 제조", _potionNameText[i]));
+                yield return StartCoroutine(TypingCorutine($"{quest.PotionName} 제조", _potionNameText[i]));
 
                 _potionNameText[i].enabled = true;
                 _moneyText[i].enabled = true;
@@ -124,7 +124,7 @@ public class CraftReceipt : MonoBehaviour
     public IEnumerator TypingSoundgCorutine()
     {
         _isRunningTypingSFXCorutine = true;
-        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Writing);
+        SoundManager._Instance.PlaySFX2D(SFXType.Writing);
         yield return new WaitForSeconds(_typingSFXSpeed);
         _isRunningTypingSFXCorutine = false;
     }
@@ -133,7 +133,7 @@ public class CraftReceipt : MonoBehaviour
     {
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
 
-        _storeUI.OpenStoreUI(Store.StoreType.Recipe);
+        GameManager.GM.Brewer.StoreUI.OpenStoreUI(Store.StoreType.Recipe);
     }
 
     private void ResetUIText()
