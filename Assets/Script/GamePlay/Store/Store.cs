@@ -153,7 +153,7 @@ public class Store : MonoBehaviour
     private void NextDay()
     {
         SoundManager._Instance.PlayClickSound();
-        GameManager.GM.MainCamera.GetComponentInChildren<GamePlayHUD>().ShowRestartUI();
         CloseStoreUI();
+        GameManager.GM.CheckRecipt();
     }
 }

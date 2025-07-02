@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         { GameStage.Receipt, new Vector3(0, 180, 0) },
     };
 
-    GameStage _stage = GameStage.QuestBoard;
+    private GameStage _stage = GameStage.QuestBoard;
 
     //Getter Setter
     public GameStage CurrentStage => _stage;
@@ -235,17 +235,29 @@ public class GameManager : MonoBehaviour
         if (Receipt.TargetSuccess)
         {
             PlayInformation.IncrementCraftDay();
+            ShowQuestBoard();
         }
         else
         {
-            PlayInformation.ResetInfo();
+            MainCamera.GetComponentInChildren<GamePlayHUD>().ShowRestartUI();
         }
-        ShowQuestBoard();
     }
 
     public void DestoryQuest(GameObject gameObject)
     {
         destroyObjects.Add(gameObject);
+    }
+
+    public void ChangeStage(Quaternion rotation)
+    {
+        foreach(var stage in _stageRotationDict)
+        {
+            if(Quaternion.Euler(stage.Value) == rotation)
+            {
+                _camera.transform.rotation = (rotation);
+                _stage = stage.Key;
+            }
+        }
     }
 
     private void ChangeStage(GameStage stage)

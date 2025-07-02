@@ -268,7 +268,7 @@ public class SaveManager : MonoBehaviour
         playInfo.SetDay(_saveData.currentDay);
 
         //Stage 로드(카메라 회전) Load
-        gm.MainCamera.transform.rotation = _saveData.cameraRotation;
+        gm.ChangeStage(_saveData.cameraRotation);
         brewer.InitializeBrewer();
 
         //수주 의뢰 Load
@@ -336,6 +336,11 @@ public class SaveManager : MonoBehaviour
             {
                 gm.BM.AddBuff(buffID);
             }
+        }
+        
+        if(gm.CurrentStage == GameStage.Receipt)
+        {
+            gm.CheckRecipt();
         }
         _isLoading = false;
 

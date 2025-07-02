@@ -60,6 +60,7 @@ public class GamePlayHUD : HUD
     }
     public void ReturnToMainMenu()
     {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
         SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
     }
 
@@ -77,7 +78,9 @@ public class GamePlayHUD : HUD
 
     public void GameRestart()
     {
-        GameManager.GM.CheckRecipt();
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
+        GameManager.GM.PlayInformation.ResetInfo();
+        GameManager.GM.ShowQuestBoard();
         _restartUIObject.SetActive(false);
     }
 
