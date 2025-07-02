@@ -30,7 +30,7 @@ public class PotionBrewer : MonoBehaviour
     [SerializeField] private Text _potionNameText;
     [SerializeField] private Text _questText;
     [SerializeField] private Text _questTitleText;
-    [SerializeField] private Text _reqQualityValueText;
+    [SerializeField] private Text _reqCapacityValueText;
     [SerializeField] private Text _questProgressText;
     [SerializeField] private int _currentQuestIndex;
     private Quest _currentQuest;
@@ -44,7 +44,7 @@ public class PotionBrewer : MonoBehaviour
     private int _ingredientCount;
     private int[] _currentAmount = new int[INGREDIENT_SLOT_COUNT];
     private int[] _maxAmount = new int[INGREDIENT_SLOT_COUNT];
-    private int _currentPotionQuality;
+    private int _currentPotionCapacity;
     public bool _activePlusPowder;
 
     public IngredientSlot[] Slots => _slots;
@@ -59,10 +59,13 @@ public class PotionBrewer : MonoBehaviour
     public CraftState CurrentCraftState { get => _craftState; set => _craftState = value; }
 
     //Getter Setter
-    public int CurrentPotionQuality => _currentPotionQuality;
+    public int CurrentPotionCapacity => _currentPotionCapacity;
     public int CurrentQuestIndex => _currentQuestIndex;
     public int[] MaxAmount => _maxAmount;
     public int[] CurrentAmount => _currentAmount;
+
+    public Text ReqCapacityValueText => _reqCapacityValueText;
+
     public Store StoreUI 
     {
         get
@@ -114,8 +117,8 @@ public class PotionBrewer : MonoBehaviour
 
     public bool IsCraftSuccessful()
     {
-        _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionQuality);
-        bool ret = (_currentQuest.RequirePotionCapacity <= _currentPotionQuality);
+        _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionCapacity);
+        bool ret = (_currentQuest.RequirePotionCapacity <= _currentPotionCapacity);
 
         ret &= IsFullSlot();
         
@@ -156,7 +159,7 @@ public class PotionBrewer : MonoBehaviour
 
         _gameManager.SM.SaveVisibleCraftResult(true);
         _craftResult.UpdateCraftResultUI();
-        _reqQualityValueText.text = _currentQuest.RequirePotionCapacity.ToString();
+        _reqCapacityValueText.text = _currentQuest.RequirePotionCapacity.ToString();
     }
 
     private void ProcessCraftRetry()
@@ -212,8 +215,8 @@ public class PotionBrewer : MonoBehaviour
         _ingredientInputAmountText[ingridientIndex].text =
             $"{_currentAmount[slotId]} / {_maxAmount[slotId]}";
 
-        _currentPotionQuality = 0;
-        _currentPotionQuality = _currentAmount.Sum();
+        _currentPotionCapacity = 0;
+        _currentPotionCapacity = _currentAmount.Sum();
     }
 
     public void SetCurrentAmount(int slotId, int ingridientIndex,int value)
@@ -245,7 +248,7 @@ public class PotionBrewer : MonoBehaviour
 
         _currentAmount = new int[INGREDIENT_SLOT_COUNT];
         _maxAmount = new int[INGREDIENT_SLOT_COUNT];
-        _currentPotionQuality = 0;
+        _currentPotionCapacity = 0;
         
         _recipeNameText.text = potionInfo.potionName;
 
@@ -310,7 +313,7 @@ public class PotionBrewer : MonoBehaviour
         _questProgressText.text = $"ÀÇ·Ú {_currentQuestIndex + 1} / {Board.CurrentAcceptQuestCount}";
         _potionImage.sprite = _currentQuest.PotionImage;
         _potionNameText.text = _currentQuest.PotionName;
-        _reqQualityValueText.text = _currentQuest.PotionCapacityValue;
+        _reqCapacityValueText.text = _currentQuest.PotionCapacityValue;
         _craftButton.enabled = true;
     }
 

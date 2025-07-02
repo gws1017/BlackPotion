@@ -210,7 +210,7 @@ public class CraftResult : MonoBehaviour
 
         _potionImage.sprite = questInfo.PotionImage;
         _potionName.text = questInfo.PotionName;
-        _potionQualityResultCheckText.text = Brewer.CurrentPotionQuality.ToString();
+        _potionQualityResultCheckText.text = Brewer.CurrentPotionCapacity.ToString();
         _potionMinQuality.text = questInfo.QInfo.minCapacity.ToString();
         _potionMaxQuality.text = questInfo.QInfo.maxCapacity.ToString();
 
@@ -221,7 +221,7 @@ public class CraftResult : MonoBehaviour
             _potionQualityResultCheckText.text += plusValue;
             _potionQualityRewardText.text = _potionQualityResultCheckText.text;
         }
-        int currentQuality = Brewer.CurrentPotionQuality;
+        int currentQuality = Brewer.CurrentPotionCapacity;
         currentQuality -= questInfo.QInfo.minCapacity;
 
         float qualityPercent = (float)(currentQuality) / (float)(questInfo.QInfo.maxCapacity - questInfo.QInfo.minCapacity) * 100.0f;
@@ -251,7 +251,7 @@ public class CraftResult : MonoBehaviour
         if (Brewer.CurrentCraftState == PotionBrewer.CraftState.None) 
             return;
 
-        _potionQualityRewardText.text = Brewer.CurrentPotionQuality.ToString();
+        _potionQualityRewardText.text = Brewer.CurrentPotionCapacity.ToString();
         _questResultText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 432);
 
 

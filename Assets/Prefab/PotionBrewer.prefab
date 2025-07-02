@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6463711630240988586}
   - component: {fileID: 3196521802952936010}
   m_Layer: 5
-  m_Name: ReqQualityText
+  m_Name: ReqCapacityText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -681,7 +681,7 @@ GameObject:
   - component: {fileID: 2462464797499562252}
   - component: {fileID: 1282843859134050742}
   m_Layer: 5
-  m_Name: ReqQualityValue
+  m_Name: ReqCapacityValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1352,7 +1352,7 @@ MonoBehaviour:
   _potionNameText: {fileID: 2498289147838701295}
   _questText: {fileID: 317060454097061578}
   _questTitleText: {fileID: 8037203346361426064}
-  _reqQualityValueText: {fileID: 1282843859134050742}
+  _reqCapacityValueText: {fileID: 1282843859134050742}
   _questProgressText: {fileID: 6047193211337922942}
   _currentQuestIndex: 0
   _recipeNameText: {fileID: 2844189992398345291}
