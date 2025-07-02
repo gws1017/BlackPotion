@@ -154,6 +154,6 @@ public class Store : MonoBehaviour
     {
         SoundManager._Instance.PlayClickSound();
         CloseStoreUI();
-        GameManager.GM.CheckRecipt();
+        GameManager.GM.TryNextDay();
     }
 }

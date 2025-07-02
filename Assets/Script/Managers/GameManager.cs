@@ -230,7 +230,7 @@ public class GameManager : MonoBehaviour
     }
 
     //정산 결과에 따라 0일차로 재시작인지 다음날로 넘어가는 지 확인한다
-    public void CheckRecipt()
+    public void TryNextDay()
     {
         if (Receipt.TargetSuccess)
         {
@@ -250,6 +250,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeStage(Quaternion rotation)
     {
+
         foreach(var stage in _stageRotationDict)
         {
             if(Quaternion.Euler(stage.Value) == rotation)
@@ -258,6 +259,7 @@ public class GameManager : MonoBehaviour
                 _stage = stage.Key;
             }
         }
+        
     }
 
     private void ChangeStage(GameStage stage)

@@ -340,7 +340,7 @@ public class SaveManager : MonoBehaviour
         
         if(gm.CurrentStage == GameStage.Receipt)
         {
-            gm.CheckRecipt();
+            brewer.GetNextCraft();
         }
         _isLoading = false;
 
