@@ -48,7 +48,7 @@ public class GamePlayHUD : HUD
     private void LateUpdate()
     {
         _currentGoldUIText.text = _gm.PlayInformation.CurrentGold.ToString();
-        _currentDayUIText.text = (_gm.PlayInformation.CurrentDay + 1).ToString();
+        _currentDayUIText.text = $"{(_gm.PlayInformation.CurrentDay + 1)}ÀÏÂ÷";
     }
 
     public void TogglePauseMenu()

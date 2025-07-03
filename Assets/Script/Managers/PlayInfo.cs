@@ -10,7 +10,7 @@ public class PlayInfo : MonoBehaviour
 {
 
     private int _currentCraftDay = 0;//현재 일차
-    private int _currentGold = 0;//현재 소유하고 있는 골드량
+    private int _currentGold = 50;//현재 소유하고 있는 골드량
 
     //누적 데이터
     //public DaylightTime _playTime;
@@ -128,7 +128,7 @@ public class PlayInfo : MonoBehaviour
     public void ResetInfo(bool isSave = true)
     {
         _currentCraftDay = 0;
-        _currentGold = 0;
+        _currentGold = Constants.BASE_GOLD;
         GameManager.GM.BM.ClearBuffList();
         GameManager.GM.InitializeGameManager();
         if (isSave)

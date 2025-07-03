@@ -6,12 +6,13 @@ using UnityEngine.UI;
 public static class Constants
 {
     //Play Information
+    public const int BASE_GOLD = 50; //기본 지급 골드(시작골드)
     public const int RETRY_GOLD = 50; //재시작 골드
     public const int MAX_RECIPE_GRADE = 4; //레시피 최고 등급
     public const int MAX_ACCEPT_QUEST_COUNT = 5;
     public const int MAX_BUFF_COUNT = 3;
     public const int MAX_QUEST_COUNT_LAYER = 5;
-    public const float QUEST_PENALTY_RATIO = 0.1f;
+    public const float QUEST_PENALTY_RATIO = 0.5f;
     public const float CRITICAL_SUCCESS = 1.5f; //대성공
 
     public enum QuestGrade

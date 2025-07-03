@@ -185,20 +185,10 @@ public class BuffManager : MonoBehaviour
                 if (IsActiveBuff(BuffID))
                 {
                     var brewer = GameManager.GM.Brewer;
-                    int reqCapacity = brewer.CurrentQuest.RequirePotionCapacity;
-                    int digit = 0;
-                    while(reqCapacity / 10 > 0)
-                    {
-                        reqCapacity /= 10;
-                        digit++;
-                    }
+                    int reqCapacity = brewer.CurrentQuest.RequirePotionCapacity;//128 
 
-                    string reqCapacityText = $"{reqCapacity}";
-                    for (int i = 0; i < digit; ++i)
-                        reqCapacityText += "X";
-
+                    string reqCapacityText = $"{reqCapacity / 10}X";
                     brewer.ReqCapacityValueText.text = reqCapacityText;
-
                 }
                 else return;
                 break;
