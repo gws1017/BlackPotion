@@ -31,8 +31,8 @@
       "potionId": 2004,
       "potionName": "산들바람 물약",
       "potionGrade": 1,
-      "ingredientIdList": [ 3001, 3005, 0 ],
-      "materialRatioList": [ 2, 1, 0 ],
+      "ingredientIdList": [ 3001, 0, 3005 ],
+      "materialRatioList": [ 2, 0, 1 ],
       "recipeCost": 100,
       "potionImage": "Images/potion_breeze"
     },
@@ -40,8 +40,8 @@
       "potionId": 2005,
       "potionName": "숲속의 이슬물약",
       "potionGrade": 1,
-      "ingredientIdList": [ 3006, 3007, 0 ],
-      "materialRatioList": [ 2, 1, 0 ],
+      "ingredientIdList": [ 3006, 0, 3007 ],
+      "materialRatioList": [ 2, 0, 1 ],
       "recipeCost": 100,
       "potionImage": "Images/potion_forestdew"
     },
@@ -58,8 +58,8 @@
       "potionId": 2007,
       "potionName": "미스틱 미스트",
       "potionGrade": 2,
-      "ingredientIdList": [ 3001, 3009, 0 ],
-      "materialRatioList": [ 2, 1, 0 ],
+      "ingredientIdList": [ 3001, 0, 3009 ],
+      "materialRatioList": [ 2, 0, 1 ],
       "recipeCost": 250,
       "potionImage": "Images/potion_mysticmist"
     },

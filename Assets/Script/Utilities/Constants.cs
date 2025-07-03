@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using static Constants;
 
 public static class Constants
 {
@@ -126,6 +127,22 @@ public static class Constants
             case RecipeGrade.Legendary:
                 recipeImage.sprite = Resources.Load<Sprite>(PathHelper.RECIPE_ICON_LEGEND);
                 break;
+        }
+    }
+
+    public static Sprite GetQuestGradeMark(QuestGrade _questGrade)
+    {
+        switch (_questGrade)
+        {
+            case QuestGrade.Small:
+                return Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_SMALL);
+            case QuestGrade.Middle:
+                return Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_MEDIUM);
+            case QuestGrade.Large:
+                return Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_LARGE);
+            default:
+                Debug.LogWarning("Quest Grade value error");
+               return null;
         }
     }
 

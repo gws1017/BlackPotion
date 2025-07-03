@@ -23,14 +23,13 @@ public class SaveManager : MonoBehaviour
         public int requireCapacity = 0;
         public bool isQuestResult = false;
         public bool isQuestRestarted = false;
+        public bool isInsightPowder = false;
     }
 
     [System.Serializable]
     public class SaveData
     {
         public List<AcceptQuestInfo> acceptQuestInfos = new List<AcceptQuestInfo>();
-        public List<int> acceptQuestIds = new List<int>();
-        public List<bool> isQuestRestarted = new List<bool>();
         public List<int> buffIds = new List<int>();
         public List<int> recipeIds = new List<int>();
         public List<int> purchasedStorebuffIds = new List<int>();
@@ -45,7 +44,7 @@ public class SaveManager : MonoBehaviour
         public int currentGold;
         public int currentDay;
         //퀘스트 진행도 기본값은 -1(시작x)
-        public int currentQuestOrder = -1;
+        public int currentQuestOrder = 0;
         public bool processPenalty;
         public bool isVisibleCraftResult;
     }
@@ -81,11 +80,13 @@ public class SaveManager : MonoBehaviour
         _saveData.processPenalty = value;
         GameSave();
     }
-    public void SaveInputAmount(int slotId, int value)
+    public void SaveInputAmount(int slotId, int value,bool isReset = false)
     {
         if (_isLoading) return;
         if (slotId >= 0 && slotId < 3)
         {
+            if (isReset)
+                _saveData.slotInfoList[slotId].inputAmountList.Clear();
             //투입내역을 전부 슬롯 별로 기록한다
             _saveData.slotInfoList[slotId].inputAmountList.Add(value);
             GameSave();
@@ -134,7 +135,15 @@ public class SaveManager : MonoBehaviour
         _saveData.recipeIds = gm.PlayInformation.PossessRecipeList;
         GameSave();
     }
+    public void SaveInsightPowder()
+    {
+        if (_isLoading) return;
 
+        int count = _saveData.currentQuestOrder;
+        _saveData.acceptQuestInfos[count].isInsightPowder = true;
+        GameSave();
+
+    }
     public void SaveQuestReward(int index, int reward)
     {
         if (_isLoading) return;
@@ -168,9 +177,6 @@ public class SaveManager : MonoBehaviour
         var board = GameManager.GM.Board;
 
         _saveData.acceptQuestInfos.Clear();
-        //삭제
-        _saveData.acceptQuestIds.Clear();
-
 
         foreach (var quest in board.AcceptQuestList)
         {
@@ -179,10 +185,6 @@ public class SaveManager : MonoBehaviour
             questInfo.requireCapacity = quest.RequirePotionCapacity;
 
             _saveData.acceptQuestInfos.Add(questInfo);
-
-            //삭제예정
-            _saveData.acceptQuestIds.Add(quest.QuestID);
-            _saveData.isQuestRestarted.Add(quest.IsRestart);
         }
         GameSave();
     }
@@ -215,7 +217,6 @@ public class SaveManager : MonoBehaviour
     private void GameSave()
     {
         if (_isLoading) return;
-
         try
         {
             string json = JsonUtility.ToJson(_saveData);
@@ -227,8 +228,6 @@ public class SaveManager : MonoBehaviour
         {
             Debug.LogError("Save Error : " + ex.Message);
         }
-
-
     }
 
     public void GameLoad()
@@ -298,7 +297,9 @@ public class SaveManager : MonoBehaviour
                     board._questResultDict[quest] = questInfo.isQuestResult;
                 }
             }
-            brewer.UpdateQuestInfo(_saveData.currentQuestOrder);
+            int currentOrder = Mathf.Clamp(_saveData.currentQuestOrder, 0, 4);
+
+            brewer.UpdateQuestInfo(currentOrder);
 
             var slotInfoList = _saveData.slotInfoList;
 
@@ -311,6 +312,11 @@ public class SaveManager : MonoBehaviour
                         brewer.InsertIngredient(slot.slotId, slot.uiIngridientIdx, amount);
                     }
                 }
+            }
+
+            if (_saveData.acceptQuestInfos[currentOrder].isInsightPowder)
+            {
+                GameManager.GM.BM.InsightCapacity();
             }
 
             //결과창 한번이라도 봤으면 바로 결과창으로 진입

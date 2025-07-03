@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static Constants;
 
 public class PotionBrewer : MonoBehaviour
 {
@@ -27,7 +28,9 @@ public class PotionBrewer : MonoBehaviour
     //현재 제조 포션 정보
     [Header("Current Quest Info")]
     [SerializeField] private Image _potionImage;
+    [SerializeField] private Image _questGradeImage;
     [SerializeField] private Text _potionNameText;
+    [SerializeField] private Outline _potionNameOutline;
     [SerializeField] private Text _questText;
     [SerializeField] private Text _questTitleText;
     [SerializeField] private Text _reqCapacityValueText;
@@ -208,7 +211,8 @@ public class PotionBrewer : MonoBehaviour
         if (prevValue == _currentAmount[slotId]) return;
         if (_maxAmount[slotId] <= _currentAmount[slotId])
         {
-            _ingredientInputAmountText[ingridientIndex].color = Color.red;
+            if(_maxAmount[slotId] < _currentAmount[slotId])
+                _ingredientInputAmountText[ingridientIndex].color = Color.red;
             _slots[slotId].DisableInputButton();
         }
 
@@ -312,7 +316,9 @@ public class PotionBrewer : MonoBehaviour
         _questTitleText.text = _currentQuest.QuestName;
         _questProgressText.text = $"의뢰 {_currentQuestIndex + 1} / {Board.CurrentAcceptQuestCount}";
         _potionImage.sprite = _currentQuest.PotionImage;
+        _questGradeImage.sprite = Constants.GetQuestGradeMark(_currentQuest.QuestGrade);
         _potionNameText.text = _currentQuest.PotionName;
+        _potionNameOutline.effectColor = Constants.RecipeGradeToColor((RecipeGrade)_currentQuest.PInfo.potionGrade);
         _reqCapacityValueText.text = _currentQuest.PotionCapacityValue;
         _craftButton.enabled = true;
     }

@@ -100,17 +100,6 @@ public class DetailQuest : Quest
     //의뢰 등급에 맞는 이미지를 업데이트함
     private void UpdateQuestGradeMark()
     {
-        switch (_questGrade)
-        {
-            case Constants.QuestGrade.Small:
-                _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_SMALL);
-                break;
-            case Constants.QuestGrade.Middle:
-                _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_MEDIUM);
-                break;
-            case Constants.QuestGrade.Large:
-                _questGradeMark.sprite = Resources.Load<Sprite>(PathHelper.QUEST_GRADE_MARK_LARGE);
-                break;
-        }
+        _questGradeMark.sprite = Constants.GetQuestGradeMark(_questGrade);
     }
 }

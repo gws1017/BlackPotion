@@ -29,12 +29,14 @@ public class CraftResult : MonoBehaviour
     [SerializeField] private Text _selectText;
     [SerializeField] private Text _potionQualityRewardText;
     [SerializeField] private Text _resultText;
+    [SerializeField] private Text _recipeGradeText;
     [SerializeField] private Button _selectButton;
     [SerializeField] private Button _moneyButton;
     [SerializeField] private Button _recipeButton;
     [SerializeField] private Image _recipeImage;
     [SerializeField] private Outline _moneyOutline;
     [SerializeField] private Outline _recipeOutline;
+    [SerializeField] private Outline _recipeGradeOutline;
 
     [Header("Result Check UI")]
     [SerializeField] private Image _potionImage;
@@ -174,6 +176,9 @@ public class CraftResult : MonoBehaviour
 
             var RecipeData = ReadJson._dictPotion[_rewardRecipeId];
             _recipeNameText.text = RecipeData.potionName + " 레시피";
+            var grade = (RecipeGrade)RecipeData.potionGrade;
+            _recipeGradeText.text = Constants.RecipeGradeToString(grade);
+            _recipeGradeOutline.effectColor = Constants.RecipeGradeToColor(grade);
         }
 
         _selectText.text = "선택";

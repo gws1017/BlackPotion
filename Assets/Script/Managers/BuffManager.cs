@@ -114,6 +114,15 @@ public class BuffManager : MonoBehaviour
         InitializeBuffList();
     }
 
+    public void InsightCapacity()
+    {
+        var brewer = GameManager.GM.Brewer;
+        int reqCapacity = brewer.CurrentQuest.RequirePotionCapacity;//128 
+
+        string reqCapacityText = $"{reqCapacity / 10}X";
+        brewer.ReqCapacityValueText.text = reqCapacityText;
+    }
+
     public void CheckBuff(BuffType type, ref int value)
     {
         int BuffID = (int)type;
@@ -173,6 +182,8 @@ public class BuffManager : MonoBehaviour
                                 int val = UnityEngine.Random.Range(0, GameManager.GM.Brewer.MaxAmount[i]);
                                 int id = slots[i].GetComponent<IngredientSlot>().IngridientIndex;
                                 brewer.SetCurrentAmount(i,id, val);
+                                //투입 기록 리셋후 데이터추가
+                                GameManager.GM.SM.SaveInputAmount(i, val,true);
                             }
                         }
                     }
@@ -184,11 +195,8 @@ public class BuffManager : MonoBehaviour
                 //통찰의 가루
                 if (IsActiveBuff(BuffID))
                 {
-                    var brewer = GameManager.GM.Brewer;
-                    int reqCapacity = brewer.CurrentQuest.RequirePotionCapacity;//128 
-
-                    string reqCapacityText = $"{reqCapacity / 10}X";
-                    brewer.ReqCapacityValueText.text = reqCapacityText;
+                    InsightCapacity();
+                    GameManager.GM.SM.SaveInsightPowder();
                 }
                 else return;
                 break;
@@ -241,6 +249,7 @@ public class BuffManager : MonoBehaviour
     public void RemoveBuff(BuffObject buffObject)
     {
         if (buffObject == null) return;
+
         int id = buffObject.Id;
         if (_buffDictionary.ContainsKey(id))
         {
@@ -248,11 +257,13 @@ public class BuffManager : MonoBehaviour
             buffObject.BuffUI.GetComponentInChildren<Button>().interactable = true;
             buffObject.IsActive = false;
 
+
             Destroy(buffObject.BuffUI);
             if (_buffDictionary[id].Count == 0)
                 _buffDictionary.Remove(id);
 
         }
+            GameManager.GM.SM.SaveBuff();
     }
 
     public bool IsActiveBuff(int buffID = -1)

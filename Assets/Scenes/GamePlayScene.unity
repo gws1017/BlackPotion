@@ -6491,7 +6491,7 @@ MonoBehaviour:
   _acceptQuestList: []
   _questPrefab: {fileID: 7024418843332693245, guid: 2af10ea4938d1ca448c2dc7736fc6607,
     type: 3}
-  _questScale: {x: 7.5, y: 7.5, z: 2.5}
+  _questScale: {x: 8.5, y: 8.5, z: 2.5}
   _questStartButton: {fileID: 1380281943}
   _questBoardButton: {fileID: 412372150}
   _questCanelButton: {fileID: 326989775}

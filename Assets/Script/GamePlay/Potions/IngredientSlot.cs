@@ -219,6 +219,6 @@ public class IngredientSlot : MonoBehaviour
         if (_inputInfoUIInstance != null)
             _inputInfoUIInstance.SetActive(!_inputInfoUIInstance.activeSelf);
     }
-    public void DisableInputButton() => _inputButton.enabled = false;
-    public void EnableInputButton() => _inputButton.enabled = true;
+    public void DisableInputButton() => _inputButton.interactable = false;
+    public void EnableInputButton() => _inputButton.interactable = true;
 }
