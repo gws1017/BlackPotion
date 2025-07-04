@@ -15,7 +15,7 @@ public class RecipeObject : MonoBehaviour
     public Animator _animator;
     public Outline _outline;
 
-
+    private bool _isPlayAnim = false;
     public void Initialize(int recipeID)
     {
         _recipeID = recipeID;
@@ -67,12 +67,17 @@ public class RecipeObject : MonoBehaviour
 
     public void PlayRecipeAnim()
     {
+        if (_isPlayAnim) return;
+
         _animator.SetTrigger("Slide");
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Recipe2);
+        _isPlayAnim = true;
     }
 
     public void RecipeAnimEnd()
     {
+        _isPlayAnim = false;
+
         GameManager.GM.Board.HideSelectRecipeUI();
     }
 }

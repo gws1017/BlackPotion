@@ -213,11 +213,14 @@ public class GameManager : MonoBehaviour
     //정산 단계로 전환
     public void ShowCraftReceipt()
     {
+        Receipt.ActiveHidePanel();
         ChangeStage(GameStage.Receipt);
     }
     //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()
     {
+        Receipt.DeActiveHidePanel();
+
         ChangeStage(GameStage.QuestBoard);
         Board.InitializeQuestBoard();
 

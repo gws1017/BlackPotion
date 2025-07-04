@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using KoreanTyper;
 public class CraftReceipt : MonoBehaviour
 {
+
     //Component
     [Header("Component")]
     [SerializeField] private Canvas _canvas;
@@ -19,6 +20,7 @@ public class CraftReceipt : MonoBehaviour
     [SerializeField] private Text[] _moneyText;
     [SerializeField] private Image _resultImage;
     [SerializeField] private Text _targetMoneyText;
+    [SerializeField] private GameObject HidePanelObject;
 
     [Header("Setting Variable")]
     [SerializeField] private int[] _targetMoney;
@@ -42,6 +44,14 @@ public class CraftReceipt : MonoBehaviour
         _nextButton.onClick.AddListener(ShowRecipeStore);
     }
 
+    public void ActiveHidePanel()
+    {
+        HidePanelObject.SetActive(true);
+    }
+    public void DeActiveHidePanel()
+    {
+        HidePanelObject.SetActive(false);
+    }
     public IEnumerator UpdateReceiptCorutine()
     {
         ResetUIText();

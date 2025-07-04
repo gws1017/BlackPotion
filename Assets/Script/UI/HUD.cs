@@ -17,7 +17,6 @@ public class HUD : MonoBehaviour
     virtual protected void Start()
     {
         _gm = GameManager.GM;
-        _settingButton.onClick.AddListener(ShowSettingMenu);
         _backMenuButton.onClick.AddListener(HideMenu);
     }
 

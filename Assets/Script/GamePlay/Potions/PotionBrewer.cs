@@ -192,8 +192,8 @@ public class PotionBrewer : MonoBehaviour
         else
         {
             _currentQuestIndex = 0;
-            StartCoroutine(_gameManager.Receipt.UpdateReceiptCorutine());
             _gameManager.ShowCraftReceipt();
+            StartCoroutine(_gameManager.Receipt.UpdateReceiptCorutine());
         }
         _craftButton.gameObject.SetActive(true);
     }

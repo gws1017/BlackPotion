@@ -36,7 +36,8 @@ public class BuffManager : MonoBehaviour
     [SerializeField] private float _uiSpacing = 0.015f;
     [SerializeField] private int _buffInventoryToggleDistance = -55;
 
-    private int _disableCount = 0;
+    private int _disableBuffItemCount = 0;
+    private int _disableBuffButtonCount = 0;
     private bool _canActiveBuff = true;
     //Getter
     public int GetStateFromBuffId(int id) => ReadJson._dictBuff[id].buffState;
@@ -51,6 +52,25 @@ public class BuffManager : MonoBehaviour
     }
 
     private int GetBuffCount() => _buffDictionary.Values.Sum(list => list.Count);
+
+    public void DisableBuffListButton()
+    {
+        if (_buffListButton == null) return;
+
+        _disableBuffButtonCount++;
+        _buffListButton.interactable = false;
+    }
+    public void EnableBuffListButton()
+    {
+        if (_buffListButton == null) return;
+
+        _disableBuffButtonCount--;
+        if (_disableBuffButtonCount <= 0)
+        {
+            _disableBuffButtonCount = 0;
+            _buffListButton.interactable = true;
+        }
+    }
 
     void Start()
     {
@@ -416,16 +436,16 @@ public class BuffManager : MonoBehaviour
 
     public void EnableBuffInventory()
     {
-        _disableCount--;
-        if(_disableCount <= 0)
+        _disableBuffItemCount--;
+        if(_disableBuffItemCount <= 0)
         {
-            _disableCount = 0;
+            _disableBuffItemCount = 0;
             _canActiveBuff = true;
         }
     }
     public void DisableBuffInventory()
     {
-        _disableCount++;
+        _disableBuffItemCount++;
         _canActiveBuff = false;
     }
 }
