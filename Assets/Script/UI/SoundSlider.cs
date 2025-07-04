@@ -9,12 +9,25 @@ public class SoundSlider : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Slider _bgmSlider;
     [SerializeField] private Slider _sfxSlider;
+    private SaveManager _saveManager;
+
 
     void Start()
     {
-        _bgmSlider.value = SoundManager._Instance.BGMVolume;
-        _sfxSlider.value = SoundManager._Instance.SFXVolume;
+        if(_saveManager == null)
+        {
+            _saveManager = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+        }
+        float sfxValue = _saveManager.SFXVolume;
+        float bgmValue = _saveManager.BGMVolume;
+
+        _sfxSlider.value = sfxValue;
+        _bgmSlider.value = bgmValue;
+
+        SoundManager._Instance.SFXVolume = sfxValue;
+        SoundManager._Instance.BGMVolume = bgmValue;
     }
+
 
     public void SFXVolumeSlide()
     {
@@ -26,5 +39,5 @@ public class SoundSlider : MonoBehaviour
         SoundManager._Instance.BGMVolume = _bgmSlider.value;
     }
 
-    
+
 }

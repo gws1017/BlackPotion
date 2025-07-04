@@ -41,7 +41,7 @@ public class CraftReceipt : MonoBehaviour
         _targetSuccessSprite = Resources.Load<Sprite>(PathHelper.TARGET_SUCCESS_IMAGE);
         _targetFailSprite = Resources.Load<Sprite>(PathHelper.TARGET_FAIL_IMAGE);
 
-        _nextButton.onClick.AddListener(ShowRecipeStore);
+        _nextButton.onClick.AddListener(TryNextDay);
     }
 
     public void ActiveHidePanel()
@@ -139,11 +139,10 @@ public class CraftReceipt : MonoBehaviour
         _isRunningTypingSFXCorutine = false;
     }
 
-    public void ShowRecipeStore()
+    public void TryNextDay()
     {
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
-
-        GameManager.GM.Brewer.StoreUI.OpenStoreUI(Store.StoreType.Recipe);
+        GameManager.GM.TryNextDay();
     }
 
     private void ResetUIText()

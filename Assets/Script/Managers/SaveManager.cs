@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static SaveManager;
 
 public class SaveManager : MonoBehaviour
@@ -49,28 +51,58 @@ public class SaveManager : MonoBehaviour
         public int currentDay;
         //퀘스트 진행도
         public int currentQuestOrder = 0;
+
         public bool processPenalty;
         public bool isVisibleCraftResult;
     }
 
+    //항상 불러오는 시스템 데이터
+    [System.Serializable]
+
+    public class SystemData
+    {
+        public float bgmVolume = 0.1f;
+        public float sfxVolume = 0.1f;
+    }
+
     private const string SaveKey = "Save";
+    private const string SystemKey = "SystemSave";
 
     [SerializeField] private SaveData _saveData = new SaveData();
+    [SerializeField] private SystemData _systemData = new SystemData();
     private bool _isLoading = false;
 
     public bool ProcessPenalty => _saveData.processPenalty;
+    public float BGMVolume => _systemData.bgmVolume;
+    public float SFXVolume => _systemData.sfxVolume;
 
     void Start()
     {
-        if (SceneSharedData.loadSaveData)
-            GameLoad();
-        else
-            GameManager.GM.PlayInformation.ResetInfo(false);
+        SystemLoad();
+
+        Scene current = SceneManager.GetActiveScene();
+
+        if (current.name == Constants.GAME_PLAY_SCENE)
+        {
+            if (SceneSharedData.loadSaveData)
+                GameLoad();
+            else
+                GameManager.GM.PlayInformation.ResetInfo(false);
+        }
     }
 
     private void OnDestroy()
     {
         //GameSave();
+    }
+
+    public void SaveVolume(SoundType type, float value)
+    {
+        if(SoundType.SFX == type)
+            _systemData.sfxVolume = value;
+        if(SoundType.BGM == type)
+            _systemData.bgmVolume = value;
+        SystemSave();
     }
     public void SaveVisibleCraftResult(bool value)
     {
@@ -241,6 +273,22 @@ public class SaveManager : MonoBehaviour
         GameSave();
     }
 
+    private void SystemSave()
+    {
+        if (_isLoading) return;
+        try
+        {
+            string json = JsonUtility.ToJson(_systemData);
+            PlayerPrefs.SetString(SystemKey, json);
+            PlayerPrefs.Save();
+            Debug.Log("System Save Success");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Save Error : " + ex.Message);
+        }
+    }
+
     private void GameSave()
     {
         if (_isLoading) return;
@@ -257,9 +305,33 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+    public void SystemLoad()
+    {
+        if (!PlayerPrefs.HasKey(SystemKey))
+        {
+            Debug.LogError("Save is not found");
+            return;
+        }
+
+        string loadJson = PlayerPrefs.GetString(SystemKey);
+        try
+        {
+            _systemData = JsonUtility.FromJson<SystemData>(loadJson);
+            if (_systemData == null)
+            {
+                Debug.LogError("Load Fail : Data is null");
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Load Error " + ex.Message);
+            return;
+        }
+    }
     public void GameLoad()
     {
-        if (!PlayerPrefs.HasKey("Save"))
+        if (!PlayerPrefs.HasKey(SaveKey))
         {
             Debug.LogError("Save is not found");
             return;

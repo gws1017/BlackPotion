@@ -239,8 +239,7 @@ public class GameManager : MonoBehaviour
     {
         if (Receipt.TargetSuccess)
         {
-            PlayInformation.IncrementCraftDay();
-            ShowQuestBoard();
+            Brewer.StoreUI.OpenStoreUI(Store.StoreType.Recipe);
         }
         else
         {

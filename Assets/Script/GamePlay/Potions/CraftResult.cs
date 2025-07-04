@@ -199,6 +199,16 @@ public class CraftResult : MonoBehaviour
         }
     }
 
+    public bool CheckFGrade(int currentQuality)
+    {
+        bool ret = (currentQuality < 0);
+
+        ret |= (Brewer.IsFullSlot() == false);
+        ret |= (Brewer.IsEmptySlot() == false);
+
+        return ret;
+    }
+
     //제조버튼 클릭시 호출됨
     public void ShowResultCheckUI()
     {
@@ -233,7 +243,7 @@ public class CraftResult : MonoBehaviour
         _potionCraftGrade = Constants.CheckPotionCraftGrade(qualityPercent);
         
 
-        if (currentQuality < 0 || Brewer.IsFullSlot() == false)
+        if (CheckFGrade(currentQuality))
         {
             _potionCraftGrade = "F";
             _potionGrade.color = Color.red;

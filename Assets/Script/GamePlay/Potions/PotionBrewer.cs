@@ -118,13 +118,28 @@ public class PotionBrewer : MonoBehaviour
         return true;
     }
 
+    public bool IsEmptySlot()
+    {
+        for (int i = 0; i < CurrentAmount.Length; ++i)
+        {
+            if (MaxAmount[i] > 0 && CurrentAmount[i] == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public bool IsCraftSuccessful()
     {
         _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionCapacity);
         bool ret = (_currentQuest.RequirePotionCapacity <= _currentPotionCapacity);
 
         ret &= IsFullSlot();
-        
+
+        ret &= IsEmptySlot();
+
         return ret;
     }
 
