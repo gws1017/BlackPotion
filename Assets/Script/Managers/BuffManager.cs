@@ -30,6 +30,7 @@ public class BuffManager : MonoBehaviour
     [SerializeField] private GameObject _buffUIPrefab;
     [SerializeField] private Button _buffListButton;
     [SerializeField] private GameObject _buffInventoryObject;
+    [SerializeField] private BuffObject _activatedBuffObject;
 
     [SerializeField] private Vector2 _uiStartPosition = new Vector2(-40, -10);
     [SerializeField] private float _uiSpacing = 0.015f;
@@ -123,7 +124,7 @@ public class BuffManager : MonoBehaviour
         brewer.ReqCapacityValueText.text = reqCapacityText;
     }
 
-    public void CheckBuff(BuffType type, ref int value)
+    public bool CheckBuff(BuffType type, ref int value,int slotId = -1)
     {
         int BuffID = (int)type;
         switch (type)
@@ -132,21 +133,69 @@ public class BuffManager : MonoBehaviour
                 //짝수 버프
                 if (IsActiveBuff(BuffID))
                 {
-                    if (value % 2 == 0) break;
-                    if (value == 1) value = 2;
-                    else value -= 1;
+                    if(slotId != -1)
+                    {
+                        var brewer = GameManager.GM.Brewer;
+                        var slot = brewer.Slots[slotId];
+                        List<int> numberPool = new List<int>();
+
+                        int maxValue = Constants.INGRIDIENT_MAX_NUMBER;
+
+                        for(int n = 2; n <= maxValue; n += 2)
+                        {
+                            if (!slot.isAmountUsed(n))
+                            {
+                                numberPool.Add(n);
+                            }
+                        }
+
+                        if(numberPool.Count == 0)
+                        {
+                            DeActivateBuff(_activatedBuffObject);
+                            return false;
+                        }
+
+                        int idx = UnityEngine.Random.Range(0, numberPool.Count);
+                        value = numberPool[idx];
+                        break;
+                    }
+                    
                 }
-                else return;
+                else return false;
                 break;
             case BuffType.OddNumber:
 
-                //홀수 버프
                 if (IsActiveBuff(BuffID))
                 {
-                    if (value % 2 == 1) break;
-                    value -= 1;
+                    //홀수 버프
+                    if (slotId != -1)
+                    {
+                        var brewer = GameManager.GM.Brewer;
+                        var slot = brewer.Slots[slotId];
+                        List<int> numberPool = new List<int>();
+
+                        int maxValue = Constants.INGRIDIENT_MAX_NUMBER;
+
+                        for (int n = 1; n <= maxValue; n += 2)
+                        {
+                            if (!slot.isAmountUsed(n))
+                            {
+                                numberPool.Add(n);
+                            }
+                        }
+
+                        if (numberPool.Count == 0)
+                        {
+                            DeActivateBuff(_activatedBuffObject);
+                            return false;
+                        }
+
+                        int idx = UnityEngine.Random.Range(0, numberPool.Count);
+                        value = numberPool[idx];
+                        break;
+                    }
                 }
-                else return;
+                else return false;
                 break;
             case BuffType.PlusPowder:
                 //증가 가루
@@ -154,7 +203,7 @@ public class BuffManager : MonoBehaviour
                 {
                     value += ReadJson._dictBuff[BuffID].buffState;
                 }
-                else return;
+                else return false;
                 break;
             case BuffType.UpgradeBrew:
                 //양조기 강화
@@ -162,7 +211,7 @@ public class BuffManager : MonoBehaviour
                 {
                     value += ReadJson._dictBuff[BuffID].buffState;
                 }
-                else return;
+                else return false;
                 break;
             case BuffType.StrangeBrew:
                 //이상한 양조기
@@ -182,27 +231,28 @@ public class BuffManager : MonoBehaviour
                                 int val = UnityEngine.Random.Range(0, GameManager.GM.Brewer.MaxAmount[i]);
                                 int id = slots[i].GetComponent<IngredientSlot>().IngridientIndex;
                                 brewer.SetCurrentAmount(i,id, val);
-                                //투입 기록 리셋후 데이터추가
-                                GameManager.GM.SM.SaveInputAmount(i, val,true);
+                                GameManager.GM.SM.SaveUseBuff(type,val,i);
+                                //GameManager.GM.SM.SaveInputAmount(i, val,true);
                             }
                         }
                     }
                     
                 }
-                else return;
+                else return false; 
                 break;
             case BuffType.InsightPowder:
                 //통찰의 가루
                 if (IsActiveBuff(BuffID))
                 {
                     InsightCapacity();
-                    GameManager.GM.SM.SaveInsightPowder();
+                    GameManager.GM.SM.SaveUseBuff(type);
                 }
-                else return;
+                else return false;
                 break;
 
         }
         RemoveUsedBuff();
+        return true;
     }
     public bool IsFullBuffList()
     {
@@ -317,6 +367,8 @@ public class BuffManager : MonoBehaviour
         //임시로 즉시적용
         CheckBuff(BuffType.StrangeBrew, ref val);
         CheckBuff(BuffType.InsightPowder, ref val);
+
+        _activatedBuffObject = buffObject;
         return true;
 
     }
@@ -324,6 +376,7 @@ public class BuffManager : MonoBehaviour
     //버프해제
     public bool DeActivateBuff(BuffObject buffObject)
     {
+        if (buffObject == null) return false;
         if (_canActiveBuff == false)
             return false;
         if (buffObject.IsActive == false) return false;
@@ -342,8 +395,8 @@ public class BuffManager : MonoBehaviour
         colorBlock.pressedColor = new Color(0.78f, 0.78f, 0.78f, 1f);
         BuffButton.colors = colorBlock;
 
+        _activatedBuffObject = null;
         SoundManager._Instance.PlaySFXAtObject(buffObject.BuffUI, SFXType.Click);
-
         return true;
 
     }

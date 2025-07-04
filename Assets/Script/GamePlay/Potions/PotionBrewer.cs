@@ -225,6 +225,8 @@ public class PotionBrewer : MonoBehaviour
 
     public void SetCurrentAmount(int slotId, int ingridientIndex,int value)
     {
+        if (_maxAmount[slotId] <= 0) return;
+
         _currentAmount[slotId] = value;
         _ingredientInputAmountText[ingridientIndex].text =
             $"{_currentAmount[slotId]} / {_maxAmount[slotId]}";

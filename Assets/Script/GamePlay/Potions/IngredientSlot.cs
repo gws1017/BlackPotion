@@ -113,11 +113,8 @@ public class IngredientSlot : MonoBehaviour
         IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
     }
 
-    private void InputIngredient()
+    public void HandleInputAmount(int amount)
     {
-        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Add);
-        int amount = GetRandomAmount();
-
         if (amount == 0)
         {
             if (_questGrade > 1)
@@ -133,7 +130,7 @@ public class IngredientSlot : MonoBehaviour
             }
         }
         Debug.Log(amount);
-        _brewer.InsertIngredient(_slotId,_uiIngredientIdx, amount);
+        _brewer.InsertIngredient(_slotId, _uiIngredientIdx, amount);
         _ingredientCountDict[amount] = true;
         _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
 
@@ -146,24 +143,38 @@ public class IngredientSlot : MonoBehaviour
             _inputButton.onClick.RemoveAllListeners();
             _inputButton.onClick.AddListener(IngredientSupply);
         }
+    }
+
+    private void InputIngredient()
+    {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Add);
+        int amount = GetRandomAmount();
+
+        HandleInputAmount(amount);
 
         _particle.Emit(amount);
     }
 
+    public bool isAmountUsed(int amount)
+    {
+        return _ingredientCountDict[amount];
+    }
 
     private int GetRandomAmount()
     {
         if (IsFullCount()) return 0;
 
         int amount = UnityEngine.Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
-        while (_ingredientCountDict[amount])
+        
+        if(GameManager.GM.BM.CheckBuff(BuffType.EvenNumber, ref amount,_slotId))
+            return amount;
+        if(GameManager.GM.BM.CheckBuff(BuffType.OddNumber, ref amount, _slotId))
+            return amount;
+
+        while (isAmountUsed(amount))
         {
             amount = UnityEngine.Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
         }
-
-        //È¦Â¦¹öÇÁ È®ÀÎ
-        GameManager.GM.BM.CheckBuff(BuffType.EvenNumber, ref amount);
-        GameManager.GM.BM.CheckBuff(BuffType.OddNumber, ref amount);
 
         return amount;
     }

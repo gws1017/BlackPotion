@@ -12,7 +12,9 @@ public class SaveManager : MonoBehaviour
     {
         public int slotId;
         public int uiIngridientIdx;
-        public List<int> inputAmountList;
+        public int strangeBrewValue;
+        public List<int> usedAmountList;
+        public List<int> postStrangeBrewAmountList;
     }
 
     [System.Serializable]
@@ -21,9 +23,11 @@ public class SaveManager : MonoBehaviour
         public int questId = 0;
         public int selectedReward = 0;
         public int requireCapacity = 0;
+        public int strangeBrewValue = 0;
         public bool isQuestResult = false;
         public bool isQuestRestarted = false;
         public bool isInsightPowder = false;
+        public bool isStrageBrew = false;
     }
 
     [System.Serializable]
@@ -43,7 +47,7 @@ public class SaveManager : MonoBehaviour
         public Quaternion cameraRotation = Quaternion.identity;
         public int currentGold;
         public int currentDay;
-        //퀘스트 진행도 기본값은 -1(시작x)
+        //퀘스트 진행도
         public int currentQuestOrder = 0;
         public bool processPenalty;
         public bool isVisibleCraftResult;
@@ -85,10 +89,17 @@ public class SaveManager : MonoBehaviour
         if (_isLoading) return;
         if (slotId >= 0 && slotId < 3)
         {
+            int currentOrder = _saveData.currentQuestOrder;
+            var currentQuest = _saveData.acceptQuestInfos[currentOrder];
+            var slotInfo = _saveData.slotInfoList[slotId];
             if (isReset)
-                _saveData.slotInfoList[slotId].inputAmountList.Clear();
+                slotInfo.usedAmountList.Clear();
             //투입내역을 전부 슬롯 별로 기록한다
-            _saveData.slotInfoList[slotId].inputAmountList.Add(value);
+            slotInfo.usedAmountList.Add(value);
+
+            //양조기 쓴적이 있으면 따로한번더 저장
+            if(currentQuest.isStrageBrew)
+                slotInfo.postStrangeBrewAmountList.Add(value);
             GameSave();
         }
     }
@@ -97,13 +108,14 @@ public class SaveManager : MonoBehaviour
     {
         if (_isLoading) return;
         if (slotId >= 3 || slotId < 0) return;
-        if (_saveData.slotInfoList[slotId].inputAmountList != null) return;
+        if (_saveData.slotInfoList[slotId].usedAmountList != null) return;
 
         SlotInfo slotInfo = new SlotInfo();
         slotInfo.slotId = (int)slotId;
         slotInfo.uiIngridientIdx = (int)uiId;
-        slotInfo.inputAmountList = new List<int>();
-
+        slotInfo.usedAmountList = new List<int>();
+        slotInfo.postStrangeBrewAmountList = new List<int>();
+        slotInfo.strangeBrewValue = 0;
         _saveData.slotInfoList[(int)slotId] = slotInfo;
     }
 
@@ -111,7 +123,6 @@ public class SaveManager : MonoBehaviour
     {
         if (_isLoading) return;
         //다음 퀘스트 넘어갈때 호출
-
         //투입내역 초기화
         _saveData.slotInfoList = new List<SlotInfo>
         {
@@ -119,6 +130,7 @@ public class SaveManager : MonoBehaviour
             new SlotInfo(),
             new SlotInfo()
         };
+
         _saveData.purchasedStorebuffIds.Clear();
         _saveData.currentQuestOrder = value;
         _saveData.processPenalty = false;
@@ -135,14 +147,28 @@ public class SaveManager : MonoBehaviour
         _saveData.recipeIds = gm.PlayInformation.PossessRecipeList;
         GameSave();
     }
-    public void SaveInsightPowder()
+    public void SaveUseBuff(BuffType type, int value = -1,int slotId = -1)
     {
         if (_isLoading) return;
-
         int count = _saveData.currentQuestOrder;
-        _saveData.acceptQuestInfos[count].isInsightPowder = true;
+        var currentQuest = _saveData.acceptQuestInfos[count];
+        switch (type)
+        {
+            case BuffType.InsightPowder:
+                currentQuest.isInsightPowder = true;
+                break;
+            case BuffType.StrangeBrew:
+                if (value != -1 && slotId != -1)
+                {
+                    var slotInfo = _saveData.slotInfoList[slotId];
+                    //이전 양조기 이후 기록은 초기화
+                    slotInfo.postStrangeBrewAmountList.Clear();
+                    slotInfo.strangeBrewValue = value;
+                    currentQuest.isStrageBrew = true;
+                }                  
+                break;
+        }
         GameSave();
-
     }
     public void SaveQuestReward(int index, int reward)
     {
@@ -302,14 +328,24 @@ public class SaveManager : MonoBehaviour
             brewer.UpdateQuestInfo(currentOrder);
 
             var slotInfoList = _saveData.slotInfoList;
-
+            var currentQuest = _saveData.acceptQuestInfos[currentOrder];
             if (slotInfoList.Count > 0)
             {
                 foreach (var slot in slotInfoList)
                 {
-                    foreach (var amount in slot.inputAmountList)
+                    foreach (var amount in slot.usedAmountList)
                     {
-                        brewer.InsertIngredient(slot.slotId, slot.uiIngridientIdx, amount);
+                        brewer.Slots[slot.slotId].HandleInputAmount(amount);
+                    }
+
+                    if(currentQuest.isStrageBrew)
+                    {
+                       brewer.SetCurrentAmount(slot.slotId,slot.uiIngridientIdx, slot.strangeBrewValue);
+                    }
+
+                    foreach (var amount in slot.postStrangeBrewAmountList)
+                    {
+                        brewer.Slots[slot.slotId].HandleInputAmount(amount);
                     }
                 }
             }
@@ -324,7 +360,6 @@ public class SaveManager : MonoBehaviour
             {
                 brewer.ShowCraftResultUI();
             }
-
 
         }
         //레시피 로드

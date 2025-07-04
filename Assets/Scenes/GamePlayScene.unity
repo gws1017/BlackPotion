@@ -6313,8 +6313,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _saveData:
     acceptQuestInfos: []
-    acceptQuestIds: 
-    isQuestRestarted: 
     buffIds: 
     recipeIds: 
     purchasedStorebuffIds: 
@@ -6331,7 +6329,7 @@ MonoBehaviour:
     cameraRotation: {x: 0, y: 0, z: 0, w: 1}
     currentGold: 0
     currentDay: 0
-    currentQuestOrder: -1
+    currentQuestOrder: 0
     processPenalty: 0
     isVisibleCraftResult: 0
 --- !u!1 &1858731838
