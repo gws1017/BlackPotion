@@ -164,8 +164,10 @@ public class GameManager : MonoBehaviour
     public void InitializeGameManager(bool isLoad = false)
     {
         InitializeManagerComponent();
+        
         if (_questStartButton == null)
             _questStartButton = Board._questStartButton;
+        ChangeStage(GameStage.QuestBoard);
         _questStartButton.onClick.RemoveAllListeners();
         _questStartButton.onClick.AddListener(QuestStart);
     }

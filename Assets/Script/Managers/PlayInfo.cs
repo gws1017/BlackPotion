@@ -129,11 +129,14 @@ public class PlayInfo : MonoBehaviour
     {
         _currentCraftDay = 0;
         _currentGold = Constants.BASE_GOLD;
-        GameManager.GM.BM.ClearBuffList();
-        GameManager.GM.InitializeGameManager();
+
+        IntializeRecipeDict();
+
+        if(GameManager.GM.BM)
+            GameManager.GM.BM.ClearBuffList();
         if (isSave)
             GameManager.GM.SM.SavePlayInfo();
-        IntializeRecipeDict();
+        GameManager.GM.InitializeGameManager();
     }
 
 }

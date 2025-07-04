@@ -98,7 +98,7 @@ public class TitleHUD : HUD
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        GameManager.GM.InitializeGameManager();
+        GameManager.GM.PlayInformation.ResetInfo(false);
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     public void ContinueGame()

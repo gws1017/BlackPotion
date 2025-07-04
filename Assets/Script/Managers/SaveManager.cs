@@ -229,6 +229,7 @@ public class SaveManager : MonoBehaviour
     public void SaveBuff()
     {
         if (_isLoading) return;
+        if (GameManager.GM.BM == null) return;
         _saveData.buffIds = GameManager.GM.BM.GetCurrentBuffList();
         GameSave();
     }

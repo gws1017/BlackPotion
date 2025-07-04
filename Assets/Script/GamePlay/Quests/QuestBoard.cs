@@ -128,11 +128,27 @@ public class QuestBoard : MonoBehaviour
 
     }
 
+    private bool CanOpenSelectRecipeUI()
+    {
+        var gm = GameManager.GM;
+        var playInfo = gm.PlayInformation;
+
+        //첫째날인가?
+        bool ret = (playInfo.CurrentDay == 0);
+
+        //의뢰 게시판 단계인가?
+        ret &= (gm.CurrentStage == GameStage.QuestBoard);
+
+        //기본 레시피가 하나도 없는가?
+        ret &= (playInfo.PossessRecipeList.Count == 0); 
+
+        return ret;
+    }
     public void TryOpenSelectRecipeUI()
     {
         //0일차면 레시피 선택
         //선택 레시피가 없으면
-        if (GameManager.GM.PlayInformation.CurrentDay == 0 && GameManager.GM.CurrentStage == GameStage.QuestBoard)
+        if (CanOpenSelectRecipeUI())
         {
             _recipeSelectButton.onClick.RemoveAllListeners();
             _recipeSelectButton.onClick.AddListener(() => {

@@ -1369,6 +1369,11 @@ MonoBehaviour:
     type: 3}
   _buffListButton: {fileID: 1784809190}
   _buffInventoryObject: {fileID: 1746454503}
+  _activatedBuffObject:
+    Id: 0
+    Count: 0
+    IsActive: 0
+    BuffUI: {fileID: 0}
   _uiStartPosition: {x: 0.015, y: -0.017}
   _uiSpacing: -0.015
   _buffInventoryToggleDistance: -55
@@ -4744,9 +4749,9 @@ RectTransform:
   - {fileID: 692390955}
   - {fileID: 1925500020}
   - {fileID: 388009794}
+  - {fileID: 284176836}
   - {fileID: 1307890644}
   - {fileID: 1089744165}
-  - {fileID: 284176836}
   m_Father: {fileID: 319946039}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4815,7 +4820,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!1 &1521273701 stripped
 GameObject:
@@ -6319,13 +6324,19 @@ MonoBehaviour:
     slotInfoList:
     - slotId: 0
       uiIngridientIdx: 0
-      inputAmountList: 
+      strangeBrewValue: 0
+      usedAmountList: 
+      postStrangeBrewAmountList: 
     - slotId: 0
       uiIngridientIdx: 0
-      inputAmountList: 
+      strangeBrewValue: 0
+      usedAmountList: 
+      postStrangeBrewAmountList: 
     - slotId: 0
       uiIngridientIdx: 0
-      inputAmountList: 
+      strangeBrewValue: 0
+      usedAmountList: 
+      postStrangeBrewAmountList: 
     cameraRotation: {x: 0, y: 0, z: 0, w: 1}
     currentGold: 0
     currentDay: 0
