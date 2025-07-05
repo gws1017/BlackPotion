@@ -285,7 +285,7 @@ public class SaveManager : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError("Save Error : " + ex.Message);
+            Debug.LogError("System Save Error : " + ex.Message);
         }
     }
 
@@ -309,7 +309,7 @@ public class SaveManager : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey(SystemKey))
         {
-            Debug.LogError("Save is not found");
+            Debug.LogError("System Setting is not found");
             return;
         }
 
@@ -319,13 +319,13 @@ public class SaveManager : MonoBehaviour
             _systemData = JsonUtility.FromJson<SystemData>(loadJson);
             if (_systemData == null)
             {
-                Debug.LogError("Load Fail : Data is null");
+                Debug.LogError("Load Fail : Setting Data is null");
                 return;
             }
         }
         catch (Exception ex)
         {
-            Debug.LogError("Load Error " + ex.Message);
+            Debug.LogError("System Setting Load Error " + ex.Message);
             return;
         }
     }
