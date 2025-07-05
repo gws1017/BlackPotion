@@ -200,8 +200,8 @@ public class GameManager : MonoBehaviour
             Board.CloseCurrentQuestUI();
             Board.CurrentQuestOutlineEffectOff();
             ChangeStage(GameStage.Brewing);
-            Brewer.UpdateQuestInfo();
             SM.SaveQuestList();
+            Brewer.UpdateQuestInfo();
         }
         else
         {
