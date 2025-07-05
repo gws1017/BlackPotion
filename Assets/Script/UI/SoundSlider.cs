@@ -12,6 +12,8 @@ public class SoundSlider : MonoBehaviour
     private SaveManager _saveManager;
 
 
+
+
     void Start()
     {
         if(_saveManager == null)
@@ -23,9 +25,6 @@ public class SoundSlider : MonoBehaviour
 
         _sfxSlider.value = sfxValue;
         _bgmSlider.value = bgmValue;
-
-        SoundManager._Instance.SFXVolume = sfxValue;
-        SoundManager._Instance.BGMVolume = bgmValue;
     }
 
 

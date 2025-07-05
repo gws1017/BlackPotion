@@ -25,6 +25,17 @@ public class TitleHUD : HUD
     private Action[] _readyActions;
 
     bool _isPlayStampAnim = false;
+
+    public void DisableContinueButton()
+    {
+        if(_continueButton != null)
+            _continueButton.interactable = false;
+    }
+    public void EnableContinueButton()
+    {
+        if (_continueButton != null)
+            _continueButton.interactable = true;
+    }
     override protected void Start()
     {
         base.Start();

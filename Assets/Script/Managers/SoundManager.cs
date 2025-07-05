@@ -119,6 +119,15 @@ public class SoundManager : MonoBehaviour
             _bgmSource.spatialBlend = 0f; 
         }
 
+        var sm = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+        if (sm != null)
+        {
+            float sfxValue = sm.SFXVolume;
+            float bgmValue = sm.BGMVolume;
+            SFXVolume = sfxValue;
+            BGMVolume = bgmValue;
+        }
+
         _bgmSource.volume = _bgmVolume;
         //_sfxSource.volume = _sfxVolume;
     }

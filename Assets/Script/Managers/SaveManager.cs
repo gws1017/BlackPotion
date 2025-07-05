@@ -61,8 +61,10 @@ public class SaveManager : MonoBehaviour
 
     public class SystemData
     {
-        public float bgmVolume = 0.1f;
-        public float sfxVolume = 0.1f;
+        public float bgmVolume;
+        public float sfxVolume;
+        public string version;
+        public bool isContinue;
     }
 
     private const string SaveKey = "Save";
@@ -73,8 +75,23 @@ public class SaveManager : MonoBehaviour
     private bool _isLoading = false;
 
     public bool ProcessPenalty => _saveData.processPenalty;
-    public float BGMVolume => _systemData.bgmVolume;
-    public float SFXVolume => _systemData.sfxVolume;
+    public float BGMVolume
+    {
+        get
+        {
+            SystemLoad();
+            return _systemData.bgmVolume;
+        }
+        
+    }
+    public float SFXVolume
+    {
+        get
+        {
+            SystemLoad();
+            return _systemData.sfxVolume;
+        }
+    }
 
     void Start()
     {
@@ -272,6 +289,16 @@ public class SaveManager : MonoBehaviour
         _saveData.cameraRotation = GameManager.GM.MainCamera.transform.rotation;
         GameSave();
     }
+    public void SaveContinue(bool value)
+    {
+        _systemData.isContinue = value;
+        SystemSave();
+    }
+    public void SaveVersion()
+    {
+        _systemData.version = Application.version;
+        SystemSave();
+    }
 
     private void SystemSave()
     {
@@ -294,6 +321,8 @@ public class SaveManager : MonoBehaviour
         if (_isLoading) return;
         try
         {
+            SaveVersion();
+            SaveContinue(true);
             string json = JsonUtility.ToJson(_saveData);
             PlayerPrefs.SetString(SaveKey, json);
             PlayerPrefs.Save();
@@ -307,27 +336,65 @@ public class SaveManager : MonoBehaviour
 
     public void SystemLoad()
     {
+        Camera MainCamera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
+        TitleHUD hud = MainCamera.GetComponentInChildren<TitleHUD>();
+
         if (!PlayerPrefs.HasKey(SystemKey))
         {
             Debug.LogError("System Setting is not found");
+            if(hud != null)
+                hud.DisableContinueButton();
             return;
         }
-
         string loadJson = PlayerPrefs.GetString(SystemKey);
-        try
+        
+
+        if (!loadJson.Contains("\"version\""))
         {
-            _systemData = JsonUtility.FromJson<SystemData>(loadJson);
-            if (_systemData == null)
+            if (hud != null)
+                hud.DisableContinueButton();
+        }
+        else
+        {
+            try
             {
-                Debug.LogError("Load Fail : Setting Data is null");
+                _systemData = JsonUtility.FromJson<SystemData>(loadJson);
+                if (_systemData == null)
+                {
+                    Debug.LogError("Load Fail : Setting Data is null");
+                    return;
+                }
+
+                string currentVersion = Application.version;
+                if (_systemData.version != currentVersion)
+                {
+                    if (hud != null)
+                        hud.DisableContinueButton();
+                }
+                else
+                {
+
+
+                    if (_systemData.isContinue == false)
+                    {
+                        if (hud != null)
+                            hud.DisableContinueButton();
+                    }
+                    else
+                    {
+                        if (hud != null)
+                            hud.EnableContinueButton();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("System Setting Load Error " + ex.Message);
                 return;
             }
         }
-        catch (Exception ex)
-        {
-            Debug.LogError("System Setting Load Error " + ex.Message);
-            return;
-        }
+
+        
     }
     public void GameLoad()
     {

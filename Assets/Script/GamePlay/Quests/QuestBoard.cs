@@ -363,7 +363,7 @@ public class QuestBoard : MonoBehaviour
         Vector3 lastPosition = lastQuest.gameObject.transform.position;
         Quaternion lastRotation = lastQuest.gameObject.transform.rotation;
         int sOrder = lastQuest.CanvasRef.sortingOrder;
-        int j = 2;
+        
         for (int i = AcceptQuestList.Count - 1; i > 0; --i)
         {
             Transform currentQuestTransform = AcceptQuestList[i].gameObject.transform;

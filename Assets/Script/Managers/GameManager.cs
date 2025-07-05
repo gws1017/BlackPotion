@@ -244,6 +244,7 @@ public class GameManager : MonoBehaviour
         else
         {
             MainCamera.GetComponentInChildren<GamePlayHUD>().ShowRestartUI();
+            SM.SaveContinue(false);
         }
     }
 
