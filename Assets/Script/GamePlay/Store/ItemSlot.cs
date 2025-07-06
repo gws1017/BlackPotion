@@ -16,6 +16,9 @@ public class ItemSlot : MonoBehaviour
     public float _startY;
     public Store ParentStore;
     private PlayInfo _playInfo;
+    [SerializeField] private GameObject _buffExplainUIInstance;
+    [SerializeField] private GameObject _buffExplainUIPrefab;
+    [SerializeField] private Vector3 _buffExplainUIOffset;
     [SerializeField] private Image _soldOutImage;
     [SerializeField] private float _floatSpeed = 0.3f;
     [SerializeField] private float _floatDistance = 0.5f;
@@ -117,6 +120,30 @@ public class ItemSlot : MonoBehaviour
                 null, Vector3.one * Constants.UI_SCALE);
         }
         ParentStore.PurchaseUI.SetActive(false);
+    }
+
+    public void ShowBuffExplain()
+    {
+        if (ParentStore.SType != Store.StoreType.Buff) return;
+
+            _buffExplainUIInstance = Instantiate<GameObject>(_buffExplainUIPrefab,
+            ItemImage.transform.position + _buffExplainUIOffset, ItemImage.transform.rotation);
+
+        Text uiText = _buffExplainUIInstance.GetComponentInChildren<Text>();
+
+
+        if (uiText != null && ItemId != 0)
+        {
+            uiText.text = ReadJson._dictBuff[ItemId].buffExplain;
+        }
+        else
+            Debug.LogError("Null Error");
+    }
+    public void HideBuffExplain()
+    {
+        if (ParentStore.SType != Store.StoreType.Buff) return;
+        if (_buffExplainUIInstance != null)
+            Destroy(_buffExplainUIInstance);
     }
 
     public void StartBoxFloat()
