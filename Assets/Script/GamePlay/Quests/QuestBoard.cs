@@ -46,6 +46,7 @@ public class QuestBoard : MonoBehaviour
     [SerializeField] private Button _questCanelButton;
     [SerializeField] private Button _questNextButton;
     [SerializeField] private Button _currentQuestButton;
+    [SerializeField] private Text _questOrderText;
     [SerializeField] private Outline _buttonActiveOuline;
     [SerializeField] private GameObject _currentQuestUIObject;
     [SerializeField] private float _oulineEffectSpeed = 1;
@@ -304,7 +305,7 @@ public class QuestBoard : MonoBehaviour
         SoundManager._Instance.PlayClickSound();
         _currentQuestUIObject.SetActive(true);
         _currentQuestButton.gameObject.SetActive(false);
-
+        _questOrderText.text = $"{AcceptQuestList.Count}°³";
         foreach(GameObject questObject in _questList.SelectMany(Dict => Dict.Value))
         {
             questObject.SetActive(false);
@@ -346,6 +347,9 @@ public class QuestBoard : MonoBehaviour
         questObject.SetActive(false);
 
         quest.EnableOpenButton();
+
+        _questOrderText.text = $"{AcceptQuestList.Count}°³";
+
     }
 
     public void NextCurrentQuest()
