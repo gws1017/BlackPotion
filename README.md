@@ -1,4 +1,4 @@
-# BlackPotion(가제)
+# PotionMeister
 
 > **Unity, C#**
 
@@ -27,11 +27,11 @@
 
 ### Youtube
 
-[![Youtube Link](http://img.youtube.com/vi/GJRqFG3yMcA/0.jpg)](https://www.youtube.com/watch?v=GJRqFG3yMcA)
+[![Youtube Link]()](https://www.youtube.com/watch?v=GJRqFG3yMcA)
 
 ### 사진
 
 ---
 
-![GIF_2024-10-08_%EC%98%A4%ED%9B%84_12-59-21](https://github.com/user-attachments/assets/0ab7466c-bab5-4ff9-bed0-e2b8545bb39d)
-![GIF_2024-10-08_%EC%98%A4%ED%9B%84_1-02-39](https://github.com/user-attachments/assets/0f168417-90e0-4ce4-97e6-9957199dc8f9)
+![GIF_2024-10-08_%EC%98%A4%ED%9B%84_12-59-21]()
+![GIF_2024-10-08_%EC%98%A4%ED%9B%84_1-02-39]()
