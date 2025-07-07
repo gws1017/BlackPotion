@@ -56,12 +56,16 @@ public class BuffManager : MonoBehaviour
 
     public void HideBuffListObject()
     {
-        _buffListObject.SetActive(false);
+        var pos = _buffListObject.transform.localPosition;
+        pos.y = -450;
+        _buffListObject.transform.localPosition = pos;
     }
 
     public void ShowBuffListObject()
     {
-        _buffListObject.SetActive(true);
+        var pos = _buffListObject.transform.localPosition;
+        pos.y = -350;
+        _buffListObject.transform.localPosition = pos;
     }
     public void DisableBuffListButton()
     {

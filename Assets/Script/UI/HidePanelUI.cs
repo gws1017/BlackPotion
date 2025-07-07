@@ -27,6 +27,8 @@ public class HidePanelUI : MonoBehaviour
             return false;
         if (GameManager.GM.BM == null)
             return false;
+        if (GameManager.GM.CurrentStage != GameStage.Brewing)
+            return false;
 
         return true;
     }
