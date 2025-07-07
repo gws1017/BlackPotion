@@ -202,6 +202,7 @@ public class GameManager : MonoBehaviour
             ChangeStage(GameStage.Brewing);
             SM.SaveQuestList();
             Brewer.UpdateQuestInfo();
+            BM.ShowBuffListObject();
         }
         else
         {
@@ -215,6 +216,7 @@ public class GameManager : MonoBehaviour
     {
         Receipt.ActiveHidePanel();
         ChangeStage(GameStage.Receipt);
+        BM.HideBuffListObject();
     }
     //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()

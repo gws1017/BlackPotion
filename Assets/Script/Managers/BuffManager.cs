@@ -29,7 +29,8 @@ public class BuffManager : MonoBehaviour
 
     [SerializeField] private GameObject _buffUIPrefab;
     [SerializeField] private Button _buffListButton;
-    [SerializeField] private GameObject _buffInventoryObject;
+    [SerializeField] private GameObject _buffListObject;
+    [SerializeField] private GameObject _buffInventoryModel;
     [SerializeField] private BuffObject _activatedBuffObject;
 
     [SerializeField] private Vector2 _uiStartPosition = new Vector2(-40, -10);
@@ -53,12 +54,21 @@ public class BuffManager : MonoBehaviour
 
     private int GetBuffCount() => _buffDictionary.Values.Sum(list => list.Count);
 
+    public void HideBuffListObject()
+    {
+        _buffListObject.SetActive(false);
+    }
+
+    public void ShowBuffListObject()
+    {
+        _buffListObject.SetActive(true);
+    }
     public void DisableBuffListButton()
     {
         if (_buffListButton == null) return;
 
         _disableBuffButtonCount++;
-        _buffListButton.interactable = false;
+        _buffListButton.interactable  = false;
     }
     public void EnableBuffListButton()
     {
@@ -68,6 +78,7 @@ public class BuffManager : MonoBehaviour
         if (_disableBuffButtonCount <= 0)
         {
             _disableBuffButtonCount = 0;
+            _buffListObject.SetActive(true);
             _buffListButton.interactable = true;
         }
     }
@@ -86,8 +97,8 @@ public class BuffManager : MonoBehaviour
 
     public void ToggleBuffInventory()
     {
-        SoundManager._Instance.PlaySFXAtObject(_buffInventoryObject, SFXType.Item);
-        Vector3 position = _buffInventoryObject.transform.localPosition;
+        SoundManager._Instance.PlaySFXAtObject(_buffInventoryModel, SFXType.Item);
+        Vector3 position = _buffInventoryModel.transform.localPosition;
         if (position.y == _buffInventoryToggleDistance)
         {
             position.y = 0;
@@ -96,7 +107,7 @@ public class BuffManager : MonoBehaviour
         {
             position.y = _buffInventoryToggleDistance;
         }
-        _buffInventoryObject.transform.localPosition = position;
+        _buffInventoryModel.transform.localPosition = position;
         UpdateBuffUIPositions();
     }
 
@@ -302,7 +313,7 @@ public class BuffManager : MonoBehaviour
         };
 
         //버프 UI 설정
-        buffObject.BuffUI.transform.SetParent(_buffInventoryObject.transform, false);
+        buffObject.BuffUI.transform.SetParent(_buffInventoryModel.transform, false);
         var image = buffObject.BuffUI.GetComponentInChildren<Image>();
         image.sprite = Resources.Load<Sprite>(ReadJson._dictBuff[id].buffImage);
         var button = buffObject.BuffUI.GetComponentInChildren<Button>();

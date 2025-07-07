@@ -1110,7 +1110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &388009794
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1147,7 +1147,8 @@ MonoBehaviour:
   _buffUIPrefab: {fileID: 2796793494692962225, guid: e6513e2a26a8d0c47ac2a7cad6eb470b,
     type: 3}
   _buffListButton: {fileID: 1784809190}
-  _buffInventoryObject: {fileID: 1746454503}
+  _buffListObject: {fileID: 388009793}
+  _buffInventoryModel: {fileID: 1746454503}
   _activatedBuffObject:
     Id: 0
     Count: 0
@@ -2175,7 +2176,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC758\uB8B0 \uAC8C\uC2DC\uD310\uC73C\uB85C"
+  m_Text: "\uB3CC\uC544\uAC00\uAE30"
 --- !u!222 &756303154
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4911,7 +4912,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uB2E4\uC74C \uC7A5\uC73C\uB85C"
+  m_Text: "\uB2E4\uC74C \uC7A5"
 --- !u!222 &1609312125
 CanvasRenderer:
   m_ObjectHideFlags: 0
