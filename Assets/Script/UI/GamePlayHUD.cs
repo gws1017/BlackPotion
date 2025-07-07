@@ -11,7 +11,9 @@ public class GamePlayHUD : HUD
     [SerializeField] private Button _menuButton;
     [SerializeField] private Button _restartYesButton;
     [SerializeField] private Button _restartNoButton;
+    [SerializeField] private Button _tutorialButton;
     [SerializeField] private GameObject _restartUIObject;
+    [SerializeField] private GameObject _tutorialUIObject;
 
     [Header("Debug Option")]
     [SerializeField] private Button _debugButton;
@@ -29,6 +31,7 @@ public class GamePlayHUD : HUD
         _menuButton.onClick.AddListener(TogglePauseMenu);
         _restartNoButton.onClick.AddListener(ReturnToMainMenu);
         _restartYesButton.onClick.AddListener(GameRestart);
+        _tutorialButton.onClick.AddListener(ToggleTutorialUI);
 
         bool isReleaseBuild = !Application.isEditor && !Debug.isDebugBuild;
         if(isReleaseBuild == false)
@@ -53,6 +56,11 @@ public class GamePlayHUD : HUD
         _currentDayUIText.text = $"{(_gm.PlayInformation.CurrentDay + 1)}ÀÏÂ÷";
     }
 
+    public void ToggleTutorialUI()
+    {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
+        _tutorialUIObject.SetActive(!_tutorialUIObject.activeSelf);
+    }
     public void TogglePauseMenu()
     {
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
