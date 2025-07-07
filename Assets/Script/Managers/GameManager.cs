@@ -167,7 +167,8 @@ public class GameManager : MonoBehaviour
         
         if (_questStartButton == null)
             _questStartButton = Board._questStartButton;
-        ChangeStage(GameStage.QuestBoard);
+        if(isLoad == false)
+            ChangeStage(GameStage.QuestBoard);
         _questStartButton.onClick.RemoveAllListeners();
         _questStartButton.onClick.AddListener(QuestStart);
     }
@@ -202,7 +203,6 @@ public class GameManager : MonoBehaviour
             ChangeStage(GameStage.Brewing);
             SM.SaveQuestList();
             Brewer.UpdateQuestInfo();
-            BM.ShowBuffListObject();
         }
         else
         {
@@ -216,7 +216,6 @@ public class GameManager : MonoBehaviour
     {
         Receipt.ActiveHidePanel();
         ChangeStage(GameStage.Receipt);
-        BM.HideBuffListObject();
     }
     //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()
@@ -284,6 +283,19 @@ public class GameManager : MonoBehaviour
         if (_camera != null && _stageRotationDict.TryGetValue(stage, out var rotation))
             _camera.transform.rotation = Quaternion.Euler(rotation);
         _stage = stage;
+
+        switch(stage)
+        {
+            case GameStage.QuestBoard:
+                BM.HideBuffListObject();
+                break;
+            case GameStage.Brewing:
+                BM.ShowBuffListObject();
+                break;
+            case GameStage.Receipt:
+                BM.HideBuffListObject();
+                break;
+        }
         SM.SaveStage();
     }
 
