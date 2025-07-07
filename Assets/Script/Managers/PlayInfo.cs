@@ -16,10 +16,12 @@ public class PlayInfo : MonoBehaviour
     //public DaylightTime _playTime;
     public int _questSuccCount = 0;
     public int _maxCraftDay = 0;
-    
+    public int _maxGold = 0;
+
     private Dictionary<int, bool> _recipeDict; //보유 레시피 - 보유는 true 미보유는 false
 
     //Getter Setter
+    public int MaxGold { get => _maxGold; set => _maxGold = value; }
     public int CurrentGold => _currentGold;
     public int CurrentDay => _currentCraftDay;
     public int MaxCraftDay => _maxCraftDay;

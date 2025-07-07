@@ -63,6 +63,7 @@ public class SaveManager : MonoBehaviour
     {
         public float bgmVolume;
         public float sfxVolume;
+        public int MaxGold;
         public string version;
         public bool isContinue;
     }
@@ -74,6 +75,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private SystemData _systemData = new SystemData();
     private bool _isLoading = false;
 
+    public int MaxGold => _systemData.MaxGold;
     public bool ProcessPenalty => _saveData.processPenalty;
     public float BGMVolume
     {
@@ -93,6 +95,7 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+
     void Start()
     {
         SystemLoad();
@@ -111,6 +114,12 @@ public class SaveManager : MonoBehaviour
     private void OnDestroy()
     {
         //GameSave();
+    }
+
+    public void SaveMaxGold(int gold)
+    {
+        _systemData.MaxGold = Mathf.Max(gold, _systemData.MaxGold);
+        SystemSave();
     }
 
     public void SaveVolume(SoundType type, float value)
@@ -138,7 +147,7 @@ public class SaveManager : MonoBehaviour
         if (_isLoading) return;
         if (slotId >= 0 && slotId < 3)
         {
-            int currentOrder = _saveData.currentQuestOrder;
+            int currentOrder = GameManager.GM.Brewer.CurrentQuestIndex;
             var currentQuest = _saveData.acceptQuestInfos[currentOrder];
             var slotInfo = _saveData.slotInfoList[slotId];
             if (isReset)
@@ -199,7 +208,7 @@ public class SaveManager : MonoBehaviour
     public void SaveUseBuff(BuffType type, int value = -1,int slotId = -1)
     {
         if (_isLoading) return;
-        int count = _saveData.currentQuestOrder;
+        int count = GameManager.GM.Brewer.CurrentQuestIndex;
         var currentQuest = _saveData.acceptQuestInfos[count];
         switch (type)
         {

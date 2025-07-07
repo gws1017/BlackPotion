@@ -13,12 +13,14 @@ public class TitleHUD : HUD
         Continue,
         Setting,
         Quit,
+        MaxScore,
         DefaultMax
     };
     [SerializeField] private Image[] _stampImages;
     [SerializeField] private Button _gameStartButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _quitButton;
+    [SerializeField] private Button _maxScoreButton;
     [SerializeField] private Animator[] _stampAnimators;
 
     private MainMenuButton _currentButtonType;
@@ -54,6 +56,7 @@ public class TitleHUD : HUD
         _continueButton.onClick.AddListener(() => TriggerAction(MainMenuButton.Continue));
         _settingButton.onClick.AddListener(()=>TriggerAction(MainMenuButton.Setting));
         _quitButton.onClick.AddListener(() => TriggerAction(MainMenuButton.Quit));
+        _maxScoreButton.onClick.AddListener(() => TriggerAction(MainMenuButton.MaxScore));
         SoundManager._Instance.CurrentBGM = BGMType.Title;
         SoundManager._Instance.PlayBGM();
     }
@@ -74,6 +77,9 @@ public class TitleHUD : HUD
                 break;
             case MainMenuButton.Continue:
                 _readyActions[id] = () => ContinueGame();
+                break;
+            case MainMenuButton.MaxScore:
+                _readyActions[id] = () => ShowEndingUI();
                 break;
             case MainMenuButton.Setting:
                 _readyActions[id] = () => ShowSettingMenu();

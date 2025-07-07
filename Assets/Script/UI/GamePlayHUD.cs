@@ -17,6 +17,7 @@ public class GamePlayHUD : HUD
     [SerializeField] private Button _debugButton;
     [SerializeField] private Text _requireQualityText;
     [SerializeField] private Button _goldButton;
+    [SerializeField] private Button _successButton;
     [SerializeField] private GameObject _debugPannel;
 
 
@@ -35,6 +36,7 @@ public class GamePlayHUD : HUD
             _debugButton.enabled = true;
             _debugButton.onClick.AddListener(ToggleDebugPannel);
             _goldButton.onClick.AddListener(CheatGold);
+            _successButton.onClick.AddListener(CheatSuccess);
         }
         else
         {
@@ -88,5 +90,9 @@ public class GamePlayHUD : HUD
     {
         if(GameManager.GM.PlayInformation.CurrentGold <1000)
             GameManager.GM.PlayInformation.IncrementGold(9000);
+    }
+    public void CheatSuccess()
+    {
+        _gm.Receipt.SetTargetSuccess(true);
     }
 }

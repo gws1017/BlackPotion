@@ -239,7 +239,17 @@ public class GameManager : MonoBehaviour
     {
         if (Receipt.TargetSuccess)
         {
-            Brewer.StoreUI.OpenStoreUI(Store.StoreType.Recipe);
+            if (PlayInformation.CurrentDay == 2)
+            {
+                SM.SaveMaxGold(PlayInformation.MaxGold);
+                var hud = MainCamera.GetComponentInChildren<GamePlayHUD>();
+                hud.ShowEndingUI();
+                hud.ScoreUI.CurrentScoreText = $"{PlayInformation.MaxGold}°ñµå";
+            }
+            else
+            {
+                Brewer.StoreUI.OpenStoreUI(Store.StoreType.Recipe);
+            }
         }
         else
         {

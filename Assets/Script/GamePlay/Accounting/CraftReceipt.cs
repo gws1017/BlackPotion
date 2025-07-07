@@ -88,6 +88,9 @@ public class CraftReceipt : MonoBehaviour
                 _potionNameText[i].enabled = true;
                 _moneyText[i].enabled = true;
                 totalGold += gold;
+
+                GameManager.GM.PlayInformation.MaxGold += totalGold;
+
                 yield return StartCoroutine(TypingCorutine($"{gold} G", _moneyText[i]));
             }
             else
@@ -143,6 +146,11 @@ public class CraftReceipt : MonoBehaviour
     {
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
         GameManager.GM.TryNextDay();
+    }
+
+    public void SetTargetSuccess(bool value)
+    {
+        _isTargetAchieved = value;
     }
 
     private void ResetUIText()
