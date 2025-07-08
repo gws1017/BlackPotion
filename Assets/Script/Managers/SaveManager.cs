@@ -80,7 +80,8 @@ public class SaveManager : MonoBehaviour
     {
         public float bgmVolume;
         public float sfxVolume;
-        public int MaxGold;
+        public int maxGold;
+        public int recentGold;
         public string version;
         public bool isContinue;
     }
@@ -92,7 +93,8 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private SystemData _systemData = new SystemData();
     private bool _isLoading = false;
 
-    public int MaxGold => _systemData.MaxGold;
+    public int MaxGold => _systemData.maxGold;
+    public int RecentGold => _systemData.recentGold;
     public bool ProcessPenalty => _saveData.processPenalty;
     public float BGMVolume
     {
@@ -136,7 +138,8 @@ public class SaveManager : MonoBehaviour
     public void SaveMaxGold(int gold)
     {
         SystemLoad();
-        _systemData.MaxGold = Math.Max(gold,_systemData.MaxGold);
+        _systemData.maxGold = Math.Max(gold,_systemData.maxGold);
+        _systemData.recentGold = gold;
         SystemSave();
     }
 

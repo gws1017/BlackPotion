@@ -13,7 +13,7 @@ public static class Constants
     public const int MAX_ACCEPT_QUEST_COUNT = 5;
     public const int MAX_BUFF_COUNT = 3;
     public const int MAX_QUEST_COUNT_LAYER = 5;
-    public const float QUEST_PENALTY_RATIO = 0.5f;
+    public const float QUEST_PENALTY_RATIO = 0.3f;
     public const float CRITICAL_SUCCESS = 1.5f; //´ë¼º°ø
 
     public enum QuestGrade

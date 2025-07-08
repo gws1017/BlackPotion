@@ -33,10 +33,7 @@ public class MaxScoreUI : MonoBehaviour
 
         _maxScoreValueText.text = $"{_saveManager.MaxGold}°ñµå";
 
-        if (SceneManager.GetActiveScene().name == Constants.GAME_PLAY_SCENE)
-            _currentScoreTabObject.SetActive(true);
-        else
-            _currentScoreTabObject.SetActive(false);
+        _currentScoreValueText.text = $"{_saveManager.RecentGold}°ñµå";
     }
     // Update is called once per frame
     void Update()

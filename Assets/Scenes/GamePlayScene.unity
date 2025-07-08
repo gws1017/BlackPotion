@@ -276,7 +276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -97}
+  m_AnchoredPosition: {x: -115, y: 0}
   m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &99859330
@@ -3734,7 +3734,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 556, y: 357}
+  m_AnchoredPosition: {x: 459, y: 346}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1101410750
@@ -4004,7 +4004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 23.47, y: 15.24}
+  m_AnchoredPosition: {x: 19.9, y: 15.24}
   m_SizeDelta: {x: 330, y: 115}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1360930466
@@ -7099,12 +7099,12 @@ PrefabInstance:
     - target: {fileID: 1483430016725318828, guid: a80319115b24033439075330b27347a1,
         type: 3}
       propertyPath: '_targetMoney.Array.data[1]'
-      value: 150
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1483430016725318828, guid: a80319115b24033439075330b27347a1,
         type: 3}
       propertyPath: '_targetMoney.Array.data[2]'
-      value: 250
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 1483430016725318828, guid: a80319115b24033439075330b27347a1,
         type: 3}
