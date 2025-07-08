@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static SaveManager;
 
 [System.Serializable]
 public class BuffObject
@@ -267,7 +268,13 @@ public class BuffManager : MonoBehaviour
                                 int id = slots[i].GetComponent<IngredientSlot>().IngridientIndex;
                                 brewer.SetCurrentAmount(i,id, val);
                                 GameManager.GM.SM.SaveUseBuff(type,val,i);
-                                //GameManager.GM.SM.SaveInputAmount(i, val,true);
+                                IngridientEvent ev = new IngridientEvent
+                                {
+                                    slotId = i,
+                                    type = InputEventType.StrageBrew,
+                                    value = val
+                                };
+                                GameManager.GM.SM.SaveInputEvent(ev, brewer.CurrentQuestIndex);
                             }
                         }
                     }

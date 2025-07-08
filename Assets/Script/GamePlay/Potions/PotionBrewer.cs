@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using static Constants;
+using static SaveManager;
 
 public class PotionBrewer : MonoBehaviour
 {
@@ -213,7 +214,7 @@ public class PotionBrewer : MonoBehaviour
         _craftButton.gameObject.SetActive(true);
     }
 
-    public void InsertIngredient(int slotId,int ingridientIndex, int amount)
+    public void InsertIngredient(int slotId,int ingridientIndex, int amount,IngridientEvent oev = null)
     {
         int prevValue = _currentAmount[slotId];
 
@@ -221,7 +222,19 @@ public class PotionBrewer : MonoBehaviour
         GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
 
         _currentAmount[slotId] += amount;
-        GameManager.GM.SM.SaveInputAmount(slotId, amount);
+
+        //GameManager.GM.SM.SaveInputAmount(slotId, amount);
+
+        IngridientEvent ev = new IngridientEvent
+        {
+            slotId = slotId,
+            type = InputEventType.FreeInput,
+            value = amount
+        };
+
+        if (oev !=null)
+            ev = oev;
+         GameManager.GM.SM.SaveInputEvent(ev, _currentQuestIndex);
 
         if (prevValue == _currentAmount[slotId]) return;
         if (_maxAmount[slotId] <= _currentAmount[slotId])

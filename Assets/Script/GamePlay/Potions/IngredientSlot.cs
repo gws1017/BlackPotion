@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static SaveManager;
 using static UnityEngine.ParticleSystem;
 
 public class IngredientSlot : MonoBehaviour
@@ -101,8 +102,13 @@ public class IngredientSlot : MonoBehaviour
 
     }
 
-    private void ResetIngredientUsage()
+    public void ResetIngredientUsage()
     {
+        IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
+
+        _inputButton.onClick.RemoveAllListeners();
+        _inputButton.onClick.AddListener(InputIngredient);
+
         _inputButtonText.text = "투입";
         _ingredientCountDict.Clear();
         for (int i = 1; i <= Constants.INGRIDIENT_MAX_NUMBER; ++i)
@@ -111,17 +117,31 @@ public class IngredientSlot : MonoBehaviour
             _inputInfoImages[i].color = Color.white;
         }
         IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
+        
+    }
+
+    public void FreeReset()
+    {
+        _questGrade--;
+        ResetIngredientUsage();
     }
 
     public void HandleInputAmount(int amount)
     {
+        IngridientEvent ev = null;
         if (amount == 0)
         {
             if (_questGrade > 1)
             {
-                _questGrade--;
-                ResetIngredientUsage();
+                FreeReset();
                 amount = GetRandomAmount();
+                ev = new IngridientEvent
+                {
+                    slotId = _slotId,
+                    type = InputEventType.FreeRefill,
+                    value = amount
+                };
+                
             }
             else
             {
@@ -130,7 +150,7 @@ public class IngredientSlot : MonoBehaviour
             }
         }
         Debug.Log(amount);
-        _brewer.InsertIngredient(_slotId, _uiIngredientIdx, amount);
+        _brewer.InsertIngredient(_slotId, _uiIngredientIdx, amount,ev);
         _ingredientCountDict[amount] = true;
         _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
 
@@ -209,14 +229,15 @@ public class IngredientSlot : MonoBehaviour
             {
                 SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Item);
                 GameManager.GM.PlayInformation.ConsumeGold(Constants.INGRIDIENT_REFILL_GOLD);
-                IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
+                
 
-                _inputButtonText.text = "투입";
-
-                _ingredientCountDict.Clear();
-
-                _inputButton.onClick.RemoveAllListeners();
-                _inputButton.onClick.AddListener(InputIngredient);
+                IngridientEvent ev = new IngridientEvent
+                {
+                    slotId = _slotId,
+                    type = InputEventType.Refill,
+                    value = 0
+                };
+                GameManager.GM.SM.SaveInputEvent(ev, _brewer.CurrentQuestIndex);
                 ResetIngredientUsage();
             };
             GameManager.GM.CreateInfoUI("재료를 수급하시겠습니까?", parentTranform, null, uiScale

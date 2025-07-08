@@ -8,6 +8,22 @@ using static SaveManager;
 
 public class SaveManager : MonoBehaviour
 {
+    [System.Serializable]
+    public enum InputEventType
+    {
+        FreeInput,
+        Refill,
+        FreeRefill,
+        StrageBrew
+    }
+
+    [System.Serializable]
+    public class IngridientEvent
+    {
+        public int slotId;
+        public InputEventType type;
+        public int value;
+    }
 
     [System.Serializable]
     public class SlotInfo
@@ -26,6 +42,7 @@ public class SaveManager : MonoBehaviour
         public int selectedReward = 0;
         public int requireCapacity = 0;
         public int strangeBrewValue = 0;
+        public List<IngridientEvent> inputEvents = new List<IngridientEvent>();
         public bool isQuestResult = false;
         public bool isQuestRestarted = false;
         public bool isInsightPowder = false;
@@ -142,24 +159,30 @@ public class SaveManager : MonoBehaviour
         _saveData.processPenalty = value;
         GameSave();
     }
-    public void SaveInputAmount(int slotId, int value,bool isReset = false)
+    //public void SaveInputAmount(int slotId, int value,bool isReset = false)
+    //{
+    //    if (_isLoading) return;
+    //    if (slotId >= 0 && slotId < 3)
+    //    {
+    //        int currentOrder = GameManager.GM.Brewer.CurrentQuestIndex;
+    //        var currentQuest = _saveData.acceptQuestInfos[currentOrder];
+    //        var slotInfo = _saveData.slotInfoList[slotId];
+    //        if (isReset)
+    //            slotInfo.usedAmountList.Clear();
+    //        //투입내역을 전부 슬롯 별로 기록한다
+    //        slotInfo.usedAmountList.Add(value);
+
+    //        //양조기 쓴적이 있으면 따로한번더 저장
+    //        if(currentQuest.isStrageBrew)
+    //            slotInfo.postStrangeBrewAmountList.Add(value);
+    //        GameSave();
+    //    }
+    //}
+    public void SaveInputEvent(IngridientEvent ev,int currentQuestIndex)
     {
         if (_isLoading) return;
-        if (slotId >= 0 && slotId < 3)
-        {
-            int currentOrder = GameManager.GM.Brewer.CurrentQuestIndex;
-            var currentQuest = _saveData.acceptQuestInfos[currentOrder];
-            var slotInfo = _saveData.slotInfoList[slotId];
-            if (isReset)
-                slotInfo.usedAmountList.Clear();
-            //투입내역을 전부 슬롯 별로 기록한다
-            slotInfo.usedAmountList.Add(value);
-
-            //양조기 쓴적이 있으면 따로한번더 저장
-            if(currentQuest.isStrageBrew)
-                slotInfo.postStrangeBrewAmountList.Add(value);
-            GameSave();
-        }
+        _saveData.acceptQuestInfos[currentQuestIndex].inputEvents.Add(ev);
+        GameSave();
     }
 
     public void SaveSlotInfo(int slotId, int uiId)
@@ -223,6 +246,7 @@ public class SaveManager : MonoBehaviour
                     slotInfo.postStrangeBrewAmountList.Clear();
                     slotInfo.strangeBrewValue = value;
                     currentQuest.isStrageBrew = true;
+
                 }                  
                 break;
         }
@@ -250,7 +274,10 @@ public class SaveManager : MonoBehaviour
     {
         if (_isLoading) return;
         if(_saveData.acceptQuestInfos.Count > index)
+        {
             _saveData.acceptQuestInfos[index].isQuestRestarted = isRestart;
+            _saveData.acceptQuestInfos[index].inputEvents.Clear();
+        }
         else
             Debug.LogWarning("Save Data AcceptQuestInfo Count 0");
         GameSave();
@@ -479,26 +506,50 @@ public class SaveManager : MonoBehaviour
 
             var slotInfoList = _saveData.slotInfoList;
             var currentQuest = _saveData.acceptQuestInfos[currentOrder];
-            if (slotInfoList.Count > 0)
+            var inputEvents = currentQuest.inputEvents;
+            foreach(var inputEvent in inputEvents)
             {
-                foreach (var slot in slotInfoList)
+                int sid = inputEvent.slotId;
+                int amount = inputEvent.value;
+                switch(inputEvent.type)
                 {
-                    foreach (var amount in slot.usedAmountList)
-                    {
-                        brewer.Slots[slot.slotId].HandleInputAmount(amount);
-                    }
-
-                    if(currentQuest.isStrageBrew)
-                    {
-                       brewer.SetCurrentAmount(slot.slotId,slot.uiIngridientIdx, slot.strangeBrewValue);
-                    }
-
-                    foreach (var amount in slot.postStrangeBrewAmountList)
-                    {
-                        brewer.Slots[slot.slotId].HandleInputAmount(amount);
-                    }
+                    case InputEventType.FreeInput:
+                        brewer.Slots[sid].HandleInputAmount(amount);
+                        break;
+                    case InputEventType.FreeRefill:
+                        brewer.Slots[sid].FreeReset();
+                        brewer.Slots[sid].HandleInputAmount(amount);
+                        break;
+                    case InputEventType.Refill:
+                        brewer.Slots[sid].ResetIngredientUsage();
+                        break;
+                    case InputEventType.StrageBrew:
+                        int uiId = brewer.Slots[sid].IngridientIndex;
+                        brewer.SetCurrentAmount(sid, uiId, amount);
+                        break;
                 }
             }
+
+            //if (slotInfoList.Count > 0)
+            //{
+            //    foreach (var slot in slotInfoList)
+            //    {
+            //        foreach (var amount in slot.usedAmountList)
+            //        {
+            //            brewer.Slots[slot.slotId].HandleInputAmount(amount);
+            //        }
+
+            //        if(currentQuest.isStrageBrew)
+            //        {
+            //           brewer.SetCurrentAmount(slot.slotId,slot.uiIngridientIdx, slot.strangeBrewValue);
+            //        }
+
+            //        foreach (var amount in slot.postStrangeBrewAmountList)
+            //        {
+            //            brewer.Slots[slot.slotId].HandleInputAmount(amount);
+            //        }
+            //    }
+            //}
 
             if (_saveData.acceptQuestInfos[currentOrder].isInsightPowder)
             {
