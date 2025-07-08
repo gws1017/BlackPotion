@@ -36,14 +36,14 @@ public class GamePlayHUD : HUD
         bool isReleaseBuild = !Application.isEditor && !Debug.isDebugBuild;
         if(isReleaseBuild == false)
         {
-            _debugButton.enabled = true;
+            _debugButton.gameObject.SetActive(true);
             _debugButton.onClick.AddListener(ToggleDebugPannel);
             _goldButton.onClick.AddListener(CheatGold);
             _successButton.onClick.AddListener(CheatSuccess);
         }
         else
         {
-            _debugButton.enabled = false;
+            _debugButton.gameObject.SetActive(false);
             _debugPannel.SetActive(false);
         }
 
