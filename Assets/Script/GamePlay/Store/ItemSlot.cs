@@ -16,6 +16,9 @@ public class ItemSlot : MonoBehaviour
     public float _startY;
     public Store ParentStore;
     private PlayInfo _playInfo;
+    [SerializeField] private GameObject _buffExplainUIInstance;
+    [SerializeField] private GameObject _buffExplainUIPrefab;
+    [SerializeField] private Vector3 _buffExplainUIOffset;
     [SerializeField] private Image _soldOutImage;
     [SerializeField] private float _floatSpeed = 0.3f;
     [SerializeField] private float _floatDistance = 0.5f;
@@ -49,6 +52,11 @@ public class ItemSlot : MonoBehaviour
         ParentStore.PurchaseCancelButton.onClick.RemoveAllListeners();
         ParentStore.PurchaseCancelButton.onClick.AddListener(ClosePurchaseUI);
         _soldOutImage.gameObject.SetActive(false);
+
+        if(GameManager.GM.SM.CheckPurchase(id))
+        {
+            ItemSoldOut();
+        }
         //StartBoxFloat();
     }
 
@@ -67,6 +75,13 @@ public class ItemSlot : MonoBehaviour
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Click);
 
         ParentStore.PurchaseUI.SetActive(false);
+    }
+
+    public void ItemSoldOut()
+    {
+        _soldOutImage.gameObject.SetActive(true);
+        ItemSlotButton.interactable = false;
+        ItemNameText.text = "매진";
     }
 
     public void AcceptPurchase()
@@ -90,20 +105,45 @@ public class ItemSlot : MonoBehaviour
                 }
                 GameManager.GM.BM.AddBuff(ItemId);
             }
-            StopBoxFloat();
+            GameManager.GM.SM.SavePurchase(ItemId);
+
+            //StopBoxFloat();
             _playInfo.ConsumeGold(ItemCost);
-            _soldOutImage.gameObject.SetActive(true);
-            ItemSlotButton.interactable = false;
-            ItemNameText.text = "매진";
+            ItemSoldOut();
             SoundManager._Instance.PlaySFX2D(SFXType.Money);
 
         }
         else
         {
-            GameManager.GM.CreateInfoUI("골드가 부족합니다.", ParentStore.StoreCanvas.transform,
-               new Vector3(0, -7, -7), Vector3.one * 5);
+            GameManager.GM.CreateInfoUI("골드가 부족합니다.", 
+                GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform, 
+                null, Vector3.one * Constants.UI_SCALE);
         }
         ParentStore.PurchaseUI.SetActive(false);
+    }
+
+    public void ShowBuffExplain()
+    {
+        if (ParentStore.SType != Store.StoreType.Buff) return;
+
+            _buffExplainUIInstance = Instantiate<GameObject>(_buffExplainUIPrefab,
+            ItemImage.transform.position + _buffExplainUIOffset, ItemImage.transform.rotation);
+
+        Text uiText = _buffExplainUIInstance.GetComponentInChildren<Text>();
+
+
+        if (uiText != null && ItemId != 0)
+        {
+            uiText.text = ReadJson._dictBuff[ItemId].buffExplain;
+        }
+        else
+            Debug.LogError("Null Error");
+    }
+    public void HideBuffExplain()
+    {
+        if (ParentStore.SType != Store.StoreType.Buff) return;
+        if (_buffExplainUIInstance != null)
+            Destroy(_buffExplainUIInstance);
     }
 
     public void StartBoxFloat()

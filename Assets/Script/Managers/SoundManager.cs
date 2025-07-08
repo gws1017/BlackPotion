@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+public enum SoundType
+{
+    BGM,
+    SFX
+}
 public enum BGMType
 {
     None = -1,
@@ -80,7 +85,8 @@ public class SoundManager : MonoBehaviour
             if (Sources.Count <= 0) return;
             foreach (var Source in Sources)
             {
-                Source.volume = value;
+                if (Source != null)
+                    Source.volume = value;
             }
         }
     }
@@ -111,6 +117,15 @@ public class SoundManager : MonoBehaviour
             _bgmSource.playOnAwake = false;
             _bgmSource.loop = true;
             _bgmSource.spatialBlend = 0f; 
+        }
+
+        var sm = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+        if (sm != null)
+        {
+            float sfxValue = sm.SFXVolume;
+            float bgmValue = sm.BGMVolume;
+            SFXVolume = sfxValue;
+            BGMVolume = bgmValue;
         }
 
         _bgmSource.volume = _bgmVolume;

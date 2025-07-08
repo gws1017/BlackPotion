@@ -10,16 +10,18 @@ public class PlayInfo : MonoBehaviour
 {
 
     private int _currentCraftDay = 0;//현재 일차
-    private int _currentGold = 0;//현재 소유하고 있는 골드량
+    private int _currentGold = 50;//현재 소유하고 있는 골드량
 
     //누적 데이터
     //public DaylightTime _playTime;
     public int _questSuccCount = 0;
     public int _maxCraftDay = 0;
-    
+    public int _maxGold = 0;
+
     private Dictionary<int, bool> _recipeDict; //보유 레시피 - 보유는 true 미보유는 false
 
     //Getter Setter
+    public int MaxGold { get => _maxGold; set => _maxGold = value; }
     public int CurrentGold => _currentGold;
     public int CurrentDay => _currentCraftDay;
     public int MaxCraftDay => _maxCraftDay;
@@ -79,6 +81,7 @@ public class PlayInfo : MonoBehaviour
 
         if(_recipeDict.ContainsKey(recipeID))
             _recipeDict[recipeID] = true;
+        GameManager.GM.SM.SavePlayInfo();
     }
     //레시피 보유 확인 함수
     public bool HasRecipe(int recipeID)
@@ -127,12 +130,15 @@ public class PlayInfo : MonoBehaviour
     public void ResetInfo(bool isSave = true)
     {
         _currentCraftDay = 0;
-        _currentGold = 0;
-        GameManager.GM.BM.ClearBuffList();
-        GameManager.GM.InitializeGameManager();
+        _currentGold = Constants.BASE_GOLD;
+
+        IntializeRecipeDict();
+
+        if(GameManager.GM.BM)
+            GameManager.GM.BM.ClearBuffList();
         if (isSave)
             GameManager.GM.SM.SavePlayInfo();
-        IntializeRecipeDict();
+        GameManager.GM.InitializeGameManager();
     }
 
 }

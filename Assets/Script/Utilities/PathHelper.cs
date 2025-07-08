@@ -16,5 +16,5 @@ public static class PathHelper
 
     public const string QUEST_GRADE_OUTLINE_SMALL = "Images/ui_recipe_hl_black";
     public const string QUEST_GRADE_OUTLINE_MEDIUM = "Images/ui_recipe_hl_yellow";
-    public const string QUEST_GRADE_OUTLINE_LARGE = "Images/ui_recipe_hl_magenta";
+    public const string QUEST_GRADE_OUTLINE_LARGE = "Images/ui_recipe_hl_red";
 }

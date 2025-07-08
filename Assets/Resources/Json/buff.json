@@ -6,7 +6,7 @@
       "buffCost": 45,
       "buffImage": "Images/buffEven",
       "buffState": 0,
-      "buffExplain": "사용시 1~10사이의 랜덤한 짝수 수치가 들어갑니다.",
+      "buffExplain": "사용시 다음 투입에 짝수가 투입됩니다.",
       "buffType": 2,
       "buffTarget": 0
     },
@@ -16,7 +16,7 @@
       "buffCost": 45,
       "buffImage": "Images/buffOdd",
       "buffState": 0,
-      "buffExplain": "사용시 1~10사이의 랜덤한 홀수 수치가 들어갑니다.",
+      "buffExplain": "사용시 다음 투입에 홀수가 투입됩니다.",
       "buffType": 2,
       "buffTarget": 0
     },
@@ -36,7 +36,7 @@
       "buffCost": 45,
       "buffImage": "Images/buffUpgradeBrew",
       "buffState": 1,
-      "buffExplain": "사용시 들어가는 재료의 수치가 +{0}만큼 올라간다.",
+      "buffExplain": "투입시 들어가는 재료의 수치가 +{0}만큼 올라간다.",
       "buffType": 0,
       "buffTarget": 0
     },
@@ -46,9 +46,19 @@
       "buffCost": 45,
       "buffImage": "Images/buffStrangeBrew",
       "buffState": 0,
-      "buffExplain": "1~10사이의 랜덤한 숫자 하나가 들어간다.",
+      "buffExplain": "각 투입한 재료의 값을 무작위 값으로 바꾼다.",
       "buffType": 2,
       "buffTarget": 1
+    },
+    {
+      "buffId": 5006,
+      "buffName": "통찰의 가루",
+      "buffCost": 65,
+      "buffImage": "Images/buffMagnifier",
+      "buffState": 0,
+      "buffExplain": "요구 용량 수치의 일부를 확인할 수 있다.",
+      "buffType": 2,
+      "buffTarget": 0
     }
   ]
   

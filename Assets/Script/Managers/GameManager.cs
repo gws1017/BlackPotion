@@ -5,8 +5,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using static ConfirmUI;
 
+public enum GameStage
+{
+    QuestBoard,       // 의뢰 게시판 (0, 0, 0)
+    Brewing,          // 포션 제조 (0, 90, 0)
+    Receipt,          // 정산 (0, 180, 0)
+}
+
 public class GameManager : MonoBehaviour
 {
+    
+
     //GameManager 인스턴스 GM으로 접근
     private static GameManager _instance;
 
@@ -25,8 +34,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text _debugText;
 
     [SerializeField] private GameObject _infoUIPrefab;
-    //Getter Setter
 
+    private readonly Dictionary<GameStage, Vector3> _stageRotationDict = new Dictionary<GameStage, Vector3>
+    {
+        { GameStage.QuestBoard, new Vector3(0, 0, 0) },
+        { GameStage.Brewing, new Vector3(0, 90, 0) },
+        { GameStage.Receipt, new Vector3(0, 180, 0) },
+    };
+
+    private GameStage _stage = GameStage.QuestBoard;
+
+    //Getter Setter
+    public GameStage CurrentStage => _stage;
     public static GameManager GM
     {
         get
@@ -124,7 +143,6 @@ public class GameManager : MonoBehaviour
             return _buffManager;
         }
     }
-
     private void Awake()
     {
         if (_instance == null)
@@ -143,15 +161,19 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void InitializeGameManager()
+    public void InitializeGameManager(bool isLoad = false)
     {
         InitializeManagerComponent();
+        
         if (_questStartButton == null)
             _questStartButton = Board._questStartButton;
+        if(isLoad == false)
+            ChangeStage(GameStage.QuestBoard);
+        _questStartButton.onClick.RemoveAllListeners();
         _questStartButton.onClick.AddListener(QuestStart);
     }
 
-    private void InitializeManagerComponent()
+    private void InitializeManagerComponent(bool isLoad = false)
     {
         if (_camera == null)
             _camera = GameObject.Find("Pixel Perfect Camera").GetComponent<Camera>();
@@ -172,61 +194,69 @@ public class GameManager : MonoBehaviour
     //의뢰 시작(포션제조) 단계 전환
     private void QuestStart()
     {
-            SoundManager._Instance.PlayClickSound();
+        SoundManager._Instance.PlayClickSound();
         //수주 의뢰 저장
         if (Board.CurrentAcceptQuestCount > 0)
         {
             Board.CloseCurrentQuestUI();
             Board.CurrentQuestOutlineEffectOff();
-            RotateCamera(new Vector3(0, 90, 0));
+            ChangeStage(GameStage.Brewing);
+            SM.SaveQuestList();
             Brewer.UpdateQuestInfo();
-            SM.SaveQuest();
-            SM.SaveStage();
         }
         else
         {
-#if UNITY_EDITOR
-#else
-            //_debugText.text = "의뢰를 1개이상 수주하셔야합니다.";
-#endif
-            Debug.Log("의뢰를 1개이상 수주하셔야합니다.");
+            Canvas camCanvas = MainCamera.GetComponentInChildren<Canvas>();
+            CreateInfoUI("의뢰를 1개 이상 수락해야합니다.",
+                camCanvas.transform, null, Vector3.one * Constants.UI_SCALE);
         }
     }
     //정산 단계로 전환
     public void ShowCraftReceipt()
     {
-        RotateCamera(new Vector3(0, 180, 0));
-        SM.SaveStage();
+        Receipt.ActiveHidePanel();
+        ChangeStage(GameStage.Receipt);
     }
     //의뢰 준비 단계(다음날) 전환
     public void ShowQuestBoard()
     {
-        Board.InitializeQuestBoard();
-        Board.CreateQuestObject();
+        Receipt.DeActiveHidePanel();
 
+        ChangeStage(GameStage.QuestBoard);
+        Board.InitializeQuestBoard();
 
         foreach (var item in destroyObjects)
+        {
             Destroy(item);
+        }
         destroyObjects.Clear();
 
-        RotateCamera(new Vector3(0, 0, 0));
-        SM.SaveQuest();
-        SM.SaveStage();
+        SM.SaveQuestList();
 
     }
 
     //정산 결과에 따라 0일차로 재시작인지 다음날로 넘어가는 지 확인한다
-    public void CheckRecipt()
+    public void TryNextDay()
     {
         if (Receipt.TargetSuccess)
         {
-            PlayInformation.IncrementCraftDay();
+            if (PlayInformation.CurrentDay == 2)
+            {
+                SM.SaveMaxGold(PlayInformation.MaxGold);
+                var hud = MainCamera.GetComponentInChildren<GamePlayHUD>();
+                hud.ShowEndingUI();
+                hud.ScoreUI.CurrentScoreText = $"{PlayInformation.MaxGold}골드";
+            }
+            else
+            {
+                Brewer.StoreUI.OpenStoreUI(Store.StoreType.Recipe);
+            }
         }
         else
         {
-            PlayInformation.ResetInfo();
+            MainCamera.GetComponentInChildren<GamePlayHUD>().ShowRestartUI();
+            SM.SaveContinue(false);
         }
-        ShowQuestBoard();
     }
 
     public void DestoryQuest(GameObject gameObject)
@@ -234,10 +264,39 @@ public class GameManager : MonoBehaviour
         destroyObjects.Add(gameObject);
     }
 
-    private void RotateCamera(Vector3 eulerAngles)
+    public void ChangeStage(Quaternion rotation)
     {
-        if (_camera != null)
-            _camera.transform.rotation = Quaternion.Euler(eulerAngles);
+
+        foreach(var stage in _stageRotationDict)
+        {
+            if(Quaternion.Euler(stage.Value) == rotation)
+            {
+                _camera.transform.rotation = (rotation);
+                _stage = stage.Key;
+            }
+        }
+        
+    }
+
+    private void ChangeStage(GameStage stage)
+    {
+        if (_camera != null && _stageRotationDict.TryGetValue(stage, out var rotation))
+            _camera.transform.rotation = Quaternion.Euler(rotation);
+        _stage = stage;
+
+        switch(stage)
+        {
+            case GameStage.QuestBoard:
+                BM.HideBuffListObject();
+                break;
+            case GameStage.Brewing:
+                BM.ShowBuffListObject();
+                break;
+            case GameStage.Receipt:
+                BM.HideBuffListObject();
+                break;
+        }
+        SM.SaveStage();
     }
 
     public void CreateInfoUI(string infoText, Transform parentTransform, Vector3? localPosition = null, Vector3? localScale = null, UIInfoType type = UIInfoType.Confirm, Action yesFunc = null)

@@ -13,16 +13,31 @@ public class TitleHUD : HUD
         Continue,
         Setting,
         Quit,
+        MaxScore,
         DefaultMax
     };
     [SerializeField] private Image[] _stampImages;
     [SerializeField] private Button _gameStartButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _quitButton;
+    [SerializeField] private Button _maxScoreButton;
     [SerializeField] private Animator[] _stampAnimators;
 
     private MainMenuButton _currentButtonType;
     private Action[] _readyActions;
+
+    bool _isPlayStampAnim = false;
+
+    public void DisableContinueButton()
+    {
+        if(_continueButton != null)
+            _continueButton.interactable = false;
+    }
+    public void EnableContinueButton()
+    {
+        if (_continueButton != null)
+            _continueButton.interactable = true;
+    }
     override protected void Start()
     {
         base.Start();
@@ -41,12 +56,18 @@ public class TitleHUD : HUD
         _continueButton.onClick.AddListener(() => TriggerAction(MainMenuButton.Continue));
         _settingButton.onClick.AddListener(()=>TriggerAction(MainMenuButton.Setting));
         _quitButton.onClick.AddListener(() => TriggerAction(MainMenuButton.Quit));
+        _maxScoreButton.onClick.AddListener(() => TriggerAction(MainMenuButton.MaxScore));
         SoundManager._Instance.CurrentBGM = BGMType.Title;
         SoundManager._Instance.PlayBGM();
     }
 
     private void TriggerAction(MainMenuButton type)
     {
+        if (_isPlayStampAnim == false)
+            _isPlayStampAnim = true;
+        else
+            return;
+
         _currentButtonType = type;
         int id = (int)type;
         switch(type)
@@ -56,6 +77,9 @@ public class TitleHUD : HUD
                 break;
             case MainMenuButton.Continue:
                 _readyActions[id] = () => ContinueGame();
+                break;
+            case MainMenuButton.MaxScore:
+                _readyActions[id] = () => ShowEndingUI();
                 break;
             case MainMenuButton.Setting:
                 _readyActions[id] = () => ShowSettingMenu();
@@ -79,6 +103,7 @@ public class TitleHUD : HUD
             _readyActions[index].Invoke();
             _readyActions[index] = null;
         }
+        _isPlayStampAnim = false;
 
     }
 
@@ -90,7 +115,7 @@ public class TitleHUD : HUD
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        GameManager.GM.InitializeGameManager();
+        GameManager.GM.PlayInformation.ResetInfo(false);
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     public void ContinueGame()

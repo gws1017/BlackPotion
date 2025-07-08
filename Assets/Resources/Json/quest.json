@@ -12,7 +12,7 @@
     },
     {
       "questId": 1002,
-      "questName": "병원 하급 상처약 의뢰",
+      "questName": "병원 상처약 의뢰",
       "explainTextId": 4101,
       "questGrade": 1,
       "potionId": 2001,

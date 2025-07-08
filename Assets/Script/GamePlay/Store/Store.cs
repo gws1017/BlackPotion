@@ -153,7 +153,8 @@ public class Store : MonoBehaviour
     private void NextDay()
     {
         SoundManager._Instance.PlayClickSound();
+        GameManager.GM.PlayInformation.IncrementCraftDay();
+        GameManager.GM.ShowQuestBoard();
         CloseStoreUI();
-        GameManager.GM.CheckRecipt();
     }
 }

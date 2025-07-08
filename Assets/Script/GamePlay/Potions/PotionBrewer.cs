@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static Constants;
+using static SaveManager;
 
 public class PotionBrewer : MonoBehaviour
 {
@@ -27,10 +29,12 @@ public class PotionBrewer : MonoBehaviour
     //현재 제조 포션 정보
     [Header("Current Quest Info")]
     [SerializeField] private Image _potionImage;
+    [SerializeField] private Image _questGradeImage;
     [SerializeField] private Text _potionNameText;
+    [SerializeField] private Outline _potionNameOutline;
     [SerializeField] private Text _questText;
     [SerializeField] private Text _questTitleText;
-    [SerializeField] private Text _reqQualityValueText;
+    [SerializeField] private Text _reqCapacityValueText;
     [SerializeField] private Text _questProgressText;
     [SerializeField] private int _currentQuestIndex;
     private Quest _currentQuest;
@@ -42,25 +46,30 @@ public class PotionBrewer : MonoBehaviour
 
     //내부 변수
     private int _ingredientCount;
-    private int[] _currentAmount;
-    private int[] _maxAmount;
-    private int _currentPotionQuality;
+    private int[] _currentAmount = new int[INGREDIENT_SLOT_COUNT];
+    private int[] _maxAmount = new int[INGREDIENT_SLOT_COUNT];
+    private int _currentPotionCapacity;
     public bool _activePlusPowder;
 
+    public IngredientSlot[] Slots => _slots;
     public enum CraftState
     {
         None,
         Retry,
-        Success
+        Complete
     }
 
     private CraftState _craftState;
     public CraftState CurrentCraftState { get => _craftState; set => _craftState = value; }
 
     //Getter Setter
-    public int CurrentPotionQuality => _currentPotionQuality;
+    public int CurrentPotionCapacity => _currentPotionCapacity;
+    public int CurrentQuestIndex => _currentQuestIndex;
     public int[] MaxAmount => _maxAmount;
     public int[] CurrentAmount => _currentAmount;
+
+    public Text ReqCapacityValueText => _reqCapacityValueText;
+
     public Store StoreUI 
     {
         get
@@ -81,12 +90,12 @@ public class PotionBrewer : MonoBehaviour
 
     void Start()
     {
-        _gameManager = GameManager.GM;
         InitializeBrewer();
     }
 
     public void InitializeBrewer()
     {
+        _gameManager = GameManager.GM;
         _canvas.worldCamera = _gameManager.MainCamera;
         _craftResult.gameObject.SetActive(false);
 
@@ -98,20 +107,41 @@ public class PotionBrewer : MonoBehaviour
         _craftButton.onClick.AddListener(CraftPotion);
     }
 
-    public bool IsCraftSuccessful()
+    public bool IsFullSlot()
     {
-        _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionQuality);
-
-        if (_currentQuest.RequirePotionCapacity > _currentPotionQuality)
-            return false;
-
         foreach (var slot in _slots)
         {
             int sid = slot.SlotId;
             if (slot.enabled && _currentAmount[sid] > _maxAmount[sid])
                 return false;
         }
+
         return true;
+    }
+
+    public bool IsEmptySlot()
+    {
+        for (int i = 0; i < CurrentAmount.Length; ++i)
+        {
+            if (MaxAmount[i] > 0 && CurrentAmount[i] == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool IsCraftSuccessful()
+    {
+        _gameManager.BM.CheckBuff(BuffType.PlusPowder, ref _currentPotionCapacity);
+        bool ret = (_currentQuest.RequirePotionCapacity <= _currentPotionCapacity);
+
+        ret &= IsFullSlot();
+
+        ret &= IsEmptySlot();
+
+        return ret;
     }
 
     public void CraftPotion()
@@ -126,7 +156,7 @@ public class PotionBrewer : MonoBehaviour
 
         yield return new WaitUntil(() => _craftState != CraftState.None);
 
-        if (_craftState == CraftState.Success)
+        if (_craftState == CraftState.Complete)
         {
             ProcessCraftResult();
         }
@@ -136,17 +166,19 @@ public class PotionBrewer : MonoBehaviour
         }
     }
 
-    private void ProcessCraftResult()
+    public void ProcessCraftResult()
     {
         bool isSuccess = IsCraftSuccessful();
         _craftResult.IsPotionCraftSuccessful = isSuccess;
         Board.SetQuestResult(_currentQuest, isSuccess);
 
+        _gameManager.SM.SaveQuestResult(CurrentQuestIndex, isSuccess);
+
         _craftButton.gameObject.SetActive(false);
 
-
+        _gameManager.SM.SaveVisibleCraftResult(true);
         _craftResult.UpdateCraftResultUI();
-        _reqQualityValueText.text = _currentQuest.RequirePotionCapacity.ToString();
+        _reqCapacityValueText.text = _currentQuest.RequirePotionCapacity.ToString();
     }
 
     private void ProcessCraftRetry()
@@ -154,50 +186,84 @@ public class PotionBrewer : MonoBehaviour
         _gameManager.PlayInformation.ConsumeGold(Constants.RETRY_GOLD);
         _currentQuest.IsRestart = true;
         UpdateQuestInfo(_currentQuestIndex);
-        _gameManager.SM.SaveQuest();
+    }
+
+    public void ShowCraftResultUI()
+    {
+        _craftResult.ShowCraftResultUI();
+        ProcessCraftResult();
     }
 
     public void GetNextCraft()
     {
         _currentQuestIndex++;
+
+        _gameManager.SM.SaveVisibleCraftResult(false);
+        _gameManager.SM.SaveFailPenalty(false);
+        _gameManager.SM.SaveQuestOrder(_currentQuestIndex);
         if (Board.CurrentAcceptQuestCount > _currentQuestIndex)
         {
-            _gameManager.SM.SaveQuestOrder(_currentQuestIndex);
             UpdateQuestInfo(_currentQuestIndex);
         }
         else
         {
             _currentQuestIndex = 0;
-            StartCoroutine(_gameManager.Receipt.UpdateReceiptCorutine());
             _gameManager.ShowCraftReceipt();
+            StartCoroutine(_gameManager.Receipt.UpdateReceiptCorutine());
         }
         _craftButton.gameObject.SetActive(true);
     }
 
-    public void InsertIngredient(int slotId,int ingridientIndex, int amount)
+    public void InsertIngredient(int slotId,int ingridientIndex, int amount,IngridientEvent oev = null)
     {
         int prevValue = _currentAmount[slotId];
-        _currentAmount[slotId] += amount;
-        if (prevValue == _currentAmount[slotId]) return;
 
+        //양조기강화 버프 체크
+        GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
+
+        _currentAmount[slotId] += amount;
+
+        //GameManager.GM.SM.SaveInputAmount(slotId, amount);
+
+        IngridientEvent ev = new IngridientEvent
+        {
+            slotId = slotId,
+            type = InputEventType.FreeInput,
+            value = amount
+        };
+
+        if (oev !=null)
+            ev = oev;
+         GameManager.GM.SM.SaveInputEvent(ev, _currentQuestIndex);
+
+        if (prevValue == _currentAmount[slotId]) return;
         if (_maxAmount[slotId] <= _currentAmount[slotId])
         {
-            _ingredientInputAmountText[slotId].color = Color.red;
+            if(_maxAmount[slotId] < _currentAmount[slotId])
+                _ingredientInputAmountText[ingridientIndex].color = Color.red;
             _slots[slotId].DisableInputButton();
         }
 
         _ingredientInputAmountText[ingridientIndex].text =
             $"{_currentAmount[slotId]} / {_maxAmount[slotId]}";
 
-        _currentPotionQuality = 0;
-        _currentPotionQuality = _currentAmount.Sum();
+        _currentPotionCapacity = 0;
+        _currentPotionCapacity = _currentAmount.Sum();
     }
 
-    public void SetCurrentAmount(int index,int value)
+    public void SetCurrentAmount(int slotId, int ingridientIndex,int value)
     {
-        _currentAmount[index] = value;
-        _ingredientInputAmountText[index].text =
-            $"{_currentAmount[index]} / {_maxAmount[index]}";
+        if (_maxAmount[slotId] <= 0) return;
+
+        _currentAmount[slotId] = value;
+        _ingredientInputAmountText[ingridientIndex].text =
+            $"{_currentAmount[slotId]} / {_maxAmount[slotId]}";
+
+        if(_currentAmount[slotId] / _maxAmount[slotId] < 1)
+        {
+            _ingredientInputAmountText[ingridientIndex].color = Color.black;
+            _slots[slotId].EnableInputButton();
+        }
     }
 
     public void UpdateQuestInfo(int questIndex = 0)
@@ -205,6 +271,7 @@ public class PotionBrewer : MonoBehaviour
         _currentQuestIndex = questIndex;
         _currentQuest = Board.GetCurrentQuest(_currentQuestIndex);
 
+        _gameManager.SM.SaveQuestRestart(CurrentQuestIndex, _currentQuest.IsRestart);
 
         var potionInfo = _currentQuest.PInfo;
 
@@ -215,7 +282,7 @@ public class PotionBrewer : MonoBehaviour
 
         _currentAmount = new int[INGREDIENT_SLOT_COUNT];
         _maxAmount = new int[INGREDIENT_SLOT_COUNT];
-        _currentPotionQuality = 0;
+        _currentPotionCapacity = 0;
         
         _recipeNameText.text = potionInfo.potionName;
 
@@ -228,6 +295,9 @@ public class PotionBrewer : MonoBehaviour
             _slots[i].InitializeSlot();
             _slots[i].EnableInputButton();
             _slots[i].IngridientIndex = ingridientCount;
+
+            GameManager.GM.SM.SaveSlotInfo(i, _slots[i].IngridientIndex);
+
             int ingredientId = potionInfo.ingredientIdList[i];
 
             _ingredientInputAmountText[i].color = Color.black;
@@ -276,8 +346,10 @@ public class PotionBrewer : MonoBehaviour
         _questTitleText.text = _currentQuest.QuestName;
         _questProgressText.text = $"의뢰 {_currentQuestIndex + 1} / {Board.CurrentAcceptQuestCount}";
         _potionImage.sprite = _currentQuest.PotionImage;
+        _questGradeImage.sprite = Constants.GetQuestGradeMark(_currentQuest.QuestGrade);
         _potionNameText.text = _currentQuest.PotionName;
-        _reqQualityValueText.text = _currentQuest.PotionCapacityValue;
+        _potionNameOutline.effectColor = Constants.RecipeGradeToColor((RecipeGrade)_currentQuest.PInfo.potionGrade);
+        _reqCapacityValueText.text = _currentQuest.PotionCapacityValue;
         _craftButton.enabled = true;
     }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static Constants;
 
 public class CraftResult : MonoBehaviour
 {
@@ -28,12 +29,14 @@ public class CraftResult : MonoBehaviour
     [SerializeField] private Text _selectText;
     [SerializeField] private Text _potionQualityRewardText;
     [SerializeField] private Text _resultText;
+    [SerializeField] private Text _recipeGradeText;
     [SerializeField] private Button _selectButton;
     [SerializeField] private Button _moneyButton;
     [SerializeField] private Button _recipeButton;
     [SerializeField] private Image _recipeImage;
     [SerializeField] private Outline _moneyOutline;
     [SerializeField] private Outline _recipeOutline;
+    [SerializeField] private Outline _recipeGradeOutline;
 
     [Header("Result Check UI")]
     [SerializeField] private Image _potionImage;
@@ -91,10 +94,12 @@ public class CraftResult : MonoBehaviour
 
         if (Brewer.CurrentQuest.IsRestart) _restartButton.interactable = false;
         _potionQualityProgressBar.maxValue = MAX_QUALITY_VALUE;
+        _potionQualityProgressBar.interactable = false;
     }
 
     public void ShowCraftResultUI()
     {
+        gameObject.SetActive(true);
 
         InitializeRewardUI();
         OffHighlight();
@@ -105,7 +110,7 @@ public class CraftResult : MonoBehaviour
         _resultCheckUIInstance.SetActive(false);
         _rewardUIInstance.SetActive(true);
 
-        Brewer.CurrentCraftState = PotionBrewer.CraftState.Success;
+        Brewer.CurrentCraftState = PotionBrewer.CraftState.Complete;
     }
 
     public void UpdateCraftResultUI()
@@ -127,8 +132,6 @@ public class CraftResult : MonoBehaviour
             ProcessFailureResult();
         }
     }
-
-    
 
     private void ProcessSuccessResult()
     {
@@ -173,6 +176,9 @@ public class CraftResult : MonoBehaviour
 
             var RecipeData = ReadJson._dictPotion[_rewardRecipeId];
             _recipeNameText.text = RecipeData.potionName + " 레시피";
+            var grade = (RecipeGrade)RecipeData.potionGrade;
+            _recipeGradeText.text = Constants.RecipeGradeToString(grade);
+            _recipeGradeOutline.effectColor = Constants.RecipeGradeToColor(grade);
         }
 
         _selectText.text = "선택";
@@ -186,7 +192,21 @@ public class CraftResult : MonoBehaviour
         _rewardButtons.SetActive(false);
         _selectText.text = "다음";
 
-        playInfo.ConsumeGold((int)(quest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO));
+        if (GameManager.GM.SM.ProcessPenalty == false)
+        {
+            playInfo.ConsumeGold((int)(quest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO));
+            GameManager.GM.SM.SaveFailPenalty(true);
+        }
+    }
+
+    public bool CheckFGrade(int currentQuality)
+    {
+        bool ret = (currentQuality < 0);
+
+        ret |= (Brewer.IsFullSlot() == false);
+        ret |= (Brewer.IsEmptySlot() == false);
+
+        return ret;
     }
 
     //제조버튼 클릭시 호출됨
@@ -205,7 +225,7 @@ public class CraftResult : MonoBehaviour
 
         _potionImage.sprite = questInfo.PotionImage;
         _potionName.text = questInfo.PotionName;
-        _potionQualityResultCheckText.text = Brewer.CurrentPotionQuality.ToString();
+        _potionQualityResultCheckText.text = Brewer.CurrentPotionCapacity.ToString();
         _potionMinQuality.text = questInfo.QInfo.minCapacity.ToString();
         _potionMaxQuality.text = questInfo.QInfo.maxCapacity.ToString();
 
@@ -216,19 +236,18 @@ public class CraftResult : MonoBehaviour
             _potionQualityResultCheckText.text += plusValue;
             _potionQualityRewardText.text = _potionQualityResultCheckText.text;
         }
-        int currentQuality = Brewer.CurrentPotionQuality;
+        int currentQuality = Brewer.CurrentPotionCapacity;
         currentQuality -= questInfo.QInfo.minCapacity;
 
         float qualityPercent = (float)(currentQuality) / (float)(questInfo.QInfo.maxCapacity - questInfo.QInfo.minCapacity) * 100.0f;
         _potionCraftGrade = Constants.CheckPotionCraftGrade(qualityPercent);
-        _potionGrade.text = _potionCraftGrade;
+        
 
-        if (currentQuality < 0 || Brewer.IsCraftSuccessful() == false)
+        if (CheckFGrade(currentQuality))
         {
+            _potionCraftGrade = "F";
             _potionGrade.color = Color.red;
             _sliderObject.SetActive(false);
-            _potionCraftGrade = "F";
-            _potionGrade.text = _potionCraftGrade;
         }
         else
         {
@@ -236,6 +255,9 @@ public class CraftResult : MonoBehaviour
             _potionQualityProgressBar.value = qualityPercent;
             _sliderObject.SetActive(true);
         }
+
+        Brewer.CurrentQuest.PotionCraftGrade = _potionCraftGrade;
+        _potionGrade.text = _potionCraftGrade;
     }
 
 
@@ -244,7 +266,7 @@ public class CraftResult : MonoBehaviour
         if (Brewer.CurrentCraftState == PotionBrewer.CraftState.None) 
             return;
 
-        _potionQualityRewardText.text = Brewer.CurrentPotionQuality.ToString();
+        _potionQualityRewardText.text = Brewer.CurrentPotionCapacity.ToString();
         _questResultText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 432);
 
 
@@ -262,7 +284,8 @@ public class CraftResult : MonoBehaviour
             //_questResultText.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,184);
             _questResultText.text = "의뢰 실패";
             _questFailText.enabled = true;
-            _questFailText.text = $"위약금 발생\n{Brewer.CurrentQuest.QuestRewardMoney * -0.1f}G";
+            int penaltyAmount = (int)(Brewer.CurrentQuest.QuestRewardMoney * Constants.QUEST_PENALTY_RATIO);
+            _questFailText.text = $"위약금 발생\n-{penaltyAmount}G";
             _resultText.text = "실패";
             if (_playResultSound == false)
                 SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Fail);
@@ -280,17 +303,24 @@ public class CraftResult : MonoBehaviour
 
             if (_selectReward == 1)
             {
-                playInfo.IncrementGold((int)(quest.QuestRewardMoney * _rewardMultiplier));
+                int rewardMoney = (int)(quest.QuestRewardMoney * _rewardMultiplier);
+                quest.SelectRewardRecipeId = -1;
+                quest.SelectRewardMoney = rewardMoney;
+                playInfo.IncrementGold(rewardMoney);
             }
             else if (_selectReward == 2)
             {
                 var RecipeData = ReadJson._dictPotion[_rewardRecipeId];
                 playInfo.AddRecipe(_rewardRecipeId);
+                quest.SelectRewardMoney = 0;
+                quest.SelectRewardRecipeId = _rewardRecipeId;
                 Debug.Log(RecipeData.potionName.ToString() + " 레시피 해금되었습니다.");
             }
             else 
                 return;
+            GameManager.GM.SM.SaveQuestReward(Brewer.CurrentQuestIndex, quest.SelectRewardMoney);
         }
+        
         _playResultSound = false;
 
         SoundManager._Instance.PlayClickSound();
@@ -312,7 +342,7 @@ public class CraftResult : MonoBehaviour
         if (GameManager.GM.PlayInformation.CurrentGold < Constants.RETRY_GOLD)
         {
             GameManager.GM.CreateInfoUI("골드가 부족합니다.",
-                GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform, new Vector3(0, -200, 0), Vector3.one * 128);
+                GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform, null, Vector3.one * 128);
             return;
         }
         SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Item);

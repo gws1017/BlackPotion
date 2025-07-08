@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static SaveManager;
 using static UnityEngine.ParticleSystem;
 
 public class IngredientSlot : MonoBehaviour
@@ -32,7 +33,7 @@ public class IngredientSlot : MonoBehaviour
 
     private PotionBrewer _brewer;
     private int _slotId;
-    private int _ingridientIndex;
+    private int _uiIngredientIdx;
     private int _questGrade;
 
     private Dictionary<int, bool> _ingredientCountDict = new Dictionary<int, bool>(); //현재까지 투입된 수량
@@ -40,15 +41,11 @@ public class IngredientSlot : MonoBehaviour
     //Getter Setter
     public int IngredientAmount { get => _ingredientAmount; set => _ingredientAmount = value; }
     public int SlotId { get => _slotId; set => _slotId = value; }
-    public int IngridientIndex { get => _ingridientIndex; set => _ingridientIndex = value; }
+    public int IngridientIndex { get => _uiIngredientIdx; set => _uiIngredientIdx = value; }
 
     void Start()
     {
-        _canvas = GetComponentInChildren<Canvas>();
-        _canvas.worldCamera = GameManager.GM.MainCamera;
-        _brewer = GameManager.GM.Brewer;
-
-        _inputButton.onClick.AddListener(InputIngredient);
+        
     }
 
     public void ShowIngredientImage()
@@ -75,6 +72,13 @@ public class IngredientSlot : MonoBehaviour
 
     public void InitializeSlot()
     {
+        _canvas = GetComponentInChildren<Canvas>();
+        _canvas.worldCamera = GameManager.GM.MainCamera;
+        _brewer = GameManager.GM.Brewer;
+
+        _inputButton.onClick.RemoveAllListeners();
+        _inputButton.onClick.AddListener(InputIngredient);
+
         _questGrade = (int)_brewer.CurrentQuest.QuestGrade + 1;
         IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
 
@@ -98,8 +102,13 @@ public class IngredientSlot : MonoBehaviour
 
     }
 
-    private void ResetIngredientUsage()
+    public void ResetIngredientUsage()
     {
+        IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
+
+        _inputButton.onClick.RemoveAllListeners();
+        _inputButton.onClick.AddListener(InputIngredient);
+
         _inputButtonText.text = "투입";
         _ingredientCountDict.Clear();
         for (int i = 1; i <= Constants.INGRIDIENT_MAX_NUMBER; ++i)
@@ -108,20 +117,31 @@ public class IngredientSlot : MonoBehaviour
             _inputInfoImages[i].color = Color.white;
         }
         IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
+        
     }
 
-    private void InputIngredient()
+    public void FreeReset()
     {
-        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Add);
-        int amount = GetRandomAmount();
+        _questGrade--;
+        ResetIngredientUsage();
+    }
 
+    public void HandleInputAmount(int amount)
+    {
+        IngridientEvent ev = null;
         if (amount == 0)
         {
             if (_questGrade > 1)
             {
-                _questGrade--;
-                ResetIngredientUsage();
+                FreeReset();
                 amount = GetRandomAmount();
+                ev = new IngridientEvent
+                {
+                    slotId = _slotId,
+                    type = InputEventType.FreeRefill,
+                    value = amount
+                };
+                
             }
             else
             {
@@ -130,13 +150,10 @@ public class IngredientSlot : MonoBehaviour
             }
         }
         Debug.Log(amount);
-        _brewer.InsertIngredient(_slotId,_ingridientIndex, amount);
+        _brewer.InsertIngredient(_slotId, _uiIngredientIdx, amount,ev);
         _ingredientCountDict[amount] = true;
         _inputInfoImages[amount].color = new Color32(120, 120, 120, 255);
 
-
-        //양조기강화 버프 체크
-        GameManager.GM.BM.CheckBuff(BuffType.UpgradeBrew, ref amount);
 
         IngredientAmount -= amount;
 
@@ -146,24 +163,38 @@ public class IngredientSlot : MonoBehaviour
             _inputButton.onClick.RemoveAllListeners();
             _inputButton.onClick.AddListener(IngredientSupply);
         }
+    }
+
+    private void InputIngredient()
+    {
+        SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Add);
+        int amount = GetRandomAmount();
+
+        HandleInputAmount(amount);
 
         _particle.Emit(amount);
     }
 
+    public bool isAmountUsed(int amount)
+    {
+        return _ingredientCountDict[amount];
+    }
 
     private int GetRandomAmount()
     {
         if (IsFullCount()) return 0;
 
         int amount = UnityEngine.Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
-        while (_ingredientCountDict[amount])
+        
+        if(GameManager.GM.BM.CheckBuff(BuffType.EvenNumber, ref amount,_slotId))
+            return amount;
+        if(GameManager.GM.BM.CheckBuff(BuffType.OddNumber, ref amount, _slotId))
+            return amount;
+
+        while (isAmountUsed(amount))
         {
             amount = UnityEngine.Random.Range(1, Constants.INGRIDIENT_MAX_NUMBER + 1);
         }
-
-        //홀짝버프 확인
-        GameManager.GM.BM.CheckBuff(BuffType.EvenNumber, ref amount);
-        GameManager.GM.BM.CheckBuff(BuffType.OddNumber, ref amount);
 
         return amount;
     }
@@ -186,11 +217,10 @@ public class IngredientSlot : MonoBehaviour
         Debug.Log("재료를 수급합니다!");
 
         Transform parentTranform = GameManager.GM.MainCamera.GetComponentInChildren<Canvas>().transform;
-        Vector3 uiPosition = new Vector3(0, -200, 0);
-        Vector3 uiScale = Vector3.one * 128;
+        Vector3 uiScale = Vector3.one * Constants.UI_SCALE;
         if (GameManager.GM.PlayInformation.CurrentGold < Constants.INGRIDIENT_REFILL_GOLD)
         {
-            GameManager.GM.CreateInfoUI("골드가 부족합니다.", parentTranform, uiPosition, uiScale);
+            GameManager.GM.CreateInfoUI("골드가 부족합니다.", parentTranform, null, uiScale);
             return;
         }
         else
@@ -199,17 +229,18 @@ public class IngredientSlot : MonoBehaviour
             {
                 SoundManager._Instance.PlaySFXAtObject(gameObject, SFXType.Item);
                 GameManager.GM.PlayInformation.ConsumeGold(Constants.INGRIDIENT_REFILL_GOLD);
-                IngredientAmount = Constants.INGRIDIENT_SUM_NUMBER;
+                
 
-                _inputButtonText.text = "투입";
-
-                _ingredientCountDict.Clear();
-
-                _inputButton.onClick.RemoveAllListeners();
-                _inputButton.onClick.AddListener(InputIngredient);
+                IngridientEvent ev = new IngridientEvent
+                {
+                    slotId = _slotId,
+                    type = InputEventType.Refill,
+                    value = 0
+                };
+                GameManager.GM.SM.SaveInputEvent(ev, _brewer.CurrentQuestIndex);
                 ResetIngredientUsage();
             };
-            GameManager.GM.CreateInfoUI("재료를 수급하시겠습니까?", parentTranform, uiPosition, uiScale
+            GameManager.GM.CreateInfoUI("재료를 수급하시겠습니까?", parentTranform, null, uiScale
                 , ConfirmUI.UIInfoType.YesAndNo, supplyAction);
         }
         
@@ -220,6 +251,6 @@ public class IngredientSlot : MonoBehaviour
         if (_inputInfoUIInstance != null)
             _inputInfoUIInstance.SetActive(!_inputInfoUIInstance.activeSelf);
     }
-    public void DisableInputButton() => _inputButton.enabled = false;
-    public void EnableInputButton() => _inputButton.enabled = true;
+    public void DisableInputButton() => _inputButton.interactable = false;
+    public void EnableInputButton() => _inputButton.interactable = true;
 }
