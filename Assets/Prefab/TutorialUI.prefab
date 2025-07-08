@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 300, y: 15}
+  m_AnchoredPosition: {x: 400, y: -125}
   m_SizeDelta: {x: 330, y: 115}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &808565960154031936
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f1d94ffcdc1071d49b7eb1bbe6dac452, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 88f42fb7e0652ca469dbc9dce8aaf7f2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -355,7 +355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -300, y: 15}
+  m_AnchoredPosition: {x: -400, y: -125}
   m_SizeDelta: {x: 330, y: 115}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &8904185038036570153
@@ -571,9 +571,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentImage: {fileID: 1186185857100531802}
   _imageList:
-  - {fileID: 21300000, guid: f1d94ffcdc1071d49b7eb1bbe6dac452, type: 3}
-  - {fileID: 21300000, guid: 168b4f7338c39864993ecee7fc0bc946, type: 3}
-  - {fileID: 21300000, guid: 579db6db62406b541ba1da3da40b93c0, type: 3}
+  - {fileID: 21300000, guid: 88f42fb7e0652ca469dbc9dce8aaf7f2, type: 3}
+  - {fileID: 21300000, guid: 53beef1997248814a90c871258e5f0d8, type: 3}
+  - {fileID: 21300000, guid: f28ef93207ed933419140653e77c5551, type: 3}
+  - {fileID: 21300000, guid: 76c8eeeea64fd5845ba3312afdbf84b6, type: 3}
+  - {fileID: 21300000, guid: 62cf21ce2b91b734a8bed51bc20bf5ec, type: 3}
+  - {fileID: 21300000, guid: 4058e93fefbf2374ca626d106568062d, type: 3}
+  - {fileID: 21300000, guid: 3275f7d9bc626cd4582ef1c2862d09da, type: 3}
+  - {fileID: 21300000, guid: 9e808d0ef00f88c489e31e998bfdaa25, type: 3}
+  - {fileID: 21300000, guid: f0bdcf6879c6da04ab72c18c53ab505c, type: 3}
+  - {fileID: 21300000, guid: 59e1f1d83d8cd9943ad11a30f6b912ae, type: 3}
+  - {fileID: 21300000, guid: 46c951013c4936f4cb6c8281a7a53462, type: 3}
+  - {fileID: 21300000, guid: 1c0e205009cb4144089744717c0e751e, type: 3}
   _leftButton: {fileID: 6545079902120119765}
   _rightButton: {fileID: 353911104838447548}
   _closeButton: {fileID: 1348360166768099336}

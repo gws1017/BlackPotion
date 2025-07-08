@@ -436,7 +436,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 67035010}
-  - component: {fileID: 67035009}
   m_Layer: 0
   m_Name: BorderlessWindow
   m_TagString: Untagged
@@ -444,18 +443,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &67035009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67035008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6555bc9a8eba799488b56811bf35ff4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &67035010
 Transform:
   m_ObjectHideFlags: 0
@@ -3879,6 +3866,11 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3806290309050253447, guid: d71ccb1f3e2ed5c4c8b83fb49c590670,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3984890886068680348, guid: d71ccb1f3e2ed5c4c8b83fb49c590670,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -4003,6 +3995,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SettingMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7943531068636229511, guid: d71ccb1f3e2ed5c4c8b83fb49c590670,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8213404696673156330, guid: d71ccb1f3e2ed5c4c8b83fb49c590670,
         type: 3}

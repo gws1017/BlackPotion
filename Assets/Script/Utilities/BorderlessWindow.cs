@@ -40,7 +40,7 @@ public class BorderlessWindow : MonoBehaviour
     //    HideWindowBorders();
     //}
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
     public static void InitializeWindow()
     {
 #if !UNITY_EDITOR && UNITY_STANDALONE_WIN

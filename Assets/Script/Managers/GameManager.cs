@@ -246,6 +246,7 @@ public class GameManager : MonoBehaviour
                 var hud = MainCamera.GetComponentInChildren<GamePlayHUD>();
                 hud.ShowEndingUI();
                 hud.ScoreUI.CurrentScoreText = $"{PlayInformation.MaxGold}°ñµå";
+                SM.SaveContinue(false);
             }
             else
             {

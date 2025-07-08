@@ -135,13 +135,15 @@ public class SaveManager : MonoBehaviour
 
     public void SaveMaxGold(int gold)
     {
-        _systemData.MaxGold = Mathf.Max(gold, _systemData.MaxGold);
+        SystemLoad();
+        _systemData.MaxGold = Math.Max(gold,_systemData.MaxGold);
         SystemSave();
     }
 
     public void SaveVolume(SoundType type, float value)
     {
-        if(SoundType.SFX == type)
+        SystemLoad();
+        if (SoundType.SFX == type)
             _systemData.sfxVolume = value;
         if(SoundType.BGM == type)
             _systemData.bgmVolume = value;
@@ -328,11 +330,13 @@ public class SaveManager : MonoBehaviour
     }
     public void SaveContinue(bool value)
     {
+        SystemLoad();
         _systemData.isContinue = value;
         SystemSave();
     }
     public void SaveVersion()
     {
+        SystemLoad();
         _systemData.version = Application.version;
         SystemSave();
     }
